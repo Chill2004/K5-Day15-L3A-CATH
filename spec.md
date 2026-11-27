@@ -1,4 +1,4 @@
-# AI SPEC — Hỗ trợ khi giao dịch nghi lừa đảo bị tạm chặn · Nhóm CATH · Phòng __ · Zone __
+# AI SPEC — Hỗ trợ khi giao dịch nghi lừa đảo bị tạm chặn · Nhóm CATH · Phòng H209 · Zone 2
 
 > Mốc nộp: §7 chốt chuẩn "đạt" tại **CP2 19:30 Thứ Sáu 27/11** · §0–§7 nộp **CP3 10:00 Thứ Bảy 28/11** · đủ §0–§10 **CP4 14:30 Thứ Bảy 28/11** · §10 changelog ghi tiếp đến **23:59 Thứ Bảy 28/11**.
 > Chỗ ghi *(đề xuất — nhóm chốt)* là bản nháp chờ cả nhóm duyệt. Chỗ `__` là chưa có số.
@@ -34,7 +34,7 @@ Bằng chứng đếm ngày 27/11/2026 (review 1–2 sao, đếm thử bằng t�
 | H2 · kẹt xác thực / đăng nhập / đổi máy | review VN 1–2 sao 628/2.510 (25%) đếm từ khoá, đọc tay ~1/2 người dùng tự gỡ được; Mỹ/Anh 13,8% | — | — | không ước tính (đã loại ở bước bằng chứng) | Kịp | Không — quy trình mỗi ngân hàng một khác, không có nhãn CFPB khớp |
 | **E3 · giao dịch nghi lừa đảo bị tạm chặn** | **CFPB 48,1–58,7%** khiếu nại chuyển tiền; review Mỹ/Anh khoá/lừa đảo ~9–10% mỗi nhãn; riêng MoMo cảnh báo ~29.000 giao dịch bất thường / ngày [1] | ~870.000 giao dịch bị cảnh báo / tháng (chỉ MoMo) [1] | Thời gian chờ hỗ trợ + rủi ro mất tiền | xem công thức dưới | Kịp (đề có sẵn công cụ, chuẩn đạt) | **Chọn** |
 
-- **Impact / tháng** của E3 = **870.000** giao dịch bị cảnh báo / tháng (MoMo, ~29.000 / ngày × 30 [1]) × **p%** người phải nhắn / gọi hỗ trợ × **t phút** chờ mỗi lần = __ giờ người dùng chờ / tháng.
+- **Impact / tháng** của E3 = **870.000** giao dịch bị cảnh báo / tháng (MoMo, ~29.000 / ngày × 30 [1]) × **p%** người phải nhắn / gọi hỗ trợ × **t phút** chờ mỗi lần = **≈ 216.000 giờ** người dùng chờ / tháng (mức trần, tính ở dưới).
   - p = **11/13 (85%)** người bị giữ đã chat / gọi tổng đài / ra quầy — khảo sát câu 6, N = 20 (`evidence/survey/`).
   - t = **17,5 phút** — điểm giữa nhóm "5–30 phút", nhóm trả lời nhiều nhất (8/13) ở khảo sát câu 7 *(lấy điểm giữa là tự ước tính)*; 3/13 người mất hơn 2 giờ hoặc sang ngày khác.
   - → 870.000 × 85% × 17,5 phút ≈ **12,9 triệu phút ≈ 216.000 giờ người dùng chờ hỗ trợ mỗi tháng** — đây là **mức trần** (xem giới hạn dưới), chỉ tính riêng MoMo.

@@ -92,14 +92,16 @@ Nhóm dùng stack khác (Node, Streamlit, notebook…): sửa hàm `run_app()` t
 
 | Thành phần | Thật / Giả | Ghi chú |
 |---|---|---|
-| Lời gọi AI ở quyết định trung tâm | **Thật** (bắt buộc từ CP3) | Model: ____ |
-|  |  |  |
+| Lời gọi AI ở quyết định trung tâm | **Thật** (bắt buộc từ CP3) | Model: `gemini-3.1-flash-lite` qua Gemini REST API, 1 lần gọi / tin nhắn, ép JSON bằng `responseSchema` (`codebase/ai.py`, `decide.py`) |
+| Chặn rủi ro sau model | **Thật** | Kiểm bằng code (`codebase/guard.py`): lọc xin OTP, lộ ngưỡng, hứa nhả, link/QR; nhả giao dịch và khoá ví chỉ tạo bản nháp chờ duyệt |
+| Công cụ (tra giao dịch, giữ, gửi xác thực, chuyển tư vấn viên) | **Giả** (mô phỏng) | `codebase/tools.py` đọc / ghi dữ liệu giả, không nối hệ thống ví thật |
+| Dữ liệu giao dịch, tin nhắn | **Giả** | Nhóm tự dựng (`data/held_transactions.csv`, `data/messages.csv`, `data/DATA_CARD.md`); không dùng giao dịch thật của ai |
 
 ## Dùng AI vào việc gì
 
 2–3 dòng (bắt buộc): nhóm dùng công cụ AI nào để làm gì, người kiểm lại phần nào. Chi tiết: [docs/ai-usage.md](docs/ai-usage.md). Coding agent đọc [AGENTS.md](AGENTS.md).
 
-____
+Claude Code viết nháp code (gọi model, prompt, guard, luồng, công cụ) và script đào data, gắn nhãn nháp 400 review; Cường đọc lại 400/400 nhãn (Hà gắn độc lập 40 review, khớp 37/40), Cường và Trí chạy thử trên model thật và sửa theo lỗi. Codex hỗ trợ Ánh soạn câu thử, metric và đối chiếu trace khi chấm; Ánh duyệt đáp án và chấm cột `pass`. Claude/Gemini hỗ trợ Hà dựng khung data giả và chỉnh câu văn ghi chép phỏng vấn; Hà tự viết lại tin nhắn, tự phỏng vấn và kiểm số chi phí. Không dùng AI để tạo người được phỏng vấn, câu trả lời khảo sát hay sửa kết quả các lượt đã chạy.
 
 ## File mẫu — điền ở bước nào
 
