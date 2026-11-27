@@ -41,21 +41,13 @@ def answer(text: str) -> dict:
     Trả {"output": str} — câu trả lời đã qua guard (đảm bảo luật cứng).
     """
     # ------------------------------------------------------------------
-    # Bước 1: Tra giao dịch bị giữ
+    # Bước 1: Tra giao dịch bị giữ của phiên chat
     # ------------------------------------------------------------------
     gd_raw = get_held_transaction(text)
-
-    if not gd_raw.get("found"):
-        # G10: không tìm thấy giao dịch → hỏi lại đúng 1 câu, không bịa tx_id
-        note("agent: không tìm thấy giao dịch — hỏi lại (G10)")
-        return {"output": _HOI_LAI_KHONG_THAY_GD}
-
-    # Lọc giao dịch: chỉ giữ khoá classify cho phép
-    # (không truyền ngưỡng rủi ro hay _keywords vào model)
-    gd = get_held_transaction_for_classify(gd_raw)
+    gd = get_held_transaction_for_classify(gd_raw) if gd_raw.get("found") else None
 
     # ------------------------------------------------------------------
-    # Bước 2: Classify — model phân loại tin nhắn + chọn hành động
+    # Bước 2: Classify — luôn gọi model (kể cả khi gd=None)
     # ------------------------------------------------------------------
     kq = classify(text, gd)
 
@@ -67,14 +59,13 @@ def answer(text: str) -> dict:
     # ------------------------------------------------------------------
     # Bước 4: Dispatch — gọi tool action tương ứng hanh_dong
     # ------------------------------------------------------------------
+    nhom = kq.get("nhom", "chua_ro")
     hanh_dong = g.get("hanh_dong", "chuyen_tu_van_vien")
-    tx_id = gd.get("tx_id", "")
+    tx_id = (gd or {}).get("tx_id", "")
 
     if hanh_dong == "giu_va_canh_bao":
-        # Trước khi gọi, kiểm chan_cong_cu phòng trường hợp sau này
-        # agent mở rộng và vô tình gọi tool cấm
         draft = chan_cong_cu("hold_transaction", gd)
-        if draft is None:   # hold_transaction không phải công cụ cấm
+        if draft is None:
             hold_transaction(tx_id, ly_do=kq.get("ly_do", ""))
         note("agent: dispatch → giu_va_canh_bao · tx=%s" % tx_id)
 
@@ -85,11 +76,9 @@ def answer(text: str) -> dict:
         note("agent: dispatch → gui_xac_thuc · tx=%s" % tx_id)
 
     elif hanh_dong == "hoi_lai":
-        # Không gọi action tool — chỉ trả câu hỏi lại từ guard
         note("agent: dispatch → hoi_lai · tx=%s" % tx_id)
 
     elif hanh_dong == "chuyen_tu_van_vien":
-        # Kiểm chan_cong_cu cho handoff (không cấm, nhưng pattern tốt)
         draft = chan_cong_cu("handoff_to_agent", gd)
         if draft is None:
             handoff_to_agent(
@@ -100,26 +89,14 @@ def answer(text: str) -> dict:
         note("agent: dispatch → chuyen_tu_van_vien · tx=%s" % tx_id)
 
     # ------------------------------------------------------------------
-    # Chặn công cụ cấm bất kể luồng nào cố gọi (lớp bảo vệ rõ ràng)
-    # release_transaction và lock_wallet chỉ được gọi nếu
-    # chan_cong_cu trả về None — nhưng chúng thuộc CONG_CU_CAM nên
-    # chan_cong_cu LUÔN chặn, trả bản nháp cho_duyet.
-    # ------------------------------------------------------------------
-    for ten_cam in ("release_transaction", "lock_wallet"):
-        draft = chan_cong_cu(ten_cam, gd)
-        # draft không phải None → đã chặn, bản nháp đã được tạo trong guard
-        # Không cần làm gì thêm — guard.py đã xử lý hanh_dong cấm ở bước 3
-
-    # ------------------------------------------------------------------
-    # Bước 5: Trả kết quả
+    # Bước 5: Trả kết quả kèm [nhom=... · hanh_dong=...]
     # ------------------------------------------------------------------
     tra_loi = g.get("tra_loi") or ""
     if not tra_loi:
-        # Safe fallback khi guard trả chuỗi rỗng (ví dụ chế độ giả)
         tra_loi = (
             "Mình đã nhận yêu cầu của bạn. Giao dịch vẫn đang được giữ an toàn, "
             "bạn vui lòng chờ trong giây lát."
         )
         note("agent: tra_loi rỗng — dùng fallback")
 
-    return {"output": tra_loi}
+    return {"output": "[nhom=%s · hanh_dong=%s]\n%s" % (nhom, hanh_dong, tra_loi)}

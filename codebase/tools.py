@@ -11,69 +11,44 @@ CP3 hook: đặt data/held_transactions.json → get_held_transaction tự đọ
 """
 import json
 import os
-import unicodedata
 
 from tracing import tool, TOOLS  # noqa: F401
 
 
 # ---------------------------------------------------------------------------
-# Dữ liệu mock cho CP2 — 3 ca bao phủ toàn bộ nhóm phân loại
+# Dữ liệu mock cho CP2 — phiên chat mở từ thông báo giao dịch bị tạm giữ
 # CP3: đặt data/held_transactions.json với cùng schema → tự dùng file thật
 # ---------------------------------------------------------------------------
 
 _MOCK_GD = [
     {
-        # Nhóm: bi_giuc_chuyen — nghi lừa đảo
         "tx_id": "TX-2026-0001",
         "so_tien": "2.500.000 đ",
         "nguoi_nhan": "NGUYEN VAN A",
         "loai_nguoi_nhan": "tài khoản lần đầu nhận tiền từ bạn",
         "thoi_gian": "2026-11-27T19:45:00+07:00",
         "trang_thai": "đang tạm giữ",
-        # Trường nội bộ — dùng để match; KHÔNG đưa vào classify
-        "_keywords": ["0001", "nguyen van a", "2.5", "2500", "19:45",
-                      "cong an", "toa an", "ngan hang", "xac minh ho so",
-                      "vu an", "bi giu", "bi chan", "chuyen tien xac minh"],
-        "_hold_reason_code": "nghi_lua_dao",
     },
     {
-        # Nhóm: gap_that — vượt hạn mức giao dịch
         "tx_id": "TX-2026-0002",
         "so_tien": "8.000.000 đ",
         "nguoi_nhan": "Trường ĐH Bách Khoa HN",
         "loai_nguoi_nhan": "tổ chức giáo dục đã xác minh",
         "thoi_gian": "2026-11-27T20:10:00+07:00",
         "trang_thai": "đang tạm giữ",
-        "_keywords": ["0002", "bach khoa", "bách khoa", "học phí", "hoc phi",
-                      "vien phi", "viện phí", "benh vien", "bệnh viện",
-                      "8 trieu", "8000", "20:10", "gap that", "gấp thật",
-                      "can chuyen gap", "dang o quay"],
-        "_hold_reason_code": "vuot_han_muc",
     },
     {
-        # Nhóm: nghi_chiem_tk — giao dịch không phải chủ ví thực hiện
         "tx_id": "TX-2026-0003",
         "so_tien": "15.000.000 đ",
         "nguoi_nhan": "Người lạ",
         "loai_nguoi_nhan": "tài khoản lần đầu nhận tiền từ bạn",
         "thoi_gian": "2026-11-27T20:30:00+07:00",
         "trang_thai": "đang tạm giữ",
-        "_keywords": ["0003", "nguoi la", "15 trieu", "15000", "20:30",
-                      "khong phai toi", "không phải tôi", "ai vua rut",
-                      "ai vừa rút", "mat dien thoai", "mất điện thoại",
-                      "bi dang xuat", "otp la", "otp lạ", "chiem tai khoan"],
-        "_hold_reason_code": "nghi_chiem_tai_khoan",
     },
 ]
 
 # Các khoá được phép truyền vào classify (theo decide.py → _mo_ta_giao_dich)
 _CLASSIFY_KEYS = {"tx_id", "so_tien", "nguoi_nhan", "loai_nguoi_nhan", "thoi_gian", "trang_thai"}
-
-
-def _strip_accents(s: str) -> str:
-    """Chuyển chuỗi tiếng Việt về dạng không dấu, chữ thường."""
-    nfkd = unicodedata.normalize("NFKD", s)
-    return "".join(c for c in nfkd if not unicodedata.combining(c)).lower()
 
 
 def _load_gd_list() -> list:
@@ -89,21 +64,17 @@ def _load_gd_list() -> list:
 
 
 def _match(hint: str, records: list):
-    """Trả record đầu tiên khớp hint.
-    Ưu tiên: (1) tx_id khớp trực tiếp trong hint, (2) keyword khớp.
-    Hỗ trợ cả chuỗi có dấu và không dấu."""
-    h_lower = hint.lower()
-    h_stripped = _strip_accents(hint)
-    # Ưu tiên 1: khớp tx_id trực tiếp (phân biệt cao hơn keyword ngắn)
+    """Trả giao dịch của phiên chat:
+    Nếu hint có mã TX-... khớp trực tiếp thì trả giao dịch đó;
+    ngược lại mặc định trả giao dịch đang giữ của phiên (records[0])."""
+    if not records:
+        return None
+    h_lower = (hint or "").lower()
     for rec in records:
-        if rec.get("tx_id", "").lower() in h_lower:
+        tx_id = rec.get("tx_id", "")
+        if tx_id and tx_id.lower() in h_lower:
             return rec
-    # Ưu tiên 2: khớp keyword
-    for rec in records:
-        for kw in rec.get("_keywords", []):
-            if kw.lower() in h_lower or _strip_accents(kw) in h_stripped:
-                return rec
-    return None
+    return records[0]
 
 
 # ---------------------------------------------------------------------------
