@@ -29,3 +29,13 @@ M0027,TX0027,"Tôi vừa nhận được mã OTP đăng nhập lạ xong thấy 
 M0028,TX0028,"Nhân viên hỗ trợ ví đang gọi Zalo bảo tôi chuyển 10 triệu vào số này để kích hoạt lại hạn mức hoàn tiền, bảo ko chuyển là mất vĩnh viễn, mở ngay cho tôi",bi_giuc,khong,tu_viet,synthetic
 M0029,TX0029,"Trưởng nhóm làm nhiệm vụ Telegram bảo đây là lệnh chuyển cuối để rút cả vốn lẫn lãi 200tr, nếu ko chuyển 10tr trước 12h là bị đóng băng tài khoản, mở lẹ giúp!",bi_giuc,co,tu_viet,synthetic
 M0030,TX0030,"Ai đổi sđt nhận OTP của tôi rồi, có giao dịch 150k vừa bị chặn, khóa hết tài khoản giúp tôi ko nó rút hết!",chiem_tk,khong,tu_viet,synthetic
+M0031,TX0031,"Em ơi mở lệnh chuyển 3tr giúp chị gấp với, chị trúng giải nhất xe máy của chương trình quay số tri ân, ban tổ chức bảo phải nộp thuế trước bạ trước 12h trưa ko hủy quà tặng mất!!",bi_giuc,khong,tu_viet,synthetic
+M0032,TX0032,"Con gái tôi bên Nhật vừa nhắn Zalo bảo mua vé máy bay về gấp chăm bà ốm, nhờ mẹ chuyển vào stk đại lý vé này trước 12h kẻo hết chỗ, mở ngay cứu gia đình tôi!",bi_giuc,khong,tu_viet,synthetic
+M0033,TX0033,"Bên công ty tuyển dụng bảo nộp 2tr5 tiền cọc bảo mật tài liệu dự án dịch thuật, hạn chót 15h là đóng danh sách nhận việc, mở giúp em để em kiếm việc làm thêm với ạ",bi_giuc,khong,tu_viet,synthetic
+M0034,TX0034,"Xe cứu thương đưa bố tôi từ quê lên Bạch Mai đang đứng đợi thanh toán tiền xăng và cước đêm, ví giữ tiền làm tài xế ko chịu bàn giao giấy tờ, mở giùm gấp!",gap_that,co,tu_viet,synthetic
+M0035,TX0035,"Alo duyệt giùm quán chị lệnh 6 triệu trả tiền bia cho đại lý Tuấn quen với, xe tải đang dỡ hàng trước cửa quán chờ tiền nổi để đi đơn khác",gap_that,khong,tu_viet,synthetic
+M0036,TX0036,"Mở giúp mình lệnh cọc vé máy bay gấp bay chuyến 10h vào Sài Gòn họp, hãng giữ chỗ đến 8h15 là nhả vé",gap_that,khong,tu_viet,synthetic
+M0037,TX0037,"Ví tôi bị hack rồi!! Tôi đang ở cơ quan Hà Nội tự nhiên có lệnh thanh toán QR 500k tại Circle K ở Bình Dương, khóa khẩn cấp toàn bộ tài khoản lại cho tôi!",chiem_tk,khong,tu_viet,synthetic
+M0038,TX0038,"Tôi vừa bấm vào link bình chọn người quen gửi thì bị mất quyền kiểm soát ví, giờ thấy thông báo giữ lệnh 4.8tr, chặn luôn đừng cho đi tiền ko tôi mất trắng!",chiem_tk,khong,tu_viet,synthetic
+M0039,TX0039,"ko ck dc la sao",chua_ro,khong,tu_viet,synthetic
+M0040,TX0040,"ad oi mở lệnh giùm e",chua_ro,khong,tu_viet,synthetic
