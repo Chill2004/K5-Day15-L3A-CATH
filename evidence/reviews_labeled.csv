@@ -306,7 +306,7 @@ stt,app,thi_truong,ngay,so_sao,trich,nhan_khoa_giu,nhan_lua_dao,nhan_ho_tro_kem,
 305,Monzo,UK,2026-09-20,1,I have money in the account. won't let me spend it or send it.,1,,,,
 306,PayPal,US,2026-11-25,1,I entered my number four time correctly after I wrote my email and it says the number is not right,,,,1,
 307,Cash App,US,2026-11-26,1,"they are complicit with scammers and thieves. had over $8000 stolen and all they said was ""there is nothing we can do"" completely unsecure funds with no recourse.",,1,1,,
-308,Cash App,US,2026-11-18,1,Too many thieves trying to hack phones...,,1,,,"hacker cố chiếm điện thoại, chưa rõ mất tiền → lua_dao (yếu)"
+308,Cash App,US,2026-11-18,1,Too many thieves trying to hack phones...,,,,1,"cảnh báo chung về hacker, không kể việc đã xảy ra với người viết → khac (quy tắc làm rõ 27/11)"
 309,PayPal,US,2026-11-16,1,"Paypal's customer service is absolutely horrendous. I loathe using AI and am sick of having it now be the first in line for ""customer service."" I asked multiple times to speak to a human and was given the runaround.",,,1,,
 310,Cash App,US,2026-11-20,1,card don't work after activating,,,,1,
 311,Monzo,UK,2026-09-16,1,"its a con , DO NOT USE ! you will get fraudulent payments and they will force you to pay them .",,1,,,
@@ -382,7 +382,7 @@ stt,app,thi_truong,ngay,so_sao,trich,nhan_khoa_giu,nhan_lua_dao,nhan_ho_tro_kem,
 381,Revolut,UK,2026-11-23,1,Can't update the app because it says my device is rooted even though it's not. Lazy AI slop app development.,,,,1,
 382,Revolut,UK,2026-11-17,1,"Waste of time. Tried to make a legit bank transfer and get promoted to verify identity, do so and have to retry the transfer.",,,,1,
 383,Venmo,US,2026-11-07,1,don't use it. you've been warned.,,,,1,
-384,Venmo,US,2026-11-23,1,horrible and trying to get a human to help is like pulling teeth.. better hope your account doesnt get hacked because you won't get your money back and it will happen again and again..,,1,1,,
+384,Venmo,US,2026-11-23,1,horrible and trying to get a human to help is like pulling teeth.. better hope your account doesnt get hacked because you won't get your money back and it will happen again and again..,,,1,,"câu cảnh báo, không kể lần bị hack cụ thể → bỏ lua_dao, giữ ho_tro_kem (quy tắc làm rõ 27/11)"
 385,PayPal,US,2026-11-16,1,I'm approved for PayPal service s. what happened to the payment plan.,,,,1,
 386,Cash App,US,2026-11-17,1,"Not a business for digital check cashing! ""Do not use Cash App for mobile check deposits if you actually need your money on time.",,,,1,
 387,Wise,UK,2026-11-17,1,Decided to close my account without clearly explaining why and no resolution to fix issue. Not my loss though,1,,,,

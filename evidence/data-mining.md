@@ -41,7 +41,14 @@ Nhóm đào hai nguồn: **(A) CFPB Consumer Complaint Database** (khiếu nại
   | `nhan_khac` | Không thuộc ba nhãn trên (lag, lỗi app, phí, quảng cáo, giao diện, khen…) | Đã gắn ít nhất một trong ba nhãn trên |
 
   Ví dụ: *"bị khoá ví lúc đang gấp, chat 12 tiếng không ai trả lời"* → `nhan_khoa_giu = 1` và `nhan_ho_tro_kem = 1`.
-- **Người gắn nhãn:** Claude (trợ lý AI) gắn **nhãn nháp** cho cả 400 review theo đúng định nghĩa trên; ca khó quyết có lý do ghi ở cột `ghi_chu`. Nguyễn Thế Cường **đọc lại và sửa từng dòng** — nhãn sau khi Cường kiểm mới là bản dùng để đếm. Một thành viên khác gắn độc lập 40 review (stt 1–20 và 201–220) **không nhìn nhãn nháp** để so; lệch ≥ 8/40 review thì viết lại định nghĩa nhãn rồi gắn lại. Việc dùng AI ghi trong `docs/ai-usage.md`.
+
+  **Quy tắc ranh giới — làm rõ ngày 27/11/2026, SAU khi đã gắn nhãn nháp, khi Cường kiểm lại phát hiện 4 cặp review giống nhau mà nhãn khác nhau; áp lại cho cả 400 review:**
+  1. `nhan_khoa_giu` chỉ khi người dùng nói app / ngân hàng **hạn chế, chặn, treo "đang xử lý"** việc dùng tiền hoặc tài khoản. Nói app **lỗi, không chạy** → `nhan_khac`. Giao dịch **lỗi mà vẫn bị trừ tiền, chưa hoàn** cũng là `nhan_khac` (đó là hướng H1 đã loại, không phải bị giữ).
+  2. `nhan_lua_dao` chỉ khi review kể **việc đã xảy ra với chính người viết** (bị lừa, mất tiền, bị chiếm tài khoản). Cảnh báo chung chung hoặc hành vi chưa thành → không gắn.
+  3. Cáo buộc nhân viên / bên khác lấy tiền chỉ gắn `nhan_lua_dao` khi review **mô tả một giao dịch / lần mất tiền cụ thể**.
+
+  Áp lại cho cả file: **2 dòng đổi** — stt 308 (bỏ `lua_dao` → `khac`) và stt 384 (bỏ `lua_dao`, giữ `ho_tro_kem`). Các cặp 305/391, 52/92, 46/174 giữ nguyên vì đã khớp quy tắc.
+- **Người gắn nhãn:** Claude (trợ lý AI) gắn **nhãn nháp** cho cả 400 review theo đúng định nghĩa trên; ca khó quyết có lý do ghi ở cột `ghi_chu`. Nguyễn Thế Cường **đã đọc lại cả 400/400 dòng** (27/11/2026), làm rõ 3 quy tắc ranh giới ở trên và sửa 2 dòng — đây là bản dùng để đếm. Một thành viên khác gắn độc lập 40 review (stt 1–20 và 201–220) **không nhìn nhãn nháp** để so; lệch ≥ 8/40 review thì viết lại định nghĩa nhãn rồi gắn lại. Việc dùng AI ghi trong `docs/ai-usage.md`.
 - **Script đếm:** `python evidence/scripts/count_labels.py`
 
 ### Chạy lại từ đầu
@@ -93,18 +100,18 @@ Lưu ý: review mới liên tục được thêm, nên chạy lại `scrape_revi
 - Phản hồi của công ty: Closed with explanation 31.379 · Closed with monetary relief 3.246 · Closed with non-monetary relief 2.551 · In progress 1.466 · Untimely response 257.
 - **Đối chiếu, cả năm 2025** (lấy qua API ngày 27/11/2026, cùng bộ lọc Product): N = 84.619; Fraud or scam 11.179 (13,2%); Unauthorized 5.758 (6,8%); Trouble accessing funds 3.038 (3,6%). Năm 2025 nhãn chung chung *Other transaction problem* chiếm 53.893 (63,7%), nên các nhãn cụ thể bị pha loãng. Nhóm chọn **12 tháng gần nhất làm số chính** vì là data mới nhất, và báo cả hai khoảng để người đọc tự so.
 
-### (B) Review Google Play — N = 400 · ⚠️ **NHÃN NHÁP của Claude, Cường chưa kiểm** — số sẽ cập nhật sau khi kiểm
+### (B) Review Google Play — N = 400 · nhãn nháp của Claude, **Cường đã kiểm 400/400, sửa 2 dòng** (27/11/2026)
 
 | Đếm gì | VN (N = 200) | Mỹ/Anh (N = 200) | Cả mẫu (N = 400) |
 |---|---|---|---|
 | `nhan_khoa_giu` | 10/200 (5,0%) | 28/200 (14,0%) | 38/400 (9,5%) |
-| `nhan_lua_dao` | 3/200 (1,5%) | 10/200 (5,0%) | 13/400 (3,2%) |
-| `nhan_khoa_giu` HOẶC `nhan_lua_dao` | 13/200 (6,5%) | 37/200 (18,5%) | 50/400 (12,5%) |
+| `nhan_lua_dao` | 3/200 (1,5%) | 8/200 (4,0%) | 11/400 (2,8%) |
+| `nhan_khoa_giu` HOẶC `nhan_lua_dao` | 13/200 (6,5%) | 35/200 (17,5%) | 48/400 (12,0%) |
 | `nhan_ho_tro_kem` | 14/200 (7,0%) | 39/200 (19,5%) | 53/400 (13,2%) |
-| `nhan_khac` | 176/200 (88,0%) | 133/200 (66,5%) | 309/400 (77,2%) |
+| `nhan_khac` | 176/200 (88,0%) | 134/200 (67,0%) | 310/400 (77,5%) |
 | Độ khớp giữa hai người gắn nhãn (40 review) | | | __ / 40 |
 
-So với giả thuyết (`evidence/hypothesis.md`, ngưỡng `khoa_giu HOẶC lua_dao` ≥ 10% trong mẫu 1–2 sao): **cả mẫu 12,5% → đạt**; nhưng **riêng VN chỉ 6,5% → dưới ngưỡng**, Mỹ/Anh 18,5%. Pain này rõ ở thị trường Mỹ/Anh hơn ở VN; review VN 1–2 sao chủ yếu là lỗi đăng nhập, xác thực, lag (nằm trong `nhan_khac`). Phải kiểm lại bằng phỏng vấn ở VN.
+So với giả thuyết (`evidence/hypothesis.md`, ngưỡng `khoa_giu HOẶC lua_dao` ≥ 10% trong mẫu 1–2 sao): **cả mẫu 12,0% → đạt**; nhưng **riêng VN chỉ 6,5% → dưới ngưỡng**, Mỹ/Anh 17,5%. (Trước khi kiểm: cả mẫu 12,5%, Mỹ/Anh 18,5%.) Pain này rõ ở thị trường Mỹ/Anh hơn ở VN; review VN 1–2 sao chủ yếu là lỗi đăng nhập, xác thực, lag (nằm trong `nhan_khac`). Phải kiểm lại bằng phỏng vấn ở VN.
 
 ---
 

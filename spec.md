@@ -20,7 +20,7 @@ Data BTC cấp đã dùng: không (Track E không có data BTC cấp; nhóm đà
 - Pain: người dùng ví đang cố chuyển tiền thì giao dịch bị tạm giữ; kênh hỗ trợ không phân biệt được người đang bị kẻ gian giục chuyển với người gấp thật, nên trấn an nhầm thì tiền mất trong vài giây, còn vòng vo thì người gấp bị bỏ lơ và mất lòng tin.
 - Bằng chứng — số chính (chi tiết `evidence/data-mining.md`):
   - **CFPB**, khiếu nại về chuyển tiền / ví điện tử, 27/11/2025–27/11/2026: lừa đảo + giao dịch trái phép **18.701/38.899 (48,1%)**; thêm "không dùng được tiền trong ví" → **22.841/38.899 (58,7%)**.
-  - **Review Google Play 1–2 sao**, mẫu ngẫu nhiên 400 (seed 42), nhãn nháp chờ kiểm: khoá/giữ hoặc lừa đảo **50/400 (12,5%)** — VN 13/200 (6,5%), Mỹ/Anh 37/200 (18,5%).
+  - **Review Google Play 1–2 sao**, mẫu ngẫu nhiên 400 (seed 42), Cường đã kiểm nhãn: khoá/giữ hoặc lừa đảo **48/400 (12,0%)** — VN 13/200 (6,5%), Mỹ/Anh 35/200 (17,5%).
   - Kết luận tạm: pain rõ ở Mỹ/Anh; ở VN dưới ngưỡng giả thuyết (10%) → **phải kiểm lại bằng phỏng vấn ở VN** (`evidence/interviews/`).
 
 ## §2. Impact & quyết định chọn *(guide 1.3)*
