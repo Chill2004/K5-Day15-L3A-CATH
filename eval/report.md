@@ -1,4 +1,4 @@
-# Báo cáo đánh giá — lượt 1 → một cải tiến → lượt 2
+﻿# Báo cáo đánh giá — lượt 1 → một cải tiến → lượt 2
 
 > Điền ở guide bước 4.1. Lượt 1 trước **CP3 10:00 Thứ Bảy 28/11**, lượt 2 trước **CP4 14:30 Thứ Bảy 28/11**, cùng bộ câu thử, cùng cách chấm. Chấm ở rubric R5.
 > Số lấy từ `python run.py score eval/run-1.csv` (và `run-2.csv`) sau khi điền cột `pass`. **Kết quả thấp ghi thật vẫn đủ điểm.**
@@ -11,7 +11,7 @@
 | 1 | run-1@20261127-184833 | 12/20 | 60% | 3/5 | 7/12 | 2/3 | Chưa đạt |
 | 2 | run-2@20261127-215329 | 15/20 | 75% | 4/5 | 9/12 | 2/3 | Chưa đạt |
 
-Nguồn: `python run.py score eval/run-1.csv` và `python run.py score eval/run-2.csv`; cả hai lượt dùng model `gemini-3.1-flash-lite`, mỗi lượt 20 câu, không lỗi kỹ thuật. Output và trace ở `eval/run-1.csv`, `traces/run-1.jsonl`, `eval/run-2.csv`, `traces/run-2.jsonl`. Chấm có Codex hỗ trợ; chưa có số đo người thứ hai chấm độc lập. Không chạy lại eval trong đợt làm báo cáo này. Tổng tăng 15 điểm phần trăm (60% → 75%), chưa đạt ngưỡng tổng ≥80% hoặc 100% câu từ chối.
+Nguồn: `python run.py score eval/run-1.csv` và `python run.py score eval/run-2.csv`; cả hai lượt dùng model `gemini-3.1-flash-lite`, mỗi lượt 20 câu, không lỗi kỹ thuật. Output và trace ở `eval/run-1.csv`, `traces/run-1.jsonl`, `eval/run-2.csv`, `traces/run-2.jsonl`. Chấm có Codex hỗ trợ; người chấm K1 đã kiểm độc lập C01–C05 lượt 1, khớp 4/5 (80%), đạt mốc ≥4/5 theo xác nhận điều kiện của Ánh; xem eval/peer-review-run1.md. Không chạy lại eval trong đợt làm báo cáo này. Tổng tăng 15 điểm phần trăm (60% → 75%), chưa đạt ngưỡng tổng ≥80% hoặc 100% câu từ chối.
 
 Hai nhãn khớp expected ở 18/20 câu (90%), nhưng pass tổng chỉ 12/20 vì còn điều kiện nội dung và metric. Chưa đạt cả yêu cầu tổng ≥80% và yêu cầu 100% câu tu_choi qua (hiện 2/3). Không dùng số đúng nhãn thay cho tỷ lệ pass hoặc khẳng định mọi metric đã đạt.
 
@@ -56,5 +56,6 @@ Các nhóm trên phân theo lỗi chính, tổng 8 câu trượt. C09 còn thi�
 ## 4. Còn lại
 
 - Còn 5 câu trượt: C05, C07, R04, R06, C13. Sai nhãn có thể chọn sai đường hỗ trợ; khẳng định thiếu căn cứ gây hiểu nhầm; thiếu lời nhắc OTP làm thiếu hướng dẫn bảo vệ thông tin. Không đổi expected để hợp thức hóa output.
-- Giới hạn: chỉ 20 câu, 7 câu diễn giải từ review, công cụ mô phỏng; kết quả không đo được khả năng ngăn mất tiền thực tế. Bộ 5 câu chấm đối chiếu chưa hoàn tất và không đại diện toàn bộ bộ thử.
+- Giới hạn: chỉ 20 câu, 7 câu diễn giải từ review, công cụ mô phỏng; kết quả không đo được khả năng ngăn mất tiền thực tế. Kiểm tra độc lập 5 output lượt 1 đã hoàn tất, khớp 4/5; mẫu này không đại diện toàn bộ bộ thử hoặc lượt 2.
 - Nếu có thêm một tuần (đề xuất): tăng tình huống độc lập từ người dùng, kiểm thử trạng thái công cụ thất bại/chờ duyệt và đo nhất quán giữa người chấm; không thay đổi chuẩn của lượt đã chạy.
+

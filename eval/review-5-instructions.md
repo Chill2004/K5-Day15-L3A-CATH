@@ -33,6 +33,8 @@ Chọn người không viết spec và chưa xem điểm/lý do chấm các outp
 
 ## Trạng thái
 
+**Kiểm tra độc lập lượt 1 đã hoàn tất:** người bạn khác lớp, ẩn danh K1, chấm phiếu `eval/review-5-run1-blank.csv`. Ánh xác nhận ngày 28/11/2026 người chấm không viết spec/metric và chưa xem điểm/lý do trước khi chấm. Khớp 4/5 (C05 lệch), đạt mốc ≥4/5. Phiếu này hiện đã có điểm, không gửi tiếp như phiếu trống. Chi tiết `eval/peer-review-run1.md`. Phần Trí bên dưới là một đối chiếu khác của lượt 2.
+
 - Người chấm thứ hai: **Trí chấm có AI hỗ trợ**, theo xác nhận mới nhất Ánh chuyển tiếp; run-2@20261127-215329. Chưa kết luận đủ điều kiện độc lập; thông tin trước đó khác nhau về việc xem điểm và chưa làm rõ vai trò viết spec.
 - Đã nhận kết quả: Ánh đã chuyển bảng 20 câu; đã nhập 5 câu đầu vào phiếu theo yêu cầu. Codex chưa gửi tin ra ngoài.
 - Độ khớp C01–C05 cùng lượt 2: 3/5; chưa có kết luận đồng thuận cho các câu lệch.
