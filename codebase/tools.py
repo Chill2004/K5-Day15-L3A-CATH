@@ -168,25 +168,27 @@ def hold_transaction(tx_id: str, ly_do: str = "") -> dict:
 
 @tool
 def request_verification(tx_id: str, phuong_thuc: str = "face_scan") -> dict:
-    """Tạo bước xác thực danh tính cho giao dịch khẩn cấp thật sự.
+    """Gửi màn hình xác thực danh tính cho giao dịch khẩn cấp thật sự.
 
     Tên/mục đích: Dùng khi agent quyết định gửi xác thực (nhóm gap_that).
-        Chỉ tạo bước xác thực — KHÔNG nhả tiền hay thay đổi trạng thái thật.
+        Hành động đảo lại được — AI thực hiện trực tiếp (không cần người duyệt).
         Màn hình xác thực hiện ngay trong ứng dụng ví (không gửi link ngoài).
+        KHÔNG nhả tiền hay thay đổi trạng thái giao dịch thật.
     Input:
         tx_id (str) — mã giao dịch cần xác thực.
         phuong_thuc (str) — phương thức: "face_scan" (mặc định),
             "callback" (gọi về số đăng ký), "otp_device" (OTP thiết bị đăng ký).
     Output: dict — {"action": "request_verification", "tx_id": str,
-        "phuong_thuc": str, "status": "draft",
+        "phuong_thuc": str, "status": "sent",
         "requires_human_approval": False}
-    Tác động ra ngoài: Không — chỉ tạo bản nháp bước xác thực trong bộ nhớ.
+    Tác động ra ngoài: Không — gửi yêu cầu xác thực trong phiên (đảo lại được);
+        không gọi API thật trong CP2.
     """
     return {
         "action": "request_verification",
         "tx_id": tx_id,
         "phuong_thuc": phuong_thuc,
-        "status": "draft",
+        "status": "sent",
         "requires_human_approval": False,
     }
 
@@ -197,11 +199,13 @@ def request_verification(tx_id: str, phuong_thuc: str = "face_scan") -> dict:
 
 @tool
 def handoff_to_agent(tx_id: str, tom_tat: str, suggested_action: str = "") -> dict:
-    """Tạo bản nháp chuyển ca lên tư vấn viên kèm tóm tắt tình huống.
+    """Chuyển ca lên tư vấn viên kèm tóm tắt tình huống.
 
     Tên/mục đích: Dùng khi agent quyết định chuyển tư vấn viên
         (nhóm nghi_chiem_tk, chua_ro hoặc ca ngoài phạm vi).
-        Luôn trả requires_human_approval=True; không thực thi hành động thật.
+        Hành động đảo lại được — AI thực hiện trực tiếp, chuyển ca ngay.
+        Không yêu cầu người duyệt vì đây là việc điều phối (routing), không
+        phải thao tác tiền tệ không thể hoàn tác.
     Input:
         tx_id (str) — mã giao dịch liên quan.
         tom_tat (str) — tóm tắt 1–2 câu để tư vấn viên nắm ngay tình huống.
@@ -209,17 +213,17 @@ def handoff_to_agent(tx_id: str, tom_tat: str, suggested_action: str = "") -> di
             xem xét (ví dụ: "khoa_vi_tam_thoi", "nha_giao_dich").
     Output: dict — {"action": "handoff_to_agent", "tx_id": str,
         "tom_tat": str, "suggested_action": str,
-        "status": "draft", "requires_human_approval": True}
-    Tác động ra ngoài: Không — chỉ tạo bản nháp; tư vấn viên phải duyệt.
-        requires_human_approval luôn là True.
+        "status": "sent", "requires_human_approval": False}
+    Tác động ra ngoài: Không — chuyển ca trong phiên (đảo lại được);
+        không gọi API thật trong CP2.
     """
     return {
         "action": "handoff_to_agent",
         "tx_id": tx_id,
         "tom_tat": tom_tat,
         "suggested_action": suggested_action,
-        "status": "draft",
-        "requires_human_approval": True,
+        "status": "sent",
+        "requires_human_approval": False,
     }
 
 
