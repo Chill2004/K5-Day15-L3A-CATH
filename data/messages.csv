@@ -1,0 +1,31 @@
+msg_id,tx_id,tin_nhan,nhom_that,ngoai_gio,nguon,nhan
+M0001,TX0001,"Tôi không hề tạo giao dịch này, sao ví báo đang giữ khoản chuyển 5 triệu",chiem_tk,khong,tu_viet,synthetic
+M0002,TX0002,"Thanh toán tiền hàng cho nhà cung cấp quen, hạn chót trong hôm nay, xác thực giúp tôi được không",gap_that,khong,tu_viet,synthetic
+M0003,TX0003,"Mình chuyển học phí cho con, trường đóng cổng thu lúc 17h",gap_that,co,tu_viet,synthetic
+M0004,TX0004,Sao bị giữ vậy,chua_ro,co,tu_viet,synthetic
+M0005,TX0005,"Vừa nhận tin đăng nhập trên máy lạ, sau đó thấy có lệnh chuyển tiền bị giữ, tôi không làm",chiem_tk,khong,tu_viet,synthetic
+M0006,TX0006,"Bên công an gọi bảo tôi chuyển gấp vào tài khoản an toàn, sao ví lại chặn, mở cho tôi ngay",bi_giuc,co,tu_viet,synthetic
+M0007,TX0007,"Nhân viên ngân hàng đang giữ máy với tôi, bảo đọc mã cho họ rồi chuyển lại, sao không chuyển được",bi_giuc,co,tu_viet,synthetic
+M0008,TX0008,"Mình chuyển học phí cho con, trường đóng cổng thu lúc 17h",gap_that,khong,tu_viet,synthetic
+M0009,TX0009,"Mình chuyển học phí cho con, trường đóng cổng thu lúc 17h",gap_that,co,tu_viet,synthetic
+M0010,TX0010,"Thanh toán tiền hàng cho nhà cung cấp quen, hạn chót trong hôm nay, xác thực giúp tôi được không",gap_that,co,tu_viet,synthetic
+M0011,TX0011,"Mình chuyển học phí cho con, trường đóng cổng thu lúc 17h",gap_that,khong,tu_viet,synthetic
+M0012,TX0012,Sao bị giữ vậy,chua_ro,co,tu_viet,synthetic
+M0013,TX0013,Mở giúp với,chua_ro,khong,tu_viet,synthetic
+M0014,TX0014,"Ai đó đổi số điện thoại trong ví của tôi, giờ có giao dịch lạ bị chặn",chiem_tk,co,tu_viet,synthetic
+M0015,TX0015,"Tôi trả tiền nhà cho chủ trọ tháng nào cũng chuyển, hôm nay bị chặn, chủ nhà đang đứng đợi",gap_that,co,tu_viet,synthetic
+M0016,TX0016,Sao bị giữ vậy,chua_ro,khong,tu_viet,synthetic
+M0017,TX0017,"Bên công an gọi bảo tôi chuyển gấp vào tài khoản an toàn, sao ví lại chặn, mở cho tôi ngay",bi_giuc,co,tu_viet,synthetic
+M0018,TX0018,"Thanh toán tiền hàng cho nhà cung cấp quen, hạn chót trong hôm nay, xác thực giúp tôi được không",gap_that,co,tu_viet,synthetic
+M0019,TX0019,"Ai đó đổi số điện thoại trong ví của tôi, giờ có giao dịch lạ bị chặn",chiem_tk,co,tu_viet,synthetic
+M0020,TX0020,"Bên công an gọi bảo tôi chuyển gấp vào tài khoản an toàn, sao ví lại chặn, mở cho tôi ngay",bi_giuc,co,tu_viet,synthetic
+M0021,TX0021,"Ai đó đổi số điện thoại trong ví của tôi, giờ có giao dịch lạ bị chặn",chiem_tk,khong,tu_viet,synthetic
+M0022,TX0022,Mở giúp với,chua_ro,khong,tu_viet,synthetic
+M0023,TX0023,"Người bên sàn đầu tư bảo phải nộp phí trong 10 phút không thì mất hết tiền gốc, giúp tôi với",bi_giuc,khong,tu_viet,synthetic
+M0024,TX0024,Sao bị giữ vậy,chua_ro,co,tu_viet,synthetic
+M0025,TX0025,"Shop bảo chuyển cọc trước 15 phút nữa là hết hàng, mở giao dịch giúp em",bi_giuc,khong,tu_viet,synthetic
+M0026,TX0026,"Có người nhắn là con tôi bị tai nạn cần tiền viện phí ngay, đừng chặn tôi",bi_giuc,khong,tu_viet,synthetic
+M0027,TX0027,"Vừa nhận tin đăng nhập trên máy lạ, sau đó thấy có lệnh chuyển tiền bị giữ, tôi không làm",chiem_tk,co,tu_viet,synthetic
+M0028,TX0028,"Nhân viên ngân hàng đang giữ máy với tôi, bảo đọc mã cho họ rồi chuyển lại, sao không chuyển được",bi_giuc,khong,tu_viet,synthetic
+M0029,TX0029,"Người bên sàn đầu tư bảo phải nộp phí trong 10 phút không thì mất hết tiền gốc, giúp tôi với",bi_giuc,co,tu_viet,synthetic
+M0030,TX0030,"Ai đó đổi số điện thoại trong ví của tôi, giờ có giao dịch lạ bị chặn",chiem_tk,khong,tu_viet,synthetic
