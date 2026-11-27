@@ -71,6 +71,12 @@ def post_json(url, headers, body, timeout=60):
                 time.sleep(RETRY_WAITS[attempt])
                 continue
             raise RuntimeError("HTTP %d: %s" % (e.code, e.read().decode("utf-8", "replace")[:300]))
+        except (TimeoutError, urllib.error.URLError, ConnectionError) as e:
+            # mạng chậm / hết thời gian chờ: cũng là lỗi tạm thời, thử lại
+            if attempt < len(RETRY_WAITS):
+                time.sleep(RETRY_WAITS[attempt])
+                continue
+            raise RuntimeError("Lỗi mạng sau %d lần thử: %s" % (attempt + 1, e))
     if SHOW_RAW:
         print(json.dumps(data, ensure_ascii=False, indent=2)[:3000])
     return data

@@ -1,52 +1,69 @@
-# Mô phỏng chi phí khi dùng thật — điền ở guide bước 4.2.
-# Ôn lại: ngày 13, ngày 1, ngày 14 · lab ngày 13, lab ngày 14.
-# Mọi số phải có nguồn (data / phỏng vấn / khảo sát / quy mô khoá có nguồn) hoặc ghi rõ "(tự ước tính)".
-# Chạy: python run.py simulate --try   (10 phiên, kiểm khung — làm trước CP3)
-#       python run.py simulate         (đủ số phiên dưới đây — bản nộp CP4)
-# Thay mọi dòng "(ví dụ)" bằng số và nguồn của nhóm; simulate nhắc nếu còn sót.
+# ==============================================================================
+# BẢNG THIẾT LẬP MÔ PHỎNG CHI PHÍ & PERSONA NGƯỜI DÙNG (CATH Track E3)
+# ==============================================================================
 
-sessions: 50        # số phiên mô phỏng — bản nộp ≥50
-seed: 42            # giữ cố định để chạy lại ra cùng chuỗi phiên
+# Tỷ giá bán ra USD/VND niêm yết chính thức tại Vietcombank (xem ngày 27/11/2026)
+# Nguồn: https://www.vietcombank.com.vn/
+usd_to_vnd: 26030
 
-users:              # số người dùng thật nếu đưa vào dùng — 3 kịch bản, ở quy mô thật của sản phẩm
-                    # track A: khoá học · track B–F: người dùng của sản phẩm / nhóm nhắm tới, nguồn công khai có link
-  low: 300
-  base: 700
-  high: 1000
-  source: "(ví dụ) track A — thay bằng số của nhóm. Cơ sở: lớp L3 hơn 700 học viên (README hackathon); thấp, cao: (tự ước tính)"
+prices:
+  # Bảng giá chính thức của Google Gemini API cho gói trả phí (Pay-as-you-go)
+  # Nguồn: https://ai.google.dev/gemini-api/docs/pricing (xem ngày 27/11/2026)
+  gemini-1.5-flash:
+    input: 0.075   # USD / 1M tokens (cho prompt <= 128k)
+    output: 0.300  # USD / 1M tokens
+    source: "https://ai.google.dev/gemini-api/docs/pricing (xem ngày 27/11/2026)"
 
-personas:           # ≥3 kiểu người dùng; share cộng lại = 1
-  - name: dung_it
-    share: 0.5              # tỉ lệ người dùng kiểu này
-    uses_per_month: 4       # số phiên / người / tháng
-    turns_per_session: 1    # số lượt hỏi trong một phiên
-    source: "(ví dụ) phỏng vấn P1, P3 — thay bằng nguồn của nhóm"
-  - name: dung_vua
-    share: 0.3
-    uses_per_month: 10
-    turns_per_session: 3
-    source: "(ví dụ) khảo sát n = 24, câu 3"
-  - name: dung_nhieu
-    share: 0.2
-    uses_per_month: 20
-    turns_per_session: 5
-    source: "(ví dụ) data/preclass: đếm số lượt / người — cách đếm ở evidence/data-mining.md"
-# Mỗi lượt hỏi lấy ngẫu nhiên một đầu vào trong eval/benchmark.csv (type thuong và kho).
-# Persona hỏi kiểu riêng: thêm vào persona đó
-#     types: [thuong, kho, tu_choi]
-# hoặc
-#     inputs: ["câu hỏi kiểu 1", "câu hỏi kiểu 2"]
+  gemini-1.5-pro:
+    input: 1.250   # USD / 1M tokens (cho prompt <= 128k)
+    output: 5.000  # USD / 1M tokens
+    source: "https://ai.google.dev/gemini-api/docs/pricing (xem ngày 27/11/2026)"
 
-prices:             # USD / 1 triệu token — chép từ further-reading/model-prices.md của repo đề. ≥2 mức model
-  - model: gemini-3.1-flash-lite
-    input: 0.25
-    output: 1.50
-    source: "(ví dụ) https://ai.google.dev/gemini-api/docs/pricing · xem 25/11/2026"
-  - model: gemini-4-hydrogen
-    input: 1.50
-    output: 7.50
-    source: "(ví dụ) https://ai.google.dev/gemini-api/docs/pricing · xem 25/11/2026"
+personas:
+  nguoi_lon_tuoi_bi_giuc:
+    name: "Người lớn tuổi bị giục chuyển tiền"
+    description: >
+      Người dùng bị kẻ xấu thao túng tâm lý (giả công an, viện phí tai nạn, trúng thưởng tri ân, nhiệm vụ tài chính).
+      Nạn nhân hoảng loạn, tin rằng mình gấp thật, thúc ép hỗ trợ mở chặn và dễ tranh cãi khi bị từ chối.
+    users:
+      low: 15000
+      base: 35000
+      high: 70000
+    uses_per_month: 1.2     # Trung bình bị giữ và liên hệ 1.2 lần/tháng
+    turns_per_session: 5.5  # Phản hồi nhiều lượt vì hoang mang và tranh luận với bot
+    human_handoff_rate: 0.85 # 85% trường hợp cần chuyển tư vấn viên can thiệp trực tiếp
+    source: "Giả định của nhóm. Kịch bản lấy từ phỏng vấn P1–P6 (mẫu nhỏ), chưa có số liệu thống kê chính thức."
+    types:
+      - "bi_giuc"
 
-usd_to_vnd:         # tuỳ chọn: điền thì bản tóm tắt in thêm tiền Việt
-  rate:
-  source:
+  chu_shop_nho_gap_that:
+    name: "Chủ shop nhỏ gấp thật"
+    description: >
+      Chủ hộ kinh doanh, tiểu thương, cá nhân thanh toán tiền hàng quen, học phí, tiền cọc, viện phí thật.
+      Giao dịch gấp gáp nhưng thông tin người nhận rõ ràng, mạch lạc, có lịch sử giao dịch trước đó.
+    users:
+      low: 30000
+      base: 65000
+      high: 120000
+    uses_per_month: 3.2     # Tần suất thanh toán và bị quét nhầm cao (3-4 lần/tháng)
+    turns_per_session: 2.5  # Giải thích lý do ngắn gọn, cung cấp thông tin là xong
+    human_handoff_rate: 0.25 # 25% ca chuyển tư vấn viên; 75% còn lại AI gửi xác thực cho người dùng, tư vấn viên duyệt, AI không tự mở
+    source: "Giả định của nhóm, tham khảo phỏng vấn P1–P6 (mẫu nhỏ). Chưa có nguồn cho số người dùng và tỉ lệ quét nhầm."
+    types:
+      - "gap_that"
+
+  nguoi_bi_chiem_tai_khoan:
+    name: "Người bị chiếm tài khoản"
+    description: >
+      Khách hàng phát hiện tài khoản bị hack, mất điện thoại, click link lừa đảo bị chiếm quyền hoặc bị trừ tiền lạ.
+      Tâm lý hoảng sợ, mục tiêu duy nhất là khóa ví và thu hồi tiền ngay lập tức.
+    users:
+      low: 5000
+      base: 12000
+      high: 25000
+    uses_per_month: 1.0     # Thường là sự cố đột xuất 1 lần
+    turns_per_session: 3.0  # Báo cáo sự cố và yêu cầu khóa tài khoản khẩn cấp
+    human_handoff_rate: 0.95 # 95% chuyển ngay cho đội ngũ chuyên viên Fraud/Security để đóng băng tài khoản
+    source: "Giả định của nhóm, tham khảo phỏng vấn P1–P6 (mẫu nhỏ). Chưa có nguồn cho số người dùng."
+    types:
+      - "chiem_tk"
