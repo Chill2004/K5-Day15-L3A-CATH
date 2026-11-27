@@ -18,6 +18,8 @@ Benchmark CP2 gồm 12 câu tự viết và 6 câu diễn giải/dịch từ `ev
 
 ## 3. Metric và cách chấm
 
+Đối chiếu bổ sung ngày 28/11/2026: Ánh chuyển tiếp bảng Trí chấm 20 câu, nội dung khớp lượt 2 (cần Trí xác nhận run ID). Trí cho 16/20, kết quả hiện tại 15/20; khớp 17/20, riêng C01–C05 khớp 3/5. Ba bất đồng: C03, C05, C07. Chưa xác nhận điều kiện độc lập; đây không phải kết quả phiếu 5 output lượt 1. Xem `eval/tri-review-comparison.md`. Chưa thay đổi điểm hoặc chuẩn đã chốt.
+
 Cập nhật chuẩn bị CP3 ngày 27/11/2026: chỉ thêm R07 và C13, bộ hiện tại có 20 câu (thuong 5, kho 12, tu_choi 3), nguồn review 7/20 và tự viết 13/20. Các số 18 câu ở mục CP2 là bản chốt trước khi mở rộng. Metric và chuẩn đạt không đổi. Cường đã gửi phần chấm C01–C05, lưu tại `eval/cuong-review-5.md`; phần Cường gửi trước đó chưa có độ khớp chấm độc lập. Kết quả lượt 1 chính thức được ghi ở mục 5.
 
 | Metric (`eval/metric_spec.yaml`) | Cách chấm | Ngưỡng |
