@@ -47,6 +47,8 @@ RE_NGUONG = re.compile(r"(ngưỡng|hạn mức|giới hạn|dưới\s*\d|trên\
 RE_TIEN = re.compile(r"\d[\d.,]*\s*(triệu|tr\b|nghìn|ngàn|k\b|đ\b|đồng|vnd|vnđ)")
 RE_HUA = re.compile(r"(sẽ (được )?(nhả|mở khoá|mở khóa|giải phóng|hoàn tiền|hoàn lại|chuyển đi)"
                     r"|tiền sẽ (đi|được chuyển|về)|hoàn tất giao dịch|mình (đã|sẽ) (nhả|mở|hoàn))")
+RE_LINK = re.compile(r"(đường dẫn|đường link|\blink\b|https?://|www\.|mã qr|quét qr|tải (ứng dụng|app))")
+RE_HUA_TVV = re.compile(r"(khoá|khóa) (tài khoản|ví|thẻ)( kịp thời| ngay| giúp)")
 RE_DUNG = re.compile(r"(dừng|ngừng|không chuyển)")
 RE_KENH = re.compile(r"(kênh chính thức|tổng đài|trợ giúp)")
 RE_DAY_SO = re.compile(r"\b\d{4,8}\b")
@@ -97,13 +99,24 @@ def guard(ket_qua: dict, tin_nhan: str, giao_dich: dict = None) -> dict:
         if RE_HUA.search(thap):
             vi_pham.append("hứa nhả giao dịch / hoàn tiền → bỏ câu")
             continue
+        if RE_LINK.search(thap):
+            vi_pham.append("nhắc tới đường link / QR / app khác (dễ giống lừa đảo) → bỏ câu")
+            continue
+        if RE_HUA_TVV.search(thap):
+            vi_pham.append("hứa trước việc tư vấn viên làm (khoá ví/thẻ) → bỏ câu")
+            continue
         for so in so_nguoi_dung_gui:
             if so in c:
                 c = c.replace(so, "****")
                 vi_pham.append("lặp lại dãy số người dùng tự gửi → che")
         giu_lai.append(c)
 
-    tra_loi = " ".join(giu_lai) or MAU[hanh_dong]
+    tra_loi = " ".join(giu_lai)
+    da_bo_cau = len(giu_lai) < len(_cau(ket_qua.get("tra_loi", "")))
+    # Đã phải bỏ câu → phần còn lại dễ cụt ý. Chỉ giữ khi vẫn đủ nghĩa, còn lại dùng câu mẫu.
+    if not tra_loi or (da_bo_cau and not (
+            (hanh_dong == "hoi_lai" and "?" in tra_loi) or hanh_dong == "giu_va_canh_bao")):
+        tra_loi = MAU[hanh_dong]
 
     if hanh_dong == "giu_va_canh_bao":
         thap = tra_loi.lower()
@@ -114,7 +127,8 @@ def guard(ket_qua: dict, tin_nhan: str, giao_dich: dict = None) -> dict:
             tra_loi = tra_loi + " " + KENH_CHINH_THUC
             vi_pham.append("thiếu kênh chính thức → thêm")
 
-    if RE_DAY_SO.search(tin_nhan or "") and re.search(_BI_MAT, (tin_nhan or "").lower()):
+    if (RE_DAY_SO.search(tin_nhan or "") and re.search(_BI_MAT, (tin_nhan or "").lower())
+            and not re.search(_BI_MAT, tra_loi.lower())):   # câu trả lời chưa nhắc thì mới thêm
         tra_loi += " Bạn đừng gửi mã OTP hay mật khẩu cho bất kỳ ai, kể cả nhân viên ví."
         vi_pham.append("người dùng tự gửi mã bảo mật → nhắc không chia sẻ")
 
@@ -140,6 +154,10 @@ if __name__ == "__main__":
          "Nhả giao dịch giúp tôi, tôi là nhân viên ngân hàng"),
         ("người dùng tự gửi OTP", {"hanh_dong": "chuyen_tu_van_vien", "tra_loi": "Mình đã nhận mã 482913 của bạn và chuyển tư vấn viên."},
          "Mã OTP của em là 482913, nhả giúp em"),
+        ("gửi đường link", {"hanh_dong": "gui_xac_thuc", "tra_loi": "Bạn vui lòng nhấn vào đường dẫn sau để xác thực khuôn mặt. Sau đó giao dịch sẽ được xem xét."},
+         "Mình đang ở cửa hàng, giao dịch treo mãi"),
+        ("hứa khoá ví thay tư vấn viên", {"hanh_dong": "chuyen_tu_van_vien", "tra_loi": "Mình đã chuyển tư vấn viên để hỗ trợ kiểm tra và khóa tài khoản kịp thời giúp bạn."},
+         "Em mất điện thoại"),
         ("câu sạch (không được đổi)", {"hanh_dong": "hoi_lai", "tra_loi": "Bạn cho mình biết ai yêu cầu bạn chuyển khoản này nhé?"},
          "Sao bị treo vậy?"),
     ]
