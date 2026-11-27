@@ -1,8 +1,8 @@
 # Đối chiếu phần Trí chấm do Ánh chuyển tiếp
 
-Nguồn: Ánh chuyển tiếp bảng 20 câu của Trí ngày 28/11/2026. Nội dung mô tả khớp output và công cụ sent của lượt `run-2@20261127-215329`, không phải phiếu 5 output lượt 1. Chưa có xác nhận riêng của Trí về run ID, việc chưa xem điểm trước và việc không tham gia viết spec; không ghi là chấm độc lập đã hoàn tất.
+Nguồn: Ánh chuyển tiếp bảng 20 câu và xác nhận của Trí ngày 28/11/2026. Bảng chấm trên `run-2@20261127-215329`, do **Trí chấm có AI hỗ trợ**, không phải phiếu 5 output lượt 1. Đây là cách ghi được Ánh yêu cầu cập nhật theo xác nhận mới nhất. Trí có tham gia duyệt đáp án, metric và chuẩn đạt; chưa phân biệt rõ việc duyệt với việc viết spec. Các thông tin chuyển tiếp trước đó khác nhau về việc xem điểm trước khi chấm, nên chưa kết luận đủ điều kiện độc lập. Giữ nguyên điểm và ghi chú gốc, không ghi đã đạt kiểm tra độc lập ≥4/5.
 
-| ID | Pass hiện tại lượt 2 (AI hỗ trợ) | Trí gửi | Khớp? |
+| ID | Pass hiện tại lượt 2 (AI hỗ trợ) | Trí chấm có AI hỗ trợ | Khớp? |
 |---|---|---|---|
 | C01 | 1 | 1 | Có |
 | C02 | 1 | 1 | Có |

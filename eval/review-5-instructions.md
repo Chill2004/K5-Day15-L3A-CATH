@@ -1,8 +1,8 @@
-# Phiếu chấm người thứ hai — lượt 1
+﻿# Phiếu chấm người thứ hai — lượt 1
 
 ## Cập nhật phiếu đã nhận ngày 28/11/2026
 
-Theo yêu cầu Ánh, `eval/review-5-blind.csv` hiện lưu điểm và ghi chú Trí gửi cho C01–C05: 1, 1, 0, 1, 1. Nhận xét được đối chiếu với lượt `run-2@20261127-215329`, nên phiếu dùng đúng output và tool_results lượt 2; chưa có xác nhận run ID riêng từ Trí. Phiếu trống lượt 1 ban đầu được giữ ở `eval/review-5-run1-blank.csv`. Không thay đổi bất kỳ file run hoặc trace nào.
+Theo yêu cầu Ánh, `eval/review-5-blind.csv` hiện lưu điểm và ghi chú Trí gửi cho C01–C05: 1, 1, 0, 1, 1. Nhận xét được đối chiếu với lượt `run-2@20261127-215329`, nên phiếu dùng đúng output và tool_results lượt 2; Trí đã xác nhận run ID và cho biết có AI hỗ trợ chấm. Phiếu trống lượt 1 ban đầu được giữ ở `eval/review-5-run1-blank.csv`. Không thay đổi bất kỳ file run hoặc trace nào.
 
 Điểm Trí khớp 3/5 với điểm hiện tại của cùng lượt 2; lệch C03, C05. Đây là số đối chiếu thực tế, chưa đủ 4/5. Chưa xác nhận điều kiện độc lập, không ghi là đã đạt yêu cầu kiểm chấm độc lập. Hướng dẫn lượt 1 bên dưới giữ làm lịch sử quy trình, không mô tả phiếu hiện tại.
 
@@ -33,7 +33,8 @@ Chọn người không viết spec và chưa xem điểm/lý do chấm các outp
 
 ## Trạng thái
 
-- Người chấm thứ hai: Trí, theo bảng Ánh chuyển tiếp; chưa xác nhận điều kiện độc lập.
+- Người chấm thứ hai: **Trí chấm có AI hỗ trợ**, theo xác nhận mới nhất Ánh chuyển tiếp; run-2@20261127-215329. Chưa kết luận đủ điều kiện độc lập; thông tin trước đó khác nhau về việc xem điểm và chưa làm rõ vai trò viết spec.
 - Đã nhận kết quả: Ánh đã chuyển bảng 20 câu; đã nhập 5 câu đầu vào phiếu theo yêu cầu. Codex chưa gửi tin ra ngoài.
 - Độ khớp C01–C05 cùng lượt 2: 3/5; chưa có kết luận đồng thuận cho các câu lệch.
 - Lượt chấm ban đầu trong run-1.csv có AI hỗ trợ, không mô tả là Ánh chấm độc lập.
+
