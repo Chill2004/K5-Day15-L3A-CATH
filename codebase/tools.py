@@ -12,9 +12,6 @@ CP3 hook: đặt data/held_transactions.json → get_held_transaction tự đọ
 import json
 import os
 import unicodedata
-<<<<<<< Updated upstream
-from tracing import tool, TOOLS  # noqa: F401  (TOOLS: danh sách công cụ đã đăng ký, dùng khi viết vòng lặp agent)
-=======
 
 from tracing import tool, TOOLS  # noqa: F401
 
@@ -267,7 +264,6 @@ def release_transaction(tx_id: str, ly_do: str = "") -> dict:
         "requires_human_approval": True,
         "trang_thai": "cho_duyet",
     }
->>>>>>> Stashed changes
 
 
 def _strip_accents(text: str) -> str:
@@ -352,159 +348,6 @@ def _match_transaction(user_hint: str, transactions: list) -> dict | None:
 # ---------------------------------------------------------------------------
 
 @tool
-<<<<<<< Updated upstream
-def lookup_held_transaction(user_hint: str) -> dict:
-    """Tra giao dịch bị tạm giữ dựa trên gợi ý từ người dùng.
-
-    Tên/mục đích: Tra cứu thông tin giao dịch đang bị ví tạm giữ để AI
-        có căn cứ phân loại tình huống và chọn hành động phù hợp.
-    Input: user_hint (str) — đoạn mô tả ngắn từ người dùng (mã giao dịch,
-        số tiền, tên người nhận, từ khoá liên quan…); có thể rỗng hoặc thiếu.
-    Output: dict —
-        Nếu tìm thấy: {"found": True, "tx_id": str, "amount": int,
-            "currency": str, "recipient": str, "status": "held",
-            "hold_reason": str, "hold_reason_label": str, "timestamp": str}
-        Nếu không tìm thấy hoặc user_hint rỗng:
-            {"found": False, "tx_id": None, "note": "Không tìm thấy giao dịch"}
-    Tác động ra ngoài: Không — chỉ đọc dữ liệu, không thay đổi trạng thái.
-    """
-    # Edge case G10: user_hint rỗng hoặc chỉ có khoảng trắng
-    if not user_hint or not user_hint.strip():
-        return {"found": False, "tx_id": None, "note": "Không tìm thấy giao dịch"}
-
-    transactions = _load_transactions()
-    matched = _match_transaction(user_hint.strip(), transactions)
-
-    if matched is None:
-        return {"found": False, "tx_id": None, "note": "Không tìm thấy giao dịch"}
-
-    return {
-        "found": True,
-        "tx_id": matched["tx_id"],
-        "amount": matched["amount"],
-        "currency": matched["currency"],
-        "recipient": matched["recipient"],
-        "status": matched["status"],
-        "hold_reason": matched["hold_reason"],
-        "hold_reason_label": matched["hold_reason_label"],
-        "timestamp": matched["timestamp"],
-    }
-
-
-# ---------------------------------------------------------------------------
-# Công cụ 2 — Tạo bản nháp cảnh báo giữ tiếp
-# ---------------------------------------------------------------------------
-
-@tool
-def draft_hold_warning(tx_id: str, reason: str) -> dict:
-    """Tạo bản nháp cảnh báo giữ tiếp giao dịch khi nghi bị giục chuyển tiền.
-
-    Tên/mục đích: Tạo nội dung cảnh báo (dạng bản nháp) để gửi cho người dùng
-        rằng giao dịch sẽ được giữ tiếp do nghi ngờ lừa đảo; không nhả tiền.
-    Input:
-        tx_id (str) — mã giao dịch bị giữ.
-        reason (str) — lý do phân loại (ví dụ: "bị giục chuyển tiền").
-    Output: dict — {"status": "draft", "action": "hold_warning",
-        "tx_id": str, "reason": str, "requires_human_approval": False,
-        "message_vi": str}  # nội dung cảnh báo tiếng Việt gợi ý cho agent
-    Tác động ra ngoài: Không — chỉ tạo bản nháp trong bộ nhớ, không gửi tin
-        hay thay đổi trạng thái giao dịch.
-    """
-    message = (
-        f"Giao dịch {tx_id} đang được tạm giữ để bảo vệ bạn. "
-        "Dấu hiệu lừa đảo thường gặp: người lạ giục chuyển tiền gấp, "
-        "hứa lợi nhuận cao, giả danh cơ quan nhà nước hoặc người thân. "
-        "Nếu bạn không tự mình quyết định chuyển tiền, hãy dừng lại và "
-        "liên hệ trực tiếp với người nhận qua kênh khác để xác nhận."
-    )
-    return {
-        "status": "draft",
-        "action": "hold_warning",
-        "tx_id": tx_id,
-        "reason": reason,
-        "requires_human_approval": False,
-        "message_vi": message,
-    }
-
-
-# ---------------------------------------------------------------------------
-# Công cụ 3 — Tạo bản nháp bước xác thực (trường hợp gấp thật)
-# ---------------------------------------------------------------------------
-
-@tool
-def draft_verification_step(tx_id: str, method: str) -> dict:
-    """Tạo bản nháp yêu cầu xác thực danh tính cho trường hợp giao dịch gấp thật.
-
-    Tên/mục đích: Tạo bước xác thực (dạng bản nháp) khi có căn cứ cho rằng
-        giao dịch là khẩn cấp thật — không nhả tiền, không thay đổi trạng thái.
-    Input:
-        tx_id (str) — mã giao dịch cần xác thực.
-        method (str) — phương thức xác thực đề xuất, ví dụ:
-            "selfie_id" (ảnh CCCD + ảnh mặt), "callback" (gọi lại số đăng ký),
-            "otp_registered_device" (OTP gửi về thiết bị đã đăng ký).
-    Output: dict — {"status": "draft", "action": "verification_step",
-        "tx_id": str, "method": str, "requires_human_approval": False,
-        "instructions_vi": str}  # hướng dẫn xác thực tiếng Việt gợi ý
-    Tác động ra ngoài: Không — chỉ tạo bản nháp bước xác thực, không gửi OTP
-        thật hay giải phóng giao dịch.
-    """
-    _method_labels = {
-        "selfie_id": "chụp ảnh CCCD/CMND và ảnh khuôn mặt",
-        "callback": "xác nhận qua cuộc gọi về số điện thoại đã đăng ký",
-        "otp_registered_device": "nhập mã OTP gửi về thiết bị đã đăng ký trước",
-    }
-    label = _method_labels.get(method, method)
-    instructions = (
-        f"Để xem xét giải phóng giao dịch {tx_id}, bạn cần hoàn tất bước xác thực: "
-        f"{label}. Tư vấn viên sẽ hướng dẫn bạn sau khi nhận được yêu cầu này."
-    )
-    return {
-        "status": "draft",
-        "action": "verification_step",
-        "tx_id": tx_id,
-        "method": method,
-        "requires_human_approval": False,
-        "instructions_vi": instructions,
-    }
-
-
-# ---------------------------------------------------------------------------
-# Công cụ 4 — Tạo bản nháp chuyển tư vấn viên (luôn cần duyệt)
-# ---------------------------------------------------------------------------
-
-@tool
-def draft_escalate_to_agent(tx_id: str, summary: str, suggested_action: str) -> dict:
-    """Tạo bản nháp chuyển ca lên tư vấn viên kèm tóm tắt tình huống.
-
-    Tên/mục đích: Tạo bản nháp chuyển ca (escalation) cho tư vấn viên người thật
-        để duyệt và xử lý — dùng cho các tình huống nghi chiếm tài khoản,
-        yêu cầu nhả giao dịch, khoá ví, hoặc ca ngoài phạm vi AI.
-        KHÔNG thực thi bất kỳ hành động thật nào.
-    Input:
-        tx_id (str) — mã giao dịch liên quan.
-        summary (str) — tóm tắt ngắn tình huống để tư vấn viên nắm ngay.
-        suggested_action (str) — hành động AI đề xuất tư vấn viên xem xét,
-            ví dụ: "khoa_vi_tam_thoi", "nha_giao_dich", "lien_he_xac_minh".
-    Output: dict — {"status": "draft", "action": "escalate_to_agent",
-        "tx_id": str, "summary": str, "suggested_action": str,
-        "requires_human_approval": True,
-        "note": str}  # nhắc tư vấn viên đây là bản nháp cần duyệt
-    Tác động ra ngoài: Không — chỉ tạo bản nháp trong bộ nhớ; tư vấn viên
-        phải duyệt trước khi bất kỳ hành động thật nào được thực hiện.
-        status luôn là "draft" và requires_human_approval luôn là True.
-    """
-    return {
-        "status": "draft",
-        "action": "escalate_to_agent",
-        "tx_id": tx_id,
-        "summary": summary,
-        "suggested_action": suggested_action,
-        "requires_human_approval": True,
-        "note": (
-            "Đây là bản nháp — tư vấn viên cần xem xét và duyệt trước khi "
-            "thực hiện bất kỳ thay đổi nào đối với giao dịch hoặc tài khoản."
-        ),
-=======
 def lock_wallet(tx_id: str, ly_do: str = "") -> dict:
     """CÔNG CỤ BỊ CHẶN — AI không được tự gọi.
 
@@ -524,5 +367,4 @@ def lock_wallet(tx_id: str, ly_do: str = "") -> dict:
         "status": "draft",
         "requires_human_approval": True,
         "trang_thai": "cho_duyet",
->>>>>>> Stashed changes
     }
