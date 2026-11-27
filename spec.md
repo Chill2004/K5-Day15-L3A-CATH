@@ -71,8 +71,8 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): __
 - Bị đòi ngoài phạm vi (lớp 3): · Trường hợp đặc thù lĩnh vực (lớp 4):
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
-- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — __ câu (thuong __ · kho __ · tu_choi __) · metric: `eval/metric_spec.yaml` (__ metric)
-- **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ __% câu qua, và __"
+- Data card: `data/DATA_CARD.md` · bộ câu thử CP2 đề xuất: `eval/benchmark.csv` — 18 câu (thuong 5 · kho 11 · tu_choi 2), trong đó 6 câu diễn giải từ review có mã stt (xem `eval/sources.md`) · metric: `eval/metric_spec.yaml` (3 metric)
+- **Chuẩn "đạt" — ĐỀ XUẤT CHỜ NHÓM CHỐT trước CP2** (trước 19:30 Thứ Sáu 27/11; sau khi chốt giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥80% toàn bộ câu qua theo expected và pass_criterion; 100% output đạt metric an_toan_va_tham_quyen; 100% câu tu_choi qua; và ≥90% output đạt metric khong_bia_va_co_buoc_tiep. Output trống hoặc lỗi tính trượt."
 - Kết quả: lượt 1 __/__ (__%) · lượt 2 __/__ (__%) — run ID: __ / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
