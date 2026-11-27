@@ -10,7 +10,7 @@
 | 3 | Giải pháp | Lát cắt một câu · sơ đồ · AI tự làm đến đâu, vì sao | `spec.md` §4 | ☑ nội dung |
 | 4 | Demo live | 1 trường hợp thường + 1 trường hợp khó (lấy từ bộ câu thử); mạng hỏng → video dự phòng | `eval/benchmark.csv` | ☑ nội dung |
 | 5 | **Đánh giá thế nào** | Dataset · bộ câu thử · metric · lượt 1 → lượt 2 so với chuẩn "đạt" (kèm run ID) · lỗi chính | `eval/README.md`, `eval/report.md` | ☑ nội dung |
-| 6 | **Chi phí khi dùng thật** | Chi phí / task thành công · 3 kịch bản · so với impact | `cost/cost-estimate.md` | ☐ chờ `simulate` |
+| 6 | **Chi phí khi dùng thật** | Chi phí / task thành công · 3 kịch bản · so với impact | `cost/cost-estimate.md` | ☑ nội dung |
 | 7 | Kết luận | Go / iterate / stop — dẫn số ở trang 1, 5, 6 | — | ☑ nội dung |
 | 8 | Nếu có thêm 1 tuần | 2–3 việc, trỏ về lỗi còn lại / phản hồi người dùng | `eval/report.md` mục 4 · `validation/log.md` | ☑ nội dung |
 
@@ -52,11 +52,11 @@
 - Cải tiến sửa đúng 4/4 câu đích (C03, C09, R03, R05). Đúng nhãn 18/20, nhưng pass còn chấm cả nội dung.
 - Lỗi còn lại: khẳng định tuyệt đối thiếu căn cứ (C05, C07) · sai nhãn (R04, R06) · thiếu dặn "đừng chia sẻ OTP" (C13).
 
-### 6. Chi phí khi dùng thật — **chờ Hà chạy `python run.py simulate --rate-from eval/run-2.csv`**
-- Chi phí / task thành công (chia cho tỉ lệ đạt 75%, không coi như 100%): __ ₫ (`gemini-3.1-flash-lite`) · __ ₫ (`gemini-3.8-flash`).
-- 3 kịch bản / tháng: thấp 30.350 · cơ sở 66.770 · cao 121.400 người → __ / __ / __ ₫ *(số người: 30,35 triệu ví hoạt động [2] × 0,1–0,4% — tự ước tính)*.
-- Giờ công tư vấn viên: 144.891 phiên / tháng → chuyển người 41,5% → tiết kiệm ~703 triệu ₫ / tháng **(tự ước tính: tỉ lệ chuyển người theo persona và 7 phút/ca là giả định)**.
-- Lương tham chiếu: 10–15 triệu ₫ / tháng (CareerLink, 30/05/2026).
+### 6. Chi phí khi dùng thật
+- Chi phí / task thành công (÷ tỉ lệ đạt 75%, không coi như 100%): **58 ₫** (`gemini-3.1-flash-lite`) · 328 ₫ (`gemini-3.8-flash`). *(`cost/simulate-1-summary.md`, 50 phiên, 2 lỗi)*
+- Chi phí model / tháng: thấp 2,56 tr · **cơ sở 5,64 tr** · cao 10,26 tr ₫ (≈ 84 ₫ / người / tháng) *(số người: 30,35 triệu ví [2] × 0,1–0,4% — tự ước tính)*.
+- Giờ công: 144.891 phiên / tháng → chuyển người 41,5% → **tiết kiệm ròng ≈ 697,4 triệu ₫ / tháng sau khi trừ chi phí model** (7 phút / ca, 1.184 ₫ / phút — tự ước tính).
+- Độ nhạy: 5 phút → 496,6 tr · 15 phút → 1,50 tỷ (flash-lite); 470,5 tr · 1,47 tỷ (3.8-flash). Kết luận "đáng làm" không đổi.
 
 ### 7. Kết luận — **Iterate** (chưa Go)
 - Pain có thật: 13/20 bị giữ, 11/13 phải liên hệ hỗ trợ (trang 1).
