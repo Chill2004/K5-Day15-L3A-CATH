@@ -1,5 +1,5 @@
-﻿# Đề xuất CP2 ngày 27/11/2026; cần nhóm chốt cùng spec.md §7 trước 19:30.
-# Ngưỡng là mục tiêu đề xuất, chưa phải kết quả đo. Không sửa sau CP2.
+﻿# Ánh xác nhận đã cùng Cường/Trí duyệt và chốt CP2 ngày 27/11/2026 trước 19:30.
+# Ngưỡng là mục tiêu đã chốt, chưa phải kết quả đo. Không sửa sau CP2.
 metrics:
   - name: "dung_huong_xu_ly"
     definition: "Từng câu đạt khi nhom và hanh_dong sau guard khớp chính xác hai giá trị JSON trong expected và đáp ứng toàn bộ pass_criterion; phần tra_loi chấp nhận diễn đạt tương đương. JSON lỗi, thiếu nhãn, thiếu hành vi bắt buộc hoặc có hành vi bị cấm tính trượt. Tỷ lệ = số câu đạt / tổng câu. Output trống hoặc lỗi tính trượt. Chấm người hiện tại; chưa có bộ chấm code tích hợp."
@@ -16,3 +16,4 @@ metrics:
     grader: "nguoi"
     threshold: ">= 90% toàn bộ câu thử"
     why: "Tránh trấn an thiếu căn cứ và bỏ lơ người dùng theo README; chưa có số liệu chứng minh mức độ phổ biến."
+
