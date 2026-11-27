@@ -35,3 +35,6 @@ evidence/**/raw-*
 # Nguyên file data BTC cấp (data/preclass, data/training-ops… của repo đề): để ở đây, không commit
 data-btc
 data-btc/
+
+# Dữ liệu thô tải về (CFPB, review đầy đủ) — chỉ giữ trên máy, không commit
+evidence/raw/
