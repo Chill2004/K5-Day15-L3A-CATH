@@ -64,16 +64,16 @@ flowchart LR
 ```
 
 - **Hình dạng:** [x] workflow cố định · [ ] một agent · [ ] nhiều agent — Các bước cố định: tra giao dịch → model phân loại (1 lần gọi) → code kiểm → gọi công cụ theo hành động. Đường đi không đổi theo input, chỉ nhánh cuối đổi theo `hanh_dong`. **Không chọn agent** vì không cần AI tự chọn bước tiếp: cho AI tự gọi công cụ thì có nguy cơ gọi công cụ không đảo được (nhả giao dịch); workflow rẻ hơn (1 lần gọi model) và chấm được bằng code.
-- **AI dựa vào đâu** — công cụ *(dự kiến — khớp lại khi Trí xong `codebase/tools.py`)*:
+- **AI dựa vào đâu** — mỗi công cụ (khớp `codebase/tools.py`):
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-  | `get_held_transaction` | `tx_id` | `tx_id, so_tien, nguoi_nhan, loai_nguoi_nhan, thoi_gian, trang_thai` (data giả) | Không — chỉ đọc |
-  | `hold_transaction` | `tx_id` | trạng thái giữ | Có, đảo được |
-  | `request_verification` | `user_id` | đã gửi màn hình xác thực | Có, đảo được |
-  | `handoff_to_agent` | `chat_id`, tóm tắt | mã ca chuyển | Có, đảo được |
-  | `release_transaction` | `tx_id` | — | **Không đảo được** → AI không gọi; `chan_cong_cu` chỉ trả bản nháp |
-  | `lock_wallet` | `user_id` | — | Mở lại mất nhiều giờ → AI không gọi; chỉ bản nháp |
+  | `get_held_transaction` | `user_hint: str` — tin nhắn; chỉ khớp theo mã `TX-…` (đã bỏ khớp từ khoá) | `dict` gồm `found`, `tx_id`, `so_tien`, `nguoi_nhan`, `loai_nguoi_nhan`, `thoi_gian`, `trang_thai`; nếu không thấy: `{"found": False, …}` → agent vẫn gọi `classify` với `giao_dich=None` | Không — chỉ đọc mock (CP2) hoặc `data/held_transactions.json` (CP3) |
+  | `hold_transaction` | `tx_id: str`, `ly_do: str` | `dict` gồm `action:"hold_transaction"`, `tx_id`, `status:"confirmed_hold"`, `ly_do` | Không — xác nhận trong bộ nhớ, không gửi lệnh API |
+  | `request_verification` | `tx_id: str`, `phuong_thuc: str` | `dict` gồm `action`, `tx_id`, `phuong_thuc`, `status:"draft"`, `requires_human_approval:False` | Không — chỉ tạo bản nháp bước xác thực, không gửi OTP thật |
+  | `handoff_to_agent` | `tx_id: str`, `tom_tat: str`, `suggested_action: str` | `dict` gồm `action`, `tx_id`, `tom_tat`, `suggested_action`, `status:"draft"`, `requires_human_approval:True` | Không — chỉ tạo bản nháp; tư vấn viên phải duyệt |
+  | `release_transaction` *(bị chặn)* | `tx_id: str`, `ly_do: str` | `dict` gồm `status:"draft"`, `requires_human_approval:True`, `trang_thai:"cho_duyet"` | Không — `chan_cong_cu()` chặn trước; chỉ tạo bản nháp, KHÔNG nhả tiền thật |
+  | `lock_wallet` *(bị chặn)* | `tx_id: str`, `ly_do: str` | `dict` gồm `status:"draft"`, `requires_human_approval:True`, `trang_thai:"cho_duyet"` | Không — `chan_cong_cu()` chặn trước; chỉ tạo bản nháp, KHÔNG khoá ví thật |
 
 - **Mức tự động:** [ ] AI gợi ý, người quyết · [x] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm — AI tự làm các việc đảo được (giữ tiếp, gửi xác thực, hỏi lại, chuyển người). Việc không đảo được (nhả, khoá) luôn qua tư vấn viên: nhả nhầm thì người dùng mất tiền trong vài giây, không lấy lại được.
 - **Chỗ chặn rủi ro** (`codebase/guard.py`, kiểm bằng code sau khi model trả lời):
@@ -93,7 +93,7 @@ flowchart LR
   | G1/G2 — nói rõ làm được gì | Trả lời nói rõ "mình không có quyền nhả giao dịch", không hứa việc của tư vấn viên (prompt luật 1, 9; `guard.py`) |
   | G11 — giải thích vì sao | Trường `ly_do` nêu dấu hiệu cụ thể dẫn tới quyết định, ghi vào trace và tóm tắt cho tư vấn viên; câu trả lời giải thích vì sao bị giữ ("cơ quan nhà nước không yêu cầu chuyển tiền qua ví") |
 
-- **Phần còn giả:** dữ liệu giao dịch là data giả nhóm dựng (`data/`, nhãn `synthetic`); các công cụ hold / verification / handoff là hàm giả, không nối hệ thống thật. Model **thật**: Gemini (`gemini-3.1-flash-lite`).
+- **Phần còn giả:** `get_held_transaction` đọc 3 giao dịch mock trong `tools.py` (hoặc `data/held_transactions.json` nếu có), chỉ khớp theo mã `TX-…`; câu thử không ghi mã → `classify` chạy với `giao_dich=None`. Data giả của Hà (`data/held_transactions.csv`, `data/messages.csv`, seed 42) **chưa được `tools.py` đọc** — nếu nối vào, KHÔNG đưa cột `nhom_that` / `ly_do_giu` cho model. Các công cụ `hold_transaction`, `request_verification`, `handoff_to_agent` chỉ tạo bản ghi / bản nháp trong bộ nhớ, chưa nối API ví thật. Model **thật**: Gemini (`gemini-3.1-flash-lite`); không có `.env` thì chạy chế độ giả.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 

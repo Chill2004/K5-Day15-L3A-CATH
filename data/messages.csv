@@ -1,0 +1,31 @@
+msg_id,tx_id,tin_nhan,nhom_that,ngoai_gio,nguon,nhan
+M0001,TX0001,"Ủa tôi đang ngủ tự nhiên có thông báo trừ tiền là sao?? Tôi ko hề chuyển ai 150k này hết, khóa app gấp giúp tôi!",chiem_tk,khong,tu_viet,synthetic
+M0002,TX0002,"Alo e ơi mở lệnh ck 5tr giúp a với, đang thanh toán tiền nhập rau củ cho bên giao hàng họ đứng ngoài cổng đợi nửa tiếng r",gap_that,khong,tu_viet,synthetic
+M0003,TX0003,"Em ơi duyệt giúp chị khoản học phí cho cháu với, trường báo đúng 17h khóa cổng thu tiền, trễ là cháu ko đc thi",gap_that,co,tu_viet,synthetic
+M0004,TX0004,"sao bi chan vay ad",chua_ro,co,tu_viet,synthetic
+M0005,TX0005,"Cứu với app tôi vừa báo có thiết bị khác đăng nhập ở tận Đà Nẵng xong tự tạo lệnh chuyển tiền, tôi ko hề bấm gì cả!",chiem_tk,khong,tu_viet,synthetic
+M0006,TX0006,"Alo mở gấp lệnh chuyển đi, cán bộ công an bên Cục đang gọi dọa nếu ko chuyển 5tr vào stk tạm giữ an toàn này trong 15p là họ cho xe đến còng tay tôi đấy!!",bi_giuc,co,tu_viet,synthetic
+M0007,TX0007,"Chị nhân viên bên ngân hàng bảo hệ thống lỗi đang giữ máy bắt tôi đọc OTP rồi chuyển ngay kẻo mất khoản vay, mở khóa nhanh lên ko họ cúp máy!",bi_giuc,co,tu_viet,synthetic
+M0008,TX0008,"Mở giao dịch giúp mình với, mình chuyển tiền viện phí cấp cứu cho người nhà ở Chợ Rẫy, bác sĩ giục đóng tạm ứng gấp",gap_that,khong,tu_viet,synthetic
+M0009,TX0009,"Hỗ trợ mở giao dịch với ạ, em chuyển tiền cọc thuê nhà trọ, chủ nhà bảo 10p nữa ko thấy tiền là họ cho người khác thuê mất",gap_that,co,tu_viet,synthetic
+M0010,TX0010,"Alo duyệt giúp lệnh 3.5tr với, mình thanh toán tiền hàng hải sản tươi sống mối quen, xe hàng sắp chạy rồi",gap_that,co,tu_viet,synthetic
+M0011,TX0011,"Duyệt tiền gấp giùm c em ơi, chị chuyển tiền hàng sỉ quần áo hẹn đối tác ck trước 16h để kịp gom đơn chiều",gap_that,khong,tu_viet,synthetic
+M0012,TX0012,"alo sao ko chuyển đc",chua_ro,co,tu_viet,synthetic
+M0013,TX0013,"mở giúp với ạ",chua_ro,khong,tu_viet,synthetic
+M0014,TX0014,"Alo có kẻ gian hack sim của tôi vừa đổi mật khẩu ví rồi tự tạo lệnh chuyển 3.5tr, chặn ngay lập tức cho tôi!",chiem_tk,co,tu_viet,synthetic
+M0015,TX0015,"Chủ trọ đang đứng réo trước cửa phòng đòi tiền phòng tháng này, ví tự dưng giữ tiền làm ngta tưởng tôi quỵt, mở ra ngay đi",gap_that,co,tu_viet,synthetic
+M0016,TX0016,"Lỗi gì đây??",chua_ro,khong,tu_viet,synthetic
+M0017,TX0017,"Các anh mở chặn gấp, cán bộ điều tra bảo đây là tài khoản niêm phong của cơ quan CSĐT, ko nộp 2 triệu xác minh là tôi dính án hình sự oan!",bi_giuc,co,tu_viet,synthetic
+M0018,TX0018,"Duyệt lệnh chuyển gấp giúp shop, khách cọc tiền mua máy lạnh đang đợi lấy hàng tại quầy ạ",gap_that,co,tu_viet,synthetic
+M0019,TX0019,"Tôi vừa mất điện thoại 20 phút trước, vừa vào máy tính thấy báo có lệnh chuyển 10 triệu đi, chặn giùm tôi kẻ gian rút tiền!",chiem_tk,co,tu_viet,synthetic
+M0020,TX0020,"Em mở giùm anh khoản 20tr này với, bên thanh tra bộ thông tin gọi bảo số anh phát tán tin độc hại phải nộp tiền bảo lãnh gấp trong đêm ko bị khóa sim vĩnh viễn",bi_giuc,co,tu_viet,synthetic
+M0021,TX0021,"Ủa tự nhiên ví báo liên kết thiết bị lạ rồi phát sinh giao dịch 2tr, tôi đang đi làm có đụng vào ví đâu, khóa thẻ gấp!",chiem_tk,khong,tu_viet,synthetic
+M0022,TX0022,"?",chua_ro,khong,tu_viet,synthetic
+M0023,TX0023,"Chuyên gia sàn chứng khoán bảo lệnh nạp 1.2tr này là bước cứu tài khoản, trong 10 phút ko nạp là cháy sạch 50tr tiền gốc của em, van xin ac mở giùm!",bi_giuc,khong,tu_viet,synthetic
+M0024,TX0024,"giao dich bi loi gi ad",chua_ro,co,tu_viet,synthetic
+M0025,TX0025,"Shop online bảo còn đúng 1 đôi giày sale 50% bắt ck cọc trong 15 phút ko nhường cho bạn khác, ad duyệt nhanh e với",bi_giuc,khong,tu_viet,synthetic
+M0026,TX0026,"Trời ơi cô giáo gọi bảo con tôi ngã cầu thang chấn thương sọ não đang ở viện 115 cần chuyển 1.2tr tạm ứng mổ gấp, đừng chặn tôi cứu con tôi với!",bi_giuc,khong,tu_viet,synthetic
+M0027,TX0027,"Tôi vừa nhận được mã OTP đăng nhập lạ xong thấy ví nhảy lệnh chuyển tiền 150k, có phải bị chiếm quyền ko, giữ tiền lại đừng cho đi!",chiem_tk,co,tu_viet,synthetic
+M0028,TX0028,"Nhân viên hỗ trợ ví đang gọi Zalo bảo tôi chuyển 10 triệu vào số này để kích hoạt lại hạn mức hoàn tiền, bảo ko chuyển là mất vĩnh viễn, mở ngay cho tôi",bi_giuc,khong,tu_viet,synthetic
+M0029,TX0029,"Trưởng nhóm làm nhiệm vụ Telegram bảo đây là lệnh chuyển cuối để rút cả vốn lẫn lãi 200tr, nếu ko chuyển 10tr trước 12h là bị đóng băng tài khoản, mở lẹ giúp!",bi_giuc,co,tu_viet,synthetic
+M0030,TX0030,"Ai đổi sđt nhận OTP của tôi rồi, có giao dịch 150k vừa bị chặn, khóa hết tài khoản giúp tôi ko nó rút hết!",chiem_tk,khong,tu_viet,synthetic
