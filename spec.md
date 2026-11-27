@@ -32,11 +32,21 @@ Bằng chứng đếm ngày 27/11/2026 (review 1–2 sao, đếm thử bằng t�
 | E1/E2 · giải thích chi tiêu, cảnh báo ngân sách | review VN 7/2.510 (0,3%), Mỹ/Anh 10/2.320 (0,4%) nhắc tới chi tiêu / ngân sách | __ | __ | __ | Kịp (chỉ đọc, tính) | Không — gần như không có bằng chứng |
 | H1 · tiền bị trừ mà giao dịch chưa tới | review VN ~6,4% (đếm từ khoá), đọc tay chỉ ~1/3 đúng loại; CFPB "Money not available when promised" 2.956/38.899 (7,6%) | __ | __ | __ | Kịp | Không — số nhỏ, một phần chỉ là lag mạng |
 | H2 · kẹt xác thực / đăng nhập / đổi máy | review VN 1–2 sao 628/2.510 (25%) đếm từ khoá, đọc tay ~1/2 người dùng tự gỡ được; Mỹ/Anh 13,8% | __ | __ | __ | Kịp | Không — quy trình mỗi ngân hàng một khác, không có nhãn CFPB khớp |
-| **E3 · giao dịch nghi lừa đảo bị tạm chặn** | **CFPB 48,1–58,7%** khiếu nại chuyển tiền; review Mỹ/Anh khoá/lừa đảo ~9–10% mỗi nhãn | __ | __ | __ | Kịp (đề có sẵn công cụ, chuẩn đạt) | **Chọn** |
+| **E3 · giao dịch nghi lừa đảo bị tạm chặn** | **CFPB 48,1–58,7%** khiếu nại chuyển tiền; review Mỹ/Anh khoá/lừa đảo ~9–10% mỗi nhãn; riêng MoMo cảnh báo ~29.000 giao dịch bất thường / ngày [1] | ~870.000 giao dịch bị cảnh báo / tháng (chỉ MoMo) [1] | Thời gian chờ hỗ trợ + rủi ro mất tiền | xem công thức dưới | Kịp (đề có sẵn công cụ, chuẩn đạt) | **Chọn** |
 
-- **Impact / tháng** của E3 = __ người bị giữ giao dịch × __ lần × __ (phút chờ / tiền mất) = __ — chưa có số; cần nguồn công khai về số người dùng ví và tỉ lệ giao dịch bị giữ, thiếu thì ghi *(tự ước tính)*.
+- **Impact / tháng** của E3 = **870.000** giao dịch bị cảnh báo / tháng (MoMo, ~29.000 / ngày × 30 [1]) × **p%** người phải nhắn / gọi hỗ trợ × **t phút** chờ mỗi lần = __ giờ người dùng chờ / tháng.
+  - p: __ *(chưa có — lấy từ khảo sát câu 6: tỉ lệ người bị giữ đã chat / gọi tổng đài; khảo sát đang thu 14/20)*.
+  - t: __ *(chưa có — lấy từ khảo sát câu 7: thời gian xử lý)*.
+  - Giới hạn: 870.000 là giao dịch **bị cảnh báo** (MoMo không công bố số giao dịch **bị giữ**), chỉ của một ví; 99,5% người được cảnh báo đã dừng lại suy nghĩ [1], nên phần lớn không cần hỗ trợ — p có thể nhỏ.
+  - Mặt rủi ro tiền: thiệt hại lừa đảo trực tuyến ở VN ước tính trên 6.000 tỷ đồng 11 tháng đầu 2025 (Bộ Công an [3]); MoMo dẫn Bộ Công an: hơn 8.000 tỷ đồng cả năm 2025 [1]. Mạo danh công an là hình thức phổ biến nhất 2025; 0,18% người tham gia khảo sát NCA (60.300 người) là nạn nhân; chỉ 32,12% nạn nhân báo cơ quan chức năng [3].
+- **Quy mô thật (cho §8 chi phí):** gần **30,35 triệu** ví điện tử đang hoạt động / 49,57 triệu ví đã kích hoạt, hết tháng 9/2025 [2]; MoMo phục vụ hơn **30 triệu** người dùng [4].
+- **Nguồn** (xem ngày 27/11/2026):
+  [1] MoMo, thông cáo báo chí 14/05/2026 — https://www.momo.vn/tin-tuc/thong-cao-bao-chi/cach-lam-khac-biet-de-bao-ve-nguoi-dung-so-tu-8721
+  [2] Tạp chí Ngân hàng (NHNN), 19/11/2025 — https://tapchinganhang.gov.vn/phat-trien-thi-truong-vi-dien-tu-gop-phan-thuc-day-thanh-toan-so-va-chuyen-doi-so-16719.html
+  [3] VietNamNet, khảo sát NCA 2025, 07/01/2026 — https://vietnamnet.vn/chi-32-12-nan-nhan-bi-lua-dao-truc-tuyen-co-bao-co-quan-chuc-nang-2479618.html
+  [4] VietNamNet English, 12/03/2026 — https://vietnamnet.vn/en/tens-of-thousands-of-e-wallet-accounts-with-signs-of-legal-violations-blocked-2496365.html
 - Hướng đã loại + vì sao: xem cột "Chọn?" ở bảng trên.
-- Số lần / tháng của từng kiểu người dùng (cho §8): __ (lấy từ phỏng vấn).
+- Số lần / tháng của từng kiểu người dùng (cho §8): __ (lấy từ khảo sát câu 5, 7: số lần bị giữ trong 3 tháng qua, thời gian xử lý).
 
 ## §3. Giải pháp tương tự *(guide 2.1)*
 - __
