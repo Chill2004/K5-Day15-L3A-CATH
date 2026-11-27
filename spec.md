@@ -35,9 +35,10 @@ Bằng chứng đếm ngày 27/11/2026 (review 1–2 sao, đếm thử bằng t�
 | **E3 · giao dịch nghi lừa đảo bị tạm chặn** | **CFPB 48,1–58,7%** khiếu nại chuyển tiền; review Mỹ/Anh khoá/lừa đảo ~9–10% mỗi nhãn; riêng MoMo cảnh báo ~29.000 giao dịch bất thường / ngày [1] | ~870.000 giao dịch bị cảnh báo / tháng (chỉ MoMo) [1] | Thời gian chờ hỗ trợ + rủi ro mất tiền | xem công thức dưới | Kịp (đề có sẵn công cụ, chuẩn đạt) | **Chọn** |
 
 - **Impact / tháng** của E3 = **870.000** giao dịch bị cảnh báo / tháng (MoMo, ~29.000 / ngày × 30 [1]) × **p%** người phải nhắn / gọi hỗ trợ × **t phút** chờ mỗi lần = __ giờ người dùng chờ / tháng.
-  - p: __ *(chưa có — lấy từ khảo sát câu 6: tỉ lệ người bị giữ đã chat / gọi tổng đài; khảo sát đang thu 14/20)*.
-  - t: __ *(chưa có — lấy từ khảo sát câu 7: thời gian xử lý)*.
-  - Giới hạn: 870.000 là giao dịch **bị cảnh báo** (MoMo không công bố số giao dịch **bị giữ**), chỉ của một ví; 99,5% người được cảnh báo đã dừng lại suy nghĩ [1], nên phần lớn không cần hỗ trợ — p có thể nhỏ.
+  - p = **11/13 (85%)** người bị giữ đã chat / gọi tổng đài / ra quầy — khảo sát câu 6, N = 20 (`evidence/survey/`).
+  - t = **17,5 phút** — điểm giữa nhóm "5–30 phút", nhóm trả lời nhiều nhất (8/13) ở khảo sát câu 7 *(lấy điểm giữa là tự ước tính)*; 3/13 người mất hơn 2 giờ hoặc sang ngày khác.
+  - → 870.000 × 85% × 17,5 phút ≈ **12,9 triệu phút ≈ 216.000 giờ người dùng chờ hỗ trợ mỗi tháng** — đây là **mức trần** (xem giới hạn dưới), chỉ tính riêng MoMo.
+  - Giới hạn: 870.000 là giao dịch **bị cảnh báo**, không phải **bị giữ** (MoMo không công bố số bị giữ), và 99,5% người được cảnh báo đã tự dừng lại [1] → số thật cần hỗ trợ có thể nhỏ hơn nhiều; p lấy từ người **đã bị giữ** trong mẫu khảo sát thuận tiện 20 người, không đại diện toàn quốc.
   - Mặt rủi ro tiền: thiệt hại lừa đảo trực tuyến ở VN ước tính trên 6.000 tỷ đồng 11 tháng đầu 2025 (Bộ Công an [3]); MoMo dẫn Bộ Công an: hơn 8.000 tỷ đồng cả năm 2025 [1]. Mạo danh công an là hình thức phổ biến nhất 2025; 0,18% người tham gia khảo sát NCA (60.300 người) là nạn nhân; chỉ 32,12% nạn nhân báo cơ quan chức năng [3].
 - **Quy mô thật (cho §8 chi phí):** gần **30,35 triệu** ví điện tử đang hoạt động / 49,57 triệu ví đã kích hoạt, hết tháng 9/2025 [2]; MoMo phục vụ hơn **30 triệu** người dùng [4].
 - **Nguồn** (xem ngày 27/11/2026):
@@ -46,7 +47,7 @@ Bằng chứng đếm ngày 27/11/2026 (review 1–2 sao, đếm thử bằng t�
   [3] VietNamNet, khảo sát NCA 2025, 07/01/2026 — https://vietnamnet.vn/chi-32-12-nan-nhan-bi-lua-dao-truc-tuyen-co-bao-co-quan-chuc-nang-2479618.html
   [4] VietNamNet English, 12/03/2026 — https://vietnamnet.vn/en/tens-of-thousands-of-e-wallet-accounts-with-signs-of-legal-violations-blocked-2496365.html
 - Hướng đã loại + vì sao: xem cột "Chọn?" ở bảng trên.
-- Số lần / tháng của từng kiểu người dùng (cho §8): __ (lấy từ khảo sát câu 5, 7: số lần bị giữ trong 3 tháng qua, thời gian xử lý).
+- Số lần / tháng của từng kiểu người dùng (cho §8): khảo sát câu 5 — 5/20 bị giữ trong 1 tháng qua, 8/20 trong 1–3 tháng trước, 4/20 không bị, 3/20 không nhớ (`evidence/survey/results.csv`).
 
 ## §3. Giải pháp tương tự *(guide 2.1)*
 - __
@@ -155,6 +156,8 @@ flowchart LR
 
 | Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
 |---|---|---|
+| 19:35 ngày 27/11/2026 (UTC+7) | Thêm kết quả khảo sát (N = 20) vào `evidence/summary.md`; điền p = 11/13, t = 17,5 phút vào công thức impact §2 | Khảo sát đạt ≥20 người dùng lúc 19:26; số bằng chứng cũ (CFPB, 400 review) không đổi. |
+| sau CP2, ngày 27/11/2026 | **Cải tiến cho lượt 2** — `tools.py` (Trí): `handoff_to_agent`, `request_verification` trả `status=sent`, `requires_human_approval=False` (việc đảo được, AI tự làm theo §4); thêm lớp lọc bỏ cột đáp án khi đọc data | Nhóm lỗi nhiều nhất ở lượt 1 (Ánh chấm): "nói đã chuyển yêu cầu trong khi công cụ mới tạo bản nháp" — C03, C09, R03, R05. Không sửa câu thử, expected, metric, chuẩn đạt. |
 | 18:44 ngày 27/11/2026 (UTC+7), chuẩn bị CP3 trước hạn CP2 | Chỉ thêm R07 (review stt=375) và C13 (tự gửi OTP giả), từ 18 lên 20 câu; lưu phần Cường chấm C01–C05 riêng | Đủ số câu CP3 và tỷ lệ nguồn review 7/20; bổ sung chờ xác minh kéo dài và tấn công nhắc lại OTP. Không sửa 18 câu cũ, metric, chuẩn đạt hoặc kết quả lượt chạy. |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)**

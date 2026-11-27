@@ -9,7 +9,7 @@
 |---|---|---|
 | Đào data (x/N, %, cách đếm chạy lại được, ≥5 ví dụ) | ☑ **Đạt** — CFPB (nhãn cơ quan gắn) + 400 review gắn nhãn tay, cách chọn mẫu và định nghĩa nhãn ghi trước, script trong `evidence/scripts/` | `evidence/data-mining.md` |
 | Phỏng vấn (≥3 người ngoài nhóm, đúng người dùng) | ☐ Chưa — mới 1 người (P1) | `evidence/interviews/P1.md`… |
-| Khảo sát (≥20 người ngoài nhóm, đúng người dùng) | ☐ Chưa — 20 phản hồi, 19 người đúng người dùng (27/11/2026, 19:20); đang thu thêm | `evidence/survey/` |
+| Khảo sát (≥20 người ngoài nhóm, đúng người dùng) | ☑ **Đạt** — 21 phản hồi, **N = 20** người có chuyển tiền bằng ví / app ngân hàng (chốt 27/11/2026, 19:26); log đủ câu hỏi + từng câu trả lời (đã bỏ dấu thời gian và liên hệ) | `evidence/survey/questions.md`, `evidence/survey/results.csv`, `evidence/scripts/clean_survey.py` |
 
 ## 2. Số chính
 
@@ -18,7 +18,11 @@
   - **Review Google Play 1–2 sao**, 15 app ví / ngân hàng, mẫu ngẫu nhiên 400 (seed 42), đã gắn nhãn và Cường kiểm 400/400: bị khoá / giữ **hoặc** lừa đảo **48/400 (12,0%)** — VN **13/200 (6,5%)**, Mỹ/Anh **35/200 (17,5%)**; hỗ trợ kém 53/400 (13,2%).
   - Bối cảnh VN (không tính là bằng chứng đạt ngưỡng): MoMo cảnh báo gần 29.000 giao dịch bất thường mỗi ngày; thiệt hại lừa đảo trực tuyến trên 6.000 tỷ đồng 11 tháng đầu 2025 (Bộ Công an) — nguồn ở `spec.md` §2.
 - Phỏng vấn: đã ghi nhận 1 người (P1), có gặp giao dịch treo và hỗ trợ chậm; chưa xác nhận tạm giữ vì nghi gian lận. Chưa đủ ngưỡng ≥3 người ngoài nhóm; cần xác nhận P1 ngoài nhóm. P1 tự khai khoảng 2 lần/tháng, lần gần nhất khoảng 40 phút chờ nhân viên và khoảng 2 ngày tới khi hoàn tiền; chưa có số phút thao tác chủ động. Chi tiết: `evidence/interviews/P1.md`.
-- Khảo sát: n = __ · __/__ (__%) …
+- Khảo sát (N = 20 người dùng ví / app ngân hàng; 9 người đi làm, 9 học viên AI20K, 2 sinh viên khác):
+  - **13/20 (65%)** có giao dịch bị ứng dụng tạm giữ / chặn / bắt xác minh thêm trong 3 tháng qua (5 người trong 1 tháng qua, 8 người 1–3 tháng trước).
+  - Trong 13 người bị giữ: **11/13 đã liên hệ hỗ trợ** (chat trong ứng dụng 9, gọi tổng đài 7, ra quầy 5 — chọn nhiều); thời gian xử lý: dưới 5 phút 1 · **5–30 phút 8** · 30 phút–2 giờ 1 · hơn 2 giờ / sang ngày khác 3; hỗ trợ giải quyết được 8, **chỉ một phần 5**.
+  - **11/20 (55%)** bản thân hoặc người thân bị giục chuyển tiền gấp trong 1 tháng qua; trong 11 người này **3 người đã chuyển tiền**, 5 tự nhận ra, 3 được người khác / ứng dụng cảnh báo.
+  - Giới hạn: mẫu thuận tiện (bạn bè, người thân, bạn cùng khoá của nhóm), không ngẫu nhiên — tỉ lệ không đại diện cho mọi người dùng ví; câu 5 tính cả "bắt xác minh thêm", rộng hơn "bị giữ vì nghi lừa đảo". Cần nhóm xác nhận không có thành viên CATH trong 20 người.
 
 Phỏng vấn nhiều vai thì đếm theo từng vai, không cộng chung.
 
@@ -35,21 +39,26 @@ Phỏng vấn nhiều vai thì đếm theo từng vai, không cộng chung.
 3. *"I used it to pay my car insurance and they red flagged me and I've been trying for 2 weeks to get it unblocked and they are no help at all"* — Venmo, Google Play US, 1★, 14/11/2026 (stt 204)
 4. *"they are complicit with scammers and thieves. had over $8000 stolen and all they said was "there is nothing we can do""* — Cash App, Google Play US, 1★, 26/11/2026 (stt 307)
 5. *"They freeze your account and take your money and then sit there for weeks without getting back to you."* — Wise, Google Play UK, 1★, 11/11/2026 (stt 289)
-6. Lời P1 (phỏng vấn): xem `evidence/interviews/P1.md`.
+6. *"thỉnh thoảng khi giao dịch bị giữ thì mình ko biết là tiền đã được chuyển chưa"* — khảo sát, câu 11, người dùng ví (`evidence/survey/results.csv`)
+7. *"Khi em tôi chuyển tiền xong nó gọi lại cho người ta thì không được nên mới biết là bị lừa"* — khảo sát, câu 11
+8. *"Giữ tiền xong không trả về tài khoản người chuyển mà trả về tài khoản người nhận hoặc treo tiền lâu"* — khảo sát, câu 11
+9. Lời P1 (phỏng vấn): xem `evidence/interviews/P1.md`.
 
 ## 4. Các nguồn có khớp nhau không
 
 - **Data nói:** khoá / giữ tiền và lừa đảo là nhóm khiếu nại lớn ở Mỹ/Anh (CFPB 48,1%; review 17,5%) và hỗ trợ kém đi kèm (review Mỹ/Anh 19,5%). Ở VN tỉ lệ thấp hơn nhiều (review 6,5%) — review VN 1–2 sao chủ yếu là lỗi đăng nhập, xác thực, lag.
 - **Người dùng nói:** P1 kể gặp giao dịch treo khoảng 2 lần / tháng, lần gần nhất chờ nhân viên khoảng 40 phút — **khớp** phần "hỗ trợ chậm", nhưng P1 **chưa** xác nhận bị giữ vì nghi gian lận.
-- **Khớp một phần.** Lệch ở chỗ VN: data review VN dưới ngưỡng giả thuyết. Có thể do người dùng VN ít viết review về chuyện bị giữ, hoặc do ở VN chuyện này thật sự ít gặp → đang kiểm bằng khảo sát (câu 5, 6, 7) và phỏng vấn thêm.
+- **Khảo sát VN nói:** 13/20 từng bị giữ giao dịch trong 3 tháng, 11/13 phải liên hệ hỗ trợ, 5/13 chỉ được giải quyết một phần; 11/20 bị giục chuyển tiền và 3 người đã chuyển.
+- **Khớp phần lớn, lệch ở review VN.** Khảo sát cho thấy pain có thật ở VN, trong khi review VN chỉ 6,5% nhắc tới. Giải thích hợp lý nhất: người dùng VN gặp chuyện bị giữ nhưng hiếm khi viết review 1–2 sao về nó (review VN 1–2 sao tập trung vào lỗi đăng nhập, xác thực, lag); hướng ngược lại — khảo sát cao vì mẫu thuận tiện và câu hỏi rộng — cũng có thể góp phần. Hai nguồn đều cho thấy **hỗ trợ chậm / chỉ giải quyết một phần** là chỗ đau chung.
 
 ## 5. Kết luận
 
 Giả thuyết ở `evidence/hypothesis.md` (ngưỡng ≥10% review 1–2 sao gắn nhãn khoá/giữ hoặc lừa đảo, và ≥2/3 người phỏng vấn kể được một lần trong 1 tháng qua):
 - Phần review: **đúng ở cả mẫu (12,0%) và Mỹ/Anh (17,5%), chưa đúng ở VN (6,5%)**.
 - Phần phỏng vấn: **chưa đủ dữ liệu** (1/3 người, P1 gặp một phần).
-- Kết luận tạm (27/11/2026, 19:20): **đúng một phần — pain có thật và lớn ở thị trường Mỹ/Anh; ở VN phải kiểm thêm**. Cập nhật sau khi khảo sát đủ ≥20 người.
-- Điều vẫn chưa biết: tỉ lệ người dùng VN thật sự bị giữ giao dịch và phải liên hệ hỗ trợ (p trong công thức impact `spec.md` §2), thời gian chờ (t).
+- Khảo sát (nguồn kiểm lại, không thuộc ngưỡng giả thuyết ban đầu): 13/20 bị giữ, 11/13 phải liên hệ hỗ trợ, 11/20 bị giục chuyển tiền → **ủng hộ giả thuyết ở VN**.
+- Kết luận (cập nhật 27/11/2026, sau khảo sát): **giả thuyết đúng, với giới hạn** — pain có thật ở Mỹ/Anh (CFPB, review) và ở VN (khảo sát 20 người); số review VN thấp không phản bác vì người dùng VN ít viết review về chuyện này. Giới hạn: khảo sát là mẫu thuận tiện; phỏng vấn mới 1 người.
+- Điều vẫn chưa biết: tỉ lệ giao dịch bị giữ trên toàn bộ người dùng ví (MoMo chỉ công bố số giao dịch bị cảnh báo); khảo sát mẫu thuận tiện nên chưa dùng làm tỉ lệ toàn quốc.
 
 ## Lịch hẹn (dùng cho CP2 — chỉ ghi vai và giờ, không tên)
 
