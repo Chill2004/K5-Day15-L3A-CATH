@@ -50,7 +50,31 @@ Bằng chứng đếm ngày 27/11/2026 (review 1–2 sao, đếm thử bằng t�
 - Số lần / tháng của từng kiểu người dùng (cho §8): khảo sát câu 5 — 5/20 bị giữ trong 1 tháng qua, 8/20 trong 1–3 tháng trước, 4/20 không bị, 3/20 không nhớ (`evidence/survey/results.csv`).
 
 ## §3. Giải pháp tương tự *(guide 2.1)*
-- __
+Tra tài liệu công khai ngày 27/11/2026, sau đó **nhóm thử trực tiếp** 2 chatbot (Cường, 27/11/2026, chỉ nhắn câu mẫu, không gửi thông tin thật; ảnh chụp màn hình giữ trên máy, không commit).
+
+| Giải pháp | Làm gì khi giao dịch có rủi ro | Còn thiếu so với lát cắt của nhóm |
+|---|---|---|
+| **MoMo** (VN) | AI chặn giao dịch bất thường và hiện cảnh báo **trước** khi chuyển, tạo "khoảng nghỉ" [5]; cảnh báo tài khoản nhận tiền bằng AI [6]; xác thực khuôn mặt (FaceMark, iProov) [7]. Khoảng 29.000 giao dịch bất thường / ngày [1] | Tài liệu công khai chỉ nói tới bước cảnh báo và chặn **trước** khi chuyển. Không thấy mô tả cách chat hỗ trợ phân loại người nhắn **sau** khi giao dịch đã bị giữ. Xác thực khuôn mặt chỉ chứng minh đúng chủ ví, không chứng minh chủ ví không bị giục (luật 4 ở `decide.py`) |
+| **Revolut** (Anh/EU) | AI phát hiện thanh toán thẻ đáng ngờ rồi chuyển người dùng vào chat với **chuyên viên chống gian lận**, chuyên viên hỏi thêm để xác định có bị lừa không [8]. Với chuyển khoản (một ca lừa việc làm 2023): app bắt chọn lý do thanh toán, hiện cảnh báo chung, rồi bắt chat với nhân viên, nhân viên hỏi có trả cho người mới quen trên mạng không, có trả phí trước để nhận tiền lớn hơn không, có ai bảo bỏ qua cảnh báo không [9] | Bước hỏi trong chat do **người** làm, nên tốn giờ công đúng ở chỗ đề bài nói là quá tải. Trong ca [9], nạn nhân chụp màn hình câu hỏi của Revolut gửi kẻ gian để hỏi cách trả lời, rồi trả lời "không" cho mọi câu, tức là hỏi mục đích thôi không đủ. Nhóm xử lý bằng cách: phân vân thì giữ, không tin người tự xưng nhân viên (luật 5, 7) |
+| **Monzo** (Anh) | Cảnh báo khi nghi lừa đảo, chặn hẳn khi có lý do mạnh; **Call Status** trong app cho biết có đúng nhân viên Monzo đang gọi không; nói rõ "Monzo không bao giờ yêu cầu bạn chuyển tiền hay bỏ qua cảnh báo" [10] | Có lời cảnh báo tốt nhưng không có bước chat phân loại người gấp thật với người bị giục. Người gấp thật chỉ có hai lựa chọn: tự chịu rủi ro đi tiếp, hoặc chờ hỗ trợ |
+
+**Nhóm thử trực tiếp** — nhắn *"Giao dịch chuyển tiền của tôi bị giữ, tôi cần chuyển gấp"*, rồi (nếu được) *"Bên công an gọi bảo tôi chuyển để xác minh hồ sơ"*:
+
+| Chatbot | Nó trả lời gì | Còn thiếu so với lát cắt của nhóm |
+|---|---|---|
+| **MoMo — "Trợ thủ AI - Mo247"** (Trung tâm trợ giúp, 22:33) | Hai tin gửi liền nhau, bot trả lời gộp một lần: *"tuyệt đối không chuyển tiền khi chưa xác minh rõ danh tính và mục đích… MoMo không yêu cầu chuyển tiền để xác minh hồ sơ"*, rồi xin **mã giao dịch TID 11 ký tự** để kiểm tra. Có dòng "Thông tin chỉ mang tính tham khảo" | Có cảnh báo khi dấu hiệu bị giục đã rõ, nhưng nói "**MoMo** không yêu cầu", trong khi người nhắn nói **công an** gọi. Không chỉ kênh chính thức để kiểm lại, không bảo dừng mọi cách chuyển khác. Người gấp thật không được gửi xác thực hay chuyển người, chỉ được hỏi mã giao dịch |
+| **Vietcombank — "VCB Digibot"** (22:38) | Trả về menu 4 nút chọn loại chuyển tiền (trong VCB / nhanh 24/7 / qua NHNN / tiền mặt). Nhắn lại câu đó 2 lần nữa, bot trả **đúng menu đó** cả 3 lần | Không nhận ra "bị giữ" hay "gấp", phân loại theo **loại chuyển tiền** chứ không theo **tình trạng người nhắn**. Chưa thử được câu bị giục vì bot không ra khỏi menu |
+
+- **Rút ra:** chatbot hiện có trả lời theo chủ đề (MoMo) hoặc theo menu (VCB). Cả hai đều chưa có bước **chọn hành động** cho người đang bị giữ giao dịch: giữ + cảnh báo đủ ý, gửi xác thực cho người gấp thật, hay chuyển người cho người nghi bị chiếm tài khoản. Đây chính là chỗ lát cắt của nhóm nhắm vào. Giới hạn: mỗi app thử 1 lần, 1 người thử, kết quả có thể khác theo phiên bản app.
+- **Điểm khác của nhóm:** không thay hệ thống phát hiện rủi ro (việc đó MoMo, Revolut, Monzo đã làm). Nhóm làm **bước sau đó**: trong chat, khi giao dịch đã bị giữ, AI xếp người nhắn vào 4 nhóm và chọn 1 trong 4 hành động đảo lại được. Người gấp thật được gửi xác thực ngay, người nghi bị chiếm tài khoản được chuyển người ngay, còn nhả giao dịch luôn do tư vấn viên duyệt.
+- **Học được:** câu cảnh báo kiểu Monzo ("không bao giờ yêu cầu chuyển tiền") → ý bắt buộc (2) trong `giu_va_canh_bao`; lỗi bị dặn trước câu trả lời (Revolut) → luật 4, 5, 7.
+- **Nguồn** (xem ngày 27/11/2026):
+  [5] MoMo, "MoMo cùng Chính phủ xây dựng phản xạ kiểm trước" — https://www.momo.vn/tin-tuc/thong-cao-bao-chi/momo-cung-chinh-phu-xay-dung-phan-xa-kiem-truoc-8964
+  [6] MoMo, "Cảnh báo tài khoản nhận tiền với AI & Phản ánh giao dịch rủi ro" — https://www.momo.vn/tin-tuc/thong-bao/an-tam-giao-dich-voi-2-tinh-nang-an-toan-bao-mat-7646
+  [7] MoMo, "Đại sứ Tăng Duy Tân & MoMo cùng hợp sức chống lừa đảo thời AI" — https://www.momo.vn/tin-tuc/thong-bao/dai-su-tang-duy-tan-momo-cung-hop-suc-chong-lua-8894
+  [8] Revolut, "Revolut launches AI feature to protect customers from card scams…" (02/2024) — https://www.revolut.com/en-SG/news/revolut_launches_ai_feature_to_protect_customers_from_card_scams_and_break_the_scammers_spell/
+  [9] Financial Ombudsman Service (UK), quyết định DRN-5765896, 20/08/2025 — https://www.financial-ombudsman.org.uk/decision/DRN-5765896.pdf (một ca riêng lẻ, không phải quy định chung của Revolut)
+  [10] Monzo, "Fraud warnings" và "Checking a call from Monzo is genuine" — https://monzo.com/help/monzo-fraud-category/fraud-warnings · https://monzo.com/help/monzo-fraud-category/monzo-call-status
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
 - **Lát cắt MỘT CÂU:** Một người dùng ví nhắn vào chat vì giao dịch vừa bị tạm giữ · AI phân loại tin nhắn (bị giục chuyển tiền / gấp thật / nghi bị chiếm tài khoản / chưa rõ) và chọn giữ tiếp kèm cảnh báo, gửi xác thực, hỏi lại một câu hoặc chuyển tư vấn viên kèm tóm tắt · tiền không đi sai chỗ và người gấp thật không bị bỏ lơ.
