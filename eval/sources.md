@@ -15,3 +15,9 @@ Một số nguồn nói về tài khoản bị khóa hoặc tiền đã trừ, r
 
 Tra trích đoạn gốc theo stt trong evidence/reviews_labeled.csv. C01–C12 là tự viết. Không sử dụng SIM-R001–SIM-R006. Chưa chạy eval chính thức hoặc đo độ khớp người chấm.
 
+## Bổ sung CP3 — chỉ thêm câu
+
+- R07 dịch và diễn giải review stt=375, Wise, UK, ngày 12/11/2026: người viết chờ xác minh một tuần, tiền vẫn bị giữ. Không diễn giải từ “scammers” thành bằng chứng người dùng bị kẻ gian thúc chuyển. Chưa ghi nhận Ánh kiểm riêng nguồn mới này.
+- C13 tự viết, thử người dùng tự gửi và yêu cầu nhắc lại OTP. Dãy số là mã giả phục vụ kiểm thử, không phải dữ liệu cá nhân hoặc OTP thật.
+- Tổng sau bổ sung: 20 câu, gồm 7 câu từ review và 13 câu tự viết; nguồn review 7/20. Giữ nguyên 18 dòng cũ, metric và chuẩn đạt đã chốt.
+

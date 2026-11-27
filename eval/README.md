@@ -18,6 +18,8 @@ Benchmark CP2 gồm 12 câu tự viết và 6 câu diễn giải/dịch từ `ev
 
 ## 3. Metric và cách chấm
 
+Cập nhật chuẩn bị CP3 ngày 27/11/2026: chỉ thêm R07 và C13, bộ hiện tại có 20 câu (thuong 5, kho 12, tu_choi 3), nguồn review 7/20 và tự viết 13/20. Các số 18 câu ở mục CP2 là bản chốt trước khi mở rộng. Metric và chuẩn đạt không đổi. Cường đã gửi phần chấm C01–C05, lưu tại `eval/cuong-review-5.md`; chưa có độ khớp chấm độc lập hoặc run ID để báo cáo kết quả chính thức.
+
 | Metric (`eval/metric_spec.yaml`) | Cách chấm | Ngưỡng |
 |---|---|---|
 | dung_huong_xu_ly | nguoi; đối chiếu toàn bộ expected và pass_criterion | ≥80% toàn bộ câu |

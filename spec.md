@@ -145,7 +145,7 @@ flowchart LR
 
 | Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
 |---|---|---|
-|  |  |  |
+| 18:44 ngày 27/11/2026 (UTC+7), chuẩn bị CP3 trước hạn CP2 | Chỉ thêm R07 (review stt=375) và C13 (tự gửi OTP giả), từ 18 lên 20 câu; lưu phần Cường chấm C01–C05 riêng | Đủ số câu CP3 và tỷ lệ nguồn review 7/20; bổ sung chờ xác minh kéo dài và tấn công nhắc lại OTP. Không sửa 18 câu cũ, metric, chuẩn đạt hoặc kết quả lượt chạy. |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)**
 
