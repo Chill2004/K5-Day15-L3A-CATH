@@ -1,0 +1,13 @@
+# Reflection — Nguyễn Thế Cường
+
+1. Vai trò + phần mình làm (trỏ tới file / commit):
+
+   Mình là đội trưởng nhóm CATH, làm phần model và dẫn phần đào data. Phần model gồm 3 file. `codebase/ai.py` gọi Gemini `gemini-3.1-flash-lite`, lấy token từ `usageMetadata` và tự thử lại khi gặp lỗi tạm thời. `codebase/decide.py` gọi model 1 lần và ép kết quả ra JSON theo schema (commit `3320e1c`). `codebase/guard.py` kiểm bằng code sau model, và nhả giao dịch hay khoá ví chỉ tạo bản nháp chờ duyệt (`9793611`). Mình thử 12 ca khó và tấn công trong `codebase/thu_kho.py`, đạt 12/12 sau khi sửa (`850b35e`). Về đào data: mình đếm CFPB, lấy và chọn mẫu 400 review Google Play (`evidence/data-mining.md`, `evidence/scripts/`), làm khảo sát 20 người (`evidence/survey/`) và tổng hợp ở `evidence/summary.md`. Mình chạy hai lượt eval chính thức: `run-1@20261127-184833` được 12/20, `run-2@20261127-215329` được 15/20 (`af3a96b`).
+
+2. AI hỗ trợ mình thế nào (việc gì, công cụ gì, chỗ nào phải sửa lại output AI):
+
+   Claude Code viết nháp code model, prompt, guard và các script đào data, đồng thời gắn nhãn nháp cho 400 review. Mình đọc lại cả 400 nhãn và thấy 4 cặp review giống nhau mà nhãn khác nhau. Từ đó mình viết thêm 3 quy tắc ranh giới và sửa 2 dòng (stt 308, 384); Hà gắn độc lập 40 review, khớp 37/40. Ở phần code, chạy thử trên model thật lộ ra những lỗi AI không tự thấy: model tự bịa ra đường link, hứa khoá ví thay tư vấn viên, lặp lại câu cảnh báo OTP, và C05 bị lỗi timeout khi chạy eval. Mỗi lỗi mình sửa thành một luật chung trong prompt hoặc guard, không so khớp nguyên văn câu thử. Có một lần AI chạy `eval --try` ở chế độ giả và ghi đè mất kết quả 18 câu mình đã chạy. Từ đó mình đặt quy tắc: mọi lệnh gọi model hay ghi file kết quả đều do mình tự chạy.
+
+3. Một câu thử trượt của nhóm và mình học được gì từ nó:
+
+   C05 trượt ở cả hai lượt, còn C07 đang đạt ở lượt 1 lại trượt ở lượt 2. Cả hai trượt cùng một lý do: bot khẳng định tuyệt đối mà không có căn cứ ("tổ chức uy tín không bao giờ…", "người thân không yêu cầu…"). Nguyên nhân nằm ở chính prompt mình viết. Mình bắt câu cảnh báo phải có ý "cơ quan nhà nước / ngân hàng **không bao giờ** yêu cầu chuyển tiền qua ví", và model đã mở rộng câu đó sang những nhóm khác. Bài học của mình: một câu bắt buộc trong prompt cũng là một khẳng định mà model sẽ nhân rộng, nên phải viết hẹp và đúng phạm vi, và guard phải kiểm được cả kiểu nói rộng đó. C13 cho một bài học tương tự: guard kiểm chữ "OTP" chứ không kiểm ý "đừng chia sẻ". Vì nhóm chỉ có một lần cải tiến chính thức, mình không sửa hai lỗi này trước lượt 2 mà ghi vào changelog để làm sau CP4.
