@@ -1,4 +1,4 @@
-# Khai báo dùng AI
+# Ghi nhận sử dụng AI (AI Usage Log)
 
 README của nhóm có mục "Dùng AI vào việc gì" (2–3 dòng, bắt buộc). Ghi chi tiết vào bảng dưới đây.
 
@@ -11,7 +11,7 @@ README của nhóm có mục "Dùng AI vào việc gì" (2–3 dòng, bắt bu�
 | Đào data (viết script đếm, gợi ý nhãn) | Claude Code | Viết script lấy review Google Play, chọn mẫu, đếm CFPB và đếm nhãn (`evidence/scripts/`) · gắn nhãn nháp 400 review theo định nghĩa nhãn nhóm ghi trước, ca khó ghi lý do ở `ghi_chu` | Cường đọc lại, sửa nhãn __/400 dòng · một thành viên gắn độc lập 40 review không nhìn nhãn nháp, khớp __/40 | Nguyễn Thế Cường |
 | Rà câu hỏi phỏng vấn / khảo sát | | Chỉ rà câu dẫn dắt | | |
 | Viết câu thử (benchmark) | | | Mỗi câu thử có `source`; câu thử AI viết được ghi rõ | |
-| Sinh data `synthetic` (nếu có) | | | Seed __ · kiểm tay __ dòng | |
+| Sinh data `synthetic` (nếu có) |Claude |hỗ trợ khung script gen_synthetic.py |Hà viết lại, chỉnh sửa 30 tin nhắn cho sát thực tế VN Seed 42 · kiểm tay 30 dòng | Nguyễn Thị Thu Hà |
 | Chấm cột `pass` bằng LLM (nếu có) | | | Kiểm tra thủ công __ câu thử, khớp __/__ | |
 | Slide, văn bản | | | | |
 
