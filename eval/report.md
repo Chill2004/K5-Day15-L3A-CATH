@@ -39,7 +39,7 @@ Các nhóm trên phân theo lỗi chính, tổng 8 câu trượt. C09 còn thi�
 ## 3. Một lần cải tiến
 
 - Đề xuất chờ nhóm thống nhất: ưu tiên lời trả lời không khớp trạng thái công cụ (4/20 câu), vì người dùng có thể tưởng yêu cầu đã tới tư vấn viên và ngừng tìm hỗ trợ.
-- Thay đổi đề xuất: chỉ mô tả bản nháp/chờ duyệt khi tool trả draft; chỉ nói đã thực hiện khi có kết quả xác nhận tương ứng. Chưa ghi nhận nhóm đã áp dụng thay đổi này hoặc chạy lượt 2.
+- Changelog `spec.md` §10 đã ghi cải tiến tools của Trí: gửi xác thực/chuyển tư vấn viên trả status=sent, đồng thời lọc cột đáp án khỏi dữ liệu. Chưa có kết quả lượt 2 để xác minh hiệu quả. Công cụ vẫn mô phỏng; khi chấm lượt mới phải kiểm tra lời trả lời với trạng thái công cụ của đúng lượt. Bàn giao và điều kiện kiểm: `eval/handoff-run1.md`.
 - Kết quả nhóm lỗi này: 4/20 ở lượt 1 → chưa có lượt 2; tổng 60% → chưa có số so sánh.
 - Câu tệ đi sau sửa: chưa đánh giá. Giữ nguyên bộ 20 câu, expected, metric và chuẩn đạt cho lượt so sánh.
 
