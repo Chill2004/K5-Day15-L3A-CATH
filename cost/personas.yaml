@@ -8,16 +8,17 @@ usd_to_vnd: 26030
 
 prices:
   # Bảng giá chính thức của Google Gemini API cho gói trả phí (Pay-as-you-go)
-  # Nguồn: https://ai.google.dev/gemini-api/docs/pricing (xem ngày 27/11/2026)
-  gemini-1.5-flash:
-    input: 0.075   # USD / 1M tokens (cho prompt <= 128k)
-    output: 0.300  # USD / 1M tokens
-    source: "https://ai.google.dev/gemini-api/docs/pricing (xem ngày 27/11/2026)"
+  # Nguồn: bảng giá BTC cung cấp, ngày 25/11/2026
+  gemini-3.1-flash-lite:
+    input: 0.25   # USD / 1M tokens (cho prompt <= 128k)
+    output: 1.50  # USD / 1M tokens
+    source: "Bảng giá BTC cung cấp, ngày 25/11/2026"
 
-  gemini-1.5-pro:
-    input: 1.250   # USD / 1M tokens (cho prompt <= 128k)
-    output: 5.000  # USD / 1M tokens
-    source: "https://ai.google.dev/gemini-api/docs/pricing (xem ngày 27/11/2026)"
+  gemini-3.8-flash:
+    input: 1.50   # USD / 1M tokens (cho prompt <= 128k)
+    output: 7.50  # USD / 1M tokens
+    source: "Bảng giá BTC cung cấp, ngày 25/11/2026"
+    # Giá áp dụng từ 01/01/2027
 
 personas:
   nguoi_lon_tuoi_bi_giuc:
