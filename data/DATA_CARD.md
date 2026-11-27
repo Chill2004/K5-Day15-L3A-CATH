@@ -1,15 +1,15 @@
 # DATA CARD: Giao dịch bị giữ & Tin nhắn hỗ trợ (Synthetic)
 
 ## 1. Tổng quan
-- **Nguồn dữ liệu:** Dữ liệu giả lập (`synthetic`), sinh từ script `gen_synthetic.py` với seed cố định `42`.
+- **Nguồn dữ liệu:** Dữ liệu giả lập (`synthetic`), 30 dòng đầu sinh bằng gen_synthetic.py seed 42; 10 dòng sau (TX0031–TX0040, M0031–M0040) Hà viết tay thêm.
 - **Mục đích:** Đóng vai trò môi trường giả lập (benchmark / offline eval) cho hệ thống Agent hỗ trợ phân loại và xử lý các giao dịch nghi ngờ / bị tạm giữ.
 - **Quy mô:**
-  - `transactions.csv`: 30 giao dịch bị giữ.
-  - `messages.csv`: 30 tin nhắn phản hồi từ người dùng tương ứng.
+  - `held_transactions.csv`: 40 giao dịch bị giữ.
+  - `messages.csv`: 40 tin nhắn phản hồi từ người dùng tương ứng.
 
 ## 2. Cấu trúc trường dữ liệu
-### `transactions.csv`
-- `tx_id`: Mã định danh giao dịch (`TX0001` - `TX0030`).
+### `held_transactions.csv`
+- `tx_id`: Mã định danh giao dịch (`TX0001` - `TX0040`).
 - `user_id`: Mã người dùng (`Uxxx`).
 - `thoi_gian`: Thời điểm thực hiện giao dịch (YYYY-MM-DD HH:MM).
 - `so_tien_vnd`: Số tiền giao dịch (VND).
@@ -23,7 +23,7 @@
 - `nhan`: `synthetic`.
 
 ### `messages.csv`
-- `msg_id`: Mã tin nhắn (`M0001` - `M0030`).
+- `msg_id`: Mã tin nhắn (`M0001` - `M0040`).
 - `tx_id`: Mã giao dịch tương ứng.
 - `tin_nhan`: Nội dung tin nhắn người dùng gửi lên hỗ trợ (đã được tinh chỉnh tự nhiên, hoảng loạn, không lặp câu).
 - `nhom_that`: Nhãn ground-truth tương ứng.
@@ -32,17 +32,17 @@
 - `nhan`: `synthetic`.
 
 ## 3. Phân bố 4 nhóm
-- `bi_giuc` (9/30 - 30%): Người dùng bị thao túng tâm lý, giục giã chuyển tiền gấp (giả công an, viện phí tai nạn, sàn đầu tư, làm nhiệm vụ Telegram, cọc hàng gấp, nhân viên ngân hàng giả).
-- `gap_that` (8/30 - 26.7%): Nhu cầu thanh toán thực tế, cấp bách (học phí con đến hạn, tiền trọ chủ nhà đứng đòi, tiền hàng nông sản/hải sản xe sắp chạy, khách đợi lấy hàng).
-- `chiem_tk` (7/30 - 23.3%): Dấu hiệu tài khoản bị xâm phạm (thiết bị lạ đăng nhập, bị hack SIM đổi mật khẩu ví, vừa mất máy điện thoại, phát sinh lệnh chuyển tiền khi đang ngủ).
-- `chua_ro` (6/30 - 20%): Tin nhắn cộc lốc, hỏi chung chung, từ ngữ tối giản hoặc chỉ có ký tự đặt câu hỏi.
+- `bi_giuc` (12/40 - 30%): Người dùng bị thao túng tâm lý, giục giã chuyển tiền gấp (giả công an, viện phí tai nạn, sàn đầu tư, làm nhiệm vụ Telegram, cọc hàng gấp, nhân viên ngân hàng giả).
+- `gap_that` (11/40 - 27.5%): Nhu cầu thanh toán thực tế, cấp bách (học phí con đến hạn, tiền trọ chủ nhà đứng đòi, tiền hàng nông sản/hải sản xe sắp chạy, khách đợi lấy hàng).
+- `chiem_tk` (9/40 - 22.5%): Dấu hiệu tài khoản bị xâm phạm (thiết bị lạ đăng nhập, bị hack SIM đổi mật khẩu ví, vừa mất máy điện thoại, phát sinh lệnh chuyển tiền khi đang ngủ).
+- `chua_ro` (8/40 - 20%): Tin nhắn cộc lốc, hỏi chung chung, từ ngữ tối giản hoặc chỉ có ký tự đặt câu hỏi.
 
 ## 4. Kiểm định chất lượng dữ liệu & Phân tích các ca biên (Edge Cases)
 - **Người thực hiện kiểm tay:** Nguyễn Thị Thu Hà
-- **Số dòng kiểm tra:** 30/30 dòng.
-- **Kết quả nghiệm thu:** 30/30 dòng đạt tiêu chí phân loại, văn phong thực tế, giàu cảm xúc hoảng loạn và phản ánh chân thực các tình huống giao dịch tại Việt Nam.
+- **Số dòng kiểm tra:** 40/40 dòng.
+- **Kết quả nghiệm thu:** 40/40 dòng đạt tiêu chí phân loại, văn phong thực tế, giàu cảm xúc hoảng loạn và phản ánh chân thực các tình huống giao dịch tại Việt Nam.
 
-### ⚠️ Ghi chú đặc biệt về các ca biên & mơ hồ cố ý (Tránh tranh cãi khi chấm Eval):
+###  Ghi chú đặc biệt về các ca biên & mơ hồ cố ý (Tránh tranh cãi khi chấm Eval):
 1. **Ca khó giữa `bi_giuc` và `gap_that` (Mơ hồ cố ý - Intentional Ambiguity):**
    - **`M0026` (Tin báo con tai nạn cấp cứu mổ gấp) & `M0025` (Shop giục cọc giữ đồ sale 15 phút):** 
      - *Phân loại:* Gắn nhãn `bi_giuc`.
@@ -54,7 +54,7 @@
      - *Lý do:* Phản ánh các nghĩa vụ thanh toán định kỳ, quen thuộc trong đời sống.
      - *Lưu ý khi đánh giá:* Không xem nhãn này là "đúng tuyệt đối 100% độc lập". Kẻ gian hoàn toàn có thể dàn dựng kịch bản giả chủ trọ / giả đóng tiền trường. Vì vậy hệ thống bắt buộc phải kiểm tra chéo với lịch sử giao dịch (`nguoi_nhan_da_chuyen_truoc = co`, thiết bị quen thuộc) trước khi cho phép gỡ giữ.
 3. **Thiết kế nhóm `chua_ro` phục vụ luồng "Hỏi lại một câu" (Clarification):**
-   - **`M0004`, `M0012`, `M0013`, `M0016`, `M0022`, `M0024`:** Các tin nhắn cực ngắn, cộc lốc ("?", "alo sao ko chuyển đc", "sao bi chan vay ad").
+   - **`M0004`, `M0012`, `M0013`, `M0016`, `M0022`, `M0024`,`M0039`,`M0040`:** Các tin nhắn cực ngắn, cộc lốc ("?", "alo sao ko chuyển đc", "sao bi chan vay ad").
    - *Mục đích thiết kế:* Đây là bộ mẫu lý tưởng để kiểm thử hành vi của Agent: không được vội vàng phán đoán hay mở khóa bừa bãi, mà phải kích hoạt luồng **phản hồi một câu hỏi làm rõ** một cách thân thiện, hướng dẫn khách hàng cung cấp thêm lý do chuyển tiền hoặc xác nhận danh tính.
 
 ## 5. Ghi chú kỹ thuật & Bảo mật thông tin (Anti-Leak)
