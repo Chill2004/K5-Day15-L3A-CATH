@@ -48,7 +48,7 @@ Nhóm đào hai nguồn: **(A) CFPB Consumer Complaint Database** (khiếu nại
   3. Cáo buộc nhân viên / bên khác lấy tiền chỉ gắn `nhan_lua_dao` khi review **mô tả một giao dịch / lần mất tiền cụ thể**.
 
   Áp lại cho cả file: **2 dòng đổi** — stt 308 (bỏ `lua_dao` → `khac`) và stt 384 (bỏ `lua_dao`, giữ `ho_tro_kem`). Các cặp 305/391, 52/92, 46/174 giữ nguyên vì đã khớp quy tắc.
-- **Người gắn nhãn:** Claude (trợ lý AI) gắn **nhãn nháp** cho cả 400 review theo đúng định nghĩa trên; ca khó quyết có lý do ghi ở cột `ghi_chu`. Nguyễn Thế Cường **đã đọc lại cả 400/400 dòng** (27/11/2026), làm rõ 3 quy tắc ranh giới ở trên và sửa 2 dòng — đây là bản dùng để đếm. Một thành viên khác gắn độc lập 40 review (stt 1–20 và 201–220) **không nhìn nhãn nháp** để so; lệch ≥ 8/40 review thì viết lại định nghĩa nhãn rồi gắn lại. Việc dùng AI ghi trong `docs/ai-usage.md`.
+- **Người gắn nhãn:** Claude (trợ lý AI) gắn **nhãn nháp** cho cả 400 review theo đúng định nghĩa trên; ca khó quyết có lý do ghi ở cột `ghi_chu`. Nguyễn Thế Cường **đã đọc lại cả 400/400 dòng** (27/11/2026), làm rõ 3 quy tắc ranh giới ở trên và sửa 2 dòng — đây là bản dùng để đếm. Nguyễn Thị Thu Hà gắn độc lập 40 review (stt 1–20 và 201–220) **không nhìn nhãn nháp** để so; lệch ≥ 8/40 review thì viết lại định nghĩa nhãn rồi gắn lại — kết quả khớp **37/40** (xem dưới bảng kết quả). Việc dùng AI ghi trong `docs/ai-usage.md`.
 - **Script đếm:** `python evidence/scripts/count_labels.py`
 
 ### Chạy lại từ đầu
@@ -109,9 +109,13 @@ Lưu ý: review mới liên tục được thêm, nên chạy lại `scrape_revi
 | `nhan_khoa_giu` HOẶC `nhan_lua_dao` | 13/200 (6,5%) | 35/200 (17,5%) | 48/400 (12,0%) |
 | `nhan_ho_tro_kem` | 14/200 (7,0%) | 39/200 (19,5%) | 53/400 (13,2%) |
 | `nhan_khac` | 176/200 (88,0%) | 134/200 (67,0%) | 310/400 (77,5%) |
-| Độ khớp giữa hai người gắn nhãn (40 review) | | | __ / 40 |
+| Độ khớp giữa hai người gắn nhãn (40 review) | 20/20 | 17/20 | **37/40** (lệch 3 < ngưỡng 8 → giữ định nghĩa) |
 
 So với giả thuyết (`evidence/hypothesis.md`, ngưỡng `khoa_giu HOẶC lua_dao` ≥ 10% trong mẫu 1–2 sao): **cả mẫu 12,0% → đạt**; nhưng **riêng VN chỉ 6,5% → dưới ngưỡng**, Mỹ/Anh 17,5%. (Trước khi kiểm: cả mẫu 12,5%, Mỹ/Anh 18,5%.) Pain này rõ ở thị trường Mỹ/Anh hơn ở VN; review VN 1–2 sao chủ yếu là lỗi đăng nhập, xác thực, lag (nằm trong `nhan_khac`). Phải kiểm lại bằng phỏng vấn ở VN.
+
+**Gắn nhãn độc lập (Nguyễn Thị Thu Hà, 40 review stt 1–20 và 201–220, không nhìn nhãn nháp; `python evidence/scripts/compare_labels.py`):** khớp **37/40**. Theo nhãn: `khoa_giu` 38/40 · `lua_dao` 40/40 · `ho_tro_kem` 39/40 · `khac` 38/40. Ba review lệch đều thuộc Mỹ/Anh:
+- stt 203 (*"Won't let me pay anyone"*) và stt 205 (*"someone sent me Money this morning and I still haven't received it"*): bảng chính gắn `khac`, Hà gắn `khoa_giu`. Cả hai câu không nói rõ ví chặn hay giữ, nên bảng chính theo quy tắc "không nói rõ thì không gắn". Nếu tính theo Hà, `khoa_giu HOẶC lua_dao` ở Mỹ/Anh tăng từ 35 lên 37/200 → **số chính có thể đang hơi thấp, không bị thổi lên**.
+- stt 204: bảng chính gắn `khoa_giu` + `ho_tro_kem` ("they are no help at all"), Hà chỉ gắn `khoa_giu` (có ghi "kèm hỗ trợ kém" ở `ghi_chu`). Hà gắn mỗi review đúng 1 nhãn, trong khi định nghĩa cho phép nhiều nhãn → cần nói rõ hơn ở hướng dẫn gắn nhãn.
 
 ---
 
