@@ -1,8 +1,8 @@
-# Nguồn câu thử CP2
+﻿# Nguồn câu thử CP2
 
 R01–R06 diễn giải hoặc dịch từ review đã merge. Ngày 27/11/2026, Chử Thị Ánh xác nhận đã đối chiếu và kiểm lại đúng nhãn của 6 review dùng ở đây (stt 144, 93, 130, 157, 220, 204). Xác nhận này chỉ áp dụng cho 6 review đã chọn, không phải toàn bộ bảng 400 review hoặc phép chấm độc lập output. Chưa ghi nhận đối chiếu độc lập Google Play.
 
-Một số nguồn nói về tài khoản bị khóa hoặc tiền đã trừ, rộng hơn lát cắt tạm giữ. Không thêm nguyên nhân nghi gian lận hoặc áp lực chuyển tiền vào nguồn. R06 dùng mục đích trả bảo hiểm làm nhãn đề xuất gap_that; nhóm cần duyệt trước khi chốt.
+Một số nguồn nói về tài khoản bị khóa hoặc tiền đã trừ, rộng hơn lát cắt tạm giữ. Không thêm nguyên nhân nghi gian lận hoặc áp lực chuyển tiền vào nguồn. R06 dùng mục đích trả bảo hiểm làm nhãn gap_that; Ánh xác nhận đã cùng Cường/Trí duyệt đáp án trước khi chốt CP2.
 
 | Câu | stt | App | Ngày | Xử lý |
 |---|---|---|---|---|
@@ -14,3 +14,4 @@ Một số nguồn nói về tài khoản bị khóa hoặc tiền đã trừ, r
 | R06 | 204 | Venmo | 2026-11-14 | Dịch và diễn giải |
 
 Tra trích đoạn gốc theo stt trong evidence/reviews_labeled.csv. C01–C12 là tự viết. Không sử dụng SIM-R001–SIM-R006. Chưa chạy eval chính thức hoặc đo độ khớp người chấm.
+
