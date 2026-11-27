@@ -47,20 +47,35 @@ _MOCK_GD = [
     },
 ]
 
+# Trường đáp án / nhãn thật — KHÔNG ĐƯỢC truyền cho model dưới bất kỳ hình thức nào.
+# Bị chặn ở 2 lớp: (1) xoá ngay khi đọc dữ liệu trong _load_gd_list()/_strip_labels(),
+#                   (2) whitelist _CLASSIFY_KEYS trong get_held_transaction_for_classify().
+_LABEL_FIELDS = {"nhom_that", "label", "ground_truth", "answer", "expected_nhom"}
+
 # Các khoá được phép truyền vào classify (theo decide.py → _mo_ta_giao_dich)
 _CLASSIFY_KEYS = {"tx_id", "so_tien", "nguoi_nhan", "loai_nguoi_nhan", "thoi_gian", "trang_thai"}
 
 
+def _strip_labels(rec: dict) -> dict:
+    """Xoá mọi trường đáp án / nhãn thật khỏi một record giao dịch.
+    Gọi ngay sau khi đọc từ file/mock — trước khi trả cho bất kỳ caller nào."""
+    return {k: v for k, v in rec.items() if k not in _LABEL_FIELDS}
+
+
 def _load_gd_list() -> list:
-    """CP3 hook: đọc data/held_transactions.json nếu tồn tại, ngược lại dùng mock."""
+    """CP3 hook: đọc data/held_transactions.json nếu tồn tại, ngược lại dùng mock.
+    Tự động xoá các trường đáp án (_LABEL_FIELDS như nhom_that) khỏi mọi record
+    để đảm bảo nhãn thật KHÔNG bao giờ chạm tới model."""
     path = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
         "data", "held_transactions.json",
     )
     if os.path.isfile(path):
         with open(path, encoding="utf-8") as f:
-            return json.load(f)
-    return _MOCK_GD
+            records = json.load(f)
+    else:
+        records = _MOCK_GD
+    return [_strip_labels(r) for r in records]
 
 
 def _match(hint: str, records: list):
@@ -114,6 +129,8 @@ def get_held_transaction(user_hint: str) -> dict:
 
 def get_held_transaction_for_classify(gd_raw: dict) -> dict:
     """Helper: lọc dict giao dịch, chỉ giữ khoá classify cho phép.
+    Lớp bảo vệ thứ 2 sau _strip_labels(): dù nhom_that hay bất kỳ trường lạ
+    nào lọt vào gd_raw, whitelist _CLASSIFY_KEYS đảm bảo nó không đến model.
     Dùng trong agent.py trước khi gọi classify(tin_nhan, gd_for_classify).
     Không phải @tool — không cần ghi trace riêng."""
     return {k: v for k, v in (gd_raw or {}).items() if k in _CLASSIFY_KEYS}
