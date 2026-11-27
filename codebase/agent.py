@@ -15,6 +15,8 @@ Luồng (workflow cố định, xem spec.md §4):
 
 KHÔNG sửa codebase/decide.py, codebase/guard.py, codebase/ai.py (của Cường).
 """
+import json
+
 from tracing import note
 
 from decide import classify
@@ -89,7 +91,7 @@ def answer(text: str) -> dict:
         note("agent: dispatch → chuyen_tu_van_vien · tx=%s" % tx_id)
 
     # ------------------------------------------------------------------
-    # Bước 5: Trả kết quả kèm [nhom=... · hanh_dong=...]
+    # Bước 5: Trả kết quả dưới dạng chuỗi JSON cho eval
     # ------------------------------------------------------------------
     tra_loi = g.get("tra_loi") or ""
     if not tra_loi:
@@ -99,4 +101,16 @@ def answer(text: str) -> dict:
         )
         note("agent: tra_loi rỗng — dùng fallback")
 
-    return {"output": "[nhom=%s · hanh_dong=%s]\n%s" % (nhom, hanh_dong, tra_loi)}
+    tom_tat = (
+        g.get("tom_tat")
+        or kq.get("tom_tat")
+        or ("Phân loại: %s, hành động: %s" % (nhom, hanh_dong))
+    )
+
+    payload = {
+        "nhom": nhom,
+        "hanh_dong": hanh_dong,
+        "tra_loi": tra_loi,
+        "tom_tat": tom_tat,
+    }
+    return {"output": json.dumps(payload, ensure_ascii=False)}
