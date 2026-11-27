@@ -43,17 +43,6 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): __
 
 ```mermaid
 flowchart TD
-<<<<<<< Updated upstream
-    U[Tin nhắn người dùng] --> T[Gọi tool: lookup_held_transaction]
-    T --> C{AI phân loại tình huống}
-    C -->|Bị giục chuyển tiền| P1[Giữ tiếp giao dịch + cảnh báo dấu hiệu lừa đảo]
-    C -->|Gấp thật| P2[Gửi yêu cầu xác thực nếu đủ căn cứ]
-    C -->|Nghi chiếm tài khoản| P3[Tạo bản nháp khoá ví chờ duyệt + chuyển tư vấn viên kèm tóm tắt]
-    C -->|Chưa rõ / ngoài phạm vi| P4[Hỏi lại tối đa 1 câu làm rõ - G10 hoặc chuyển tư vấn viên]
-```
-
-- **Hình dạng:** `[x] workflow cố định` · `[ ] một agent` · `[ ] nhiều agent` — Chỉ có một người dùng và một quyết định phân loại + chọn hành động trên mỗi lượt chat nên workflow cố định là đủ, dễ kiểm soát và dễ đo lường. Không dùng nhiều agent vì sẽ làm tăng độ trễ và khiến rủi ro mất tiền khó kiểm soát hơn.
-=======
     U[Tin nhắn người dùng] --> T["get_held_transaction(text)"]
     T -->|Không tìm thấy| Q["Hỏi lại 1 câu — G10"]
     T -->|Tìm thấy| C{"classify(text, gd)\nmodel phân loại"}
@@ -70,21 +59,10 @@ flowchart TD
 ```
 
 - **Hình dạng:** `[x] workflow cố định` · `[ ] một agent` · `[ ] nhiều agent` — Chỉ có một người dùng và một quyết định phân loại + chọn hành động trên mỗi lượt chat nên workflow cố định là đủ, dễ kiểm soát và dễ đo lường. Không dùng nhiều agent vì sẽ làm tăng độ trễ và khiến rủi ro mất tiền khó kiểm soát hơn (không rõ agent nào chịu trách nhiệm chặn hành động cấm).
->>>>>>> Stashed changes
 - **AI dựa vào đâu** — mỗi công cụ (khớp `codebase/tools.py`):
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-<<<<<<< Updated upstream
-  | `lookup_held_transaction` | `user_hint: str` — mô tả/từ khoá từ người dùng | `dict` gồm `found`, `tx_id`, `amount`, `currency`, `recipient`, `status`, `hold_reason`, `hold_reason_label`, `timestamp`; nếu không tìm thấy: `{"found": False, "tx_id": None, "note": "..."}` | Không — chỉ đọc mock (CP2) hoặc `data/held_transactions.json` (CP3) |
-  | `draft_hold_warning` | `tx_id: str`, `reason: str` | `dict` gồm `status:"draft"`, `action`, `tx_id`, `reason`, `requires_human_approval: False`, `message_vi` | Không — chỉ tạo bản nháp trong bộ nhớ |
-  | `draft_verification_step` | `tx_id: str`, `method: str` | `dict` gồm `status:"draft"`, `action`, `tx_id`, `method`, `requires_human_approval: False`, `instructions_vi` | Không — chỉ tạo bản nháp bước xác thực, không gửi OTP thật |
-  | `draft_escalate_to_agent` | `tx_id: str`, `summary: str`, `suggested_action: str` | `dict` gồm `status:"draft"`, `action`, `tx_id`, `summary`, `suggested_action`, `requires_human_approval: True`, `note` | Không — chỉ tạo bản nháp; tư vấn viên phải duyệt trước khi thực thi |
-
-- **Mức tự động:** `[ ] AI gợi ý, người quyết` · `[x] AI tự làm khi chắc, chuyển người khi không` · `[ ] AI tự làm` — AI tự tra giao dịch, giữ tiếp, gửi xác thực, hỏi lại 1 câu hoặc chuyển tư vấn viên (đều đảo lại được); nhả giao dịch và khoá ví chỉ tạo bản nháp chờ tư vấn viên duyệt vì nhả nhầm thì người dùng mất tiền trong vài giây, không lấy lại được.
-- **Chỗ chặn rủi ro:** AI không được gọi hàm thực thi nhả giao dịch hay khoá ví thật; mọi hành động dạng này chỉ tạo bản nháp với `status: "pending_human_approval"` để tư vấn viên duyệt.
-- **Chỗ người duyệt:** Tư vấn viên duyệt các bản nháp nhả giao dịch hoặc khoá ví (`status: "pending_human_approval"`), và tiếp nhận các ca `nghi chiếm tài khoản` hoặc ca ngoài phạm vi được chuyển lên kèm tóm tắt.
-=======
   | `get_held_transaction` | `user_hint: str` — mô tả/từ khoá từ người dùng | `dict` gồm `found`, `tx_id`, `so_tien`, `nguoi_nhan`, `loai_nguoi_nhan`, `thoi_gian`, `trang_thai`; nếu không thấy: `{"found": False, "tx_id": None, "note": "..."}` | Không — chỉ đọc mock (CP2) hoặc `data/held_transactions.json` (CP3) |
   | `hold_transaction` | `tx_id: str`, `ly_do: str` | `dict` gồm `action:"hold_transaction"`, `tx_id`, `status:"confirmed_hold"`, `ly_do` | Không — xác nhận trong bộ nhớ, không gửi lệnh API |
   | `request_verification` | `tx_id: str`, `phuong_thuc: str` | `dict` gồm `action`, `tx_id`, `phuong_thuc`, `status:"draft"`, `requires_human_approval:False` | Không — chỉ tạo bản nháp bước xác thực, không gửi OTP thật |
@@ -95,25 +73,16 @@ flowchart TD
 - **Mức tự động:** `[ ] AI gợi ý, người quyết` · `[x] AI tự làm khi chắc, chuyển người khi không` · `[ ] AI tự làm` — AI tự tra giao dịch, giữ tiếp, gửi xác thực, hỏi lại 1 câu hoặc chuyển tư vấn viên (đều đảo lại được); nhả giao dịch và khoá ví chỉ tạo bản nháp `cho_duyet` vì nhả nhầm thì người dùng mất tiền trong vài giây, không lấy lại được.
 - **Chỗ chặn rủi ro:** `guard.py` kiểm bằng code sau mỗi lần model trả lời — lọc câu xin OTP/mật khẩu, lộ ngưỡng phát hiện, hứa nhả giao dịch/hoàn tiền, gửi link/QR. `chan_cong_cu()` chặn `release_transaction` và `lock_wallet` trước khi thực thi, trả bản nháp `trang_thai:"cho_duyet"`.
 - **Chỗ người duyệt:** Tư vấn viên duyệt mọi bản nháp `release_transaction` và `lock_wallet` (`status:"draft"`, `requires_human_approval:True`); tiếp nhận ca `nghi_chiem_tk` hoặc ca ngoài phạm vi được chuyển lên qua `handoff_to_agent` kèm `tom_tat`.
->>>>>>> Stashed changes
 - **Nguyên tắc thiết kế** (≥3, bắt buộc G10):
 
   | Nguyên tắc | Chỗ cụ thể trên sơ đồ / trong bản chạy thử |
   |---|---|
-<<<<<<< Updated upstream
-  | G10 — thu hẹp phạm vi khi không chắc | Nhánh `Chưa rõ / ngoài phạm vi`: hỏi lại tối đa 1 câu làm rõ hoặc chuyển tư vấn viên |
-  | Chặn hành động không thể đảo ngược | Nhánh `Nghi chiếm tài khoản` và các thao tác nhả giao dịch/khoá ví chỉ tạo bản nháp `status: "pending_human_approval"` |
-  | Không thu thập dữ liệu nhạy cảm | Không hỏi hoặc lưu số tài khoản, mật khẩu, mã OTP trong luồng hội thoại |
-
-- **Phần nào còn giả:** `lookup_held_transaction` dùng 3 giao dịch mock in-memory cho CP2 (tình huống: nghi lừa đảo, vượt hạn mức giao dịch, nghi chiếm tài khoản); CP3 đặt file `data/held_transactions.json` là công cụ sẽ tự đọc. Các công cụ `draft_*` chỉ tạo bản nháp, chưa nối API ví thật.
-=======
   | G10 — thu hẹp phạm vi khi không chắc | Nhánh `chua_ro` → hỏi lại tối đa 1 câu; `get_held_transaction` trả `found:False` → hỏi lại ngay thay vì bịa tx_id |
   | Chặn hành động không thể đảo ngược | `chan_cong_cu()` trong `guard.py` chặn `release_transaction` / `lock_wallet`; mọi thao tác này chỉ tạo bản nháp `requires_human_approval:True` |
   | Không thu thập dữ liệu nhạy cảm | `guard.py` tự động bỏ câu xin OTP/mật khẩu/PIN/số thẻ; che dãy số người dùng tự gửi; không hỏi thêm thông tin tài khoản |
   | Mặc định an toàn khi model sai | `decide.py` trả `MAC_DINH` → `chuyen_tu_van_vien` khi model trả sai định dạng; `guard.py` override `hanh_dong` ngoài danh sách → `chuyen_tu_van_vien` |
 
 - **Phần nào còn giả:** `get_held_transaction` dùng 3 giao dịch mock in-memory cho CP2 (tình huống: `nghi_lua_dao`, `vuot_han_muc`, `nghi_chiem_tai_khoan`); CP3 đặt file `data/held_transactions.json` là công cụ sẽ tự đọc. Các công cụ `hold_transaction`, `request_verification`, `handoff_to_agent` chỉ tạo bản nháp trong bộ nhớ, chưa nối API ví thật. Model chạy chế độ giả (`MODEL_PROVIDER=fake`) khi chưa có `.env`.
->>>>>>> Stashed changes
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
