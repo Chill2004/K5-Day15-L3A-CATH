@@ -1,4 +1,4 @@
-# Canvas — [tên nhóm] · Track [A–F]
+# Canvas — CATH · Track E
 
 > Điền ở guide bước 1.4. CP1 17:00 Thứ Sáu 27/11: nộp bản đầu, đủ 7 dòng (dòng 4 được ghi giả thuyết + nguồn sẽ kiểm).
 > CP2 19:30 Thứ Sáu 27/11: cập nhật (số bằng chứng đầu, lát cắt đã chốt) và điền dòng "Đã đổi gì so với CP1".
@@ -6,11 +6,11 @@
 
 | # | Dòng | Nhóm điền |
 |---|---|---|
-| 1 | Track + lát cắt dự kiến | |
-| 2 | Người dùng chính (một vai cụ thể — không phải "học viên nói chung") | |
-| 3 | Pain một câu: ai — đang làm gì — vướng đâu — hậu quả | |
-| 4 | Bằng chứng đầu — CP1: giả thuyết + nguồn sẽ kiểm · CP2: số đầu tiên + 1 trích dẫn | |
-| 5 | **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả) | |
-| 6 | AI tự làm đến đâu + 1 dòng lý do: sai thì ai chịu gì | |
-| 7 | Phân công có tên | |
+| 1 | Track + lát cắt dự kiến | Track E (Tài chính), hướng E3: chat hỗ trợ của ví khi giao dịch nghi lừa đảo bị tạm chặn. AI phân loại tin nhắn của người dùng rồi chọn giữ tiếp, gửi xác thực, hỏi lại hay chuyển tư vấn viên. |
+| 2 | Người dùng chính (một vai cụ thể — không phải "học viên nói chung") | Người dùng ví điện tử vừa có giao dịch chuyển tiền bị ví tạm giữ vì nghi rủi ro, đang nhắn vào chat hỗ trợ ngoài giờ nhân viên trực (sau 20h) hoặc lúc nhân viên quá tải. |
+| 3 | Pain một câu: ai — đang làm gì — vướng đâu — hậu quả | Người dùng ví đang cố chuyển tiền thì giao dịch bị tạm giữ; kênh hỗ trợ không phân biệt được người đang bị kẻ gian giục chuyển với người gấp thật, nên trấn an nhầm thì tiền mất trong vài giây, còn vòng vo thì người gấp bị bỏ lơ và mất lòng tin. |
+| 4 | Bằng chứng đầu — CP1: giả thuyết + nguồn sẽ kiểm · CP2: số đầu tiên + 1 trích dẫn | **Giả thuyết:** lừa đảo và tài khoản/giao dịch bị khoá, giữ là nhóm khiếu nại lớn của người dùng ví, và hỗ trợ xử lý chậm hoặc chung chung. **Nguồn sẽ kiểm:** (1) CFPB Consumer Complaint Database, nhóm *Money transfer, virtual currency, or money service*, khiếu nại nhận từ 27/11/2025 đến 27/11/2026 (lấy ngày 27/11/2026) — số đầu: Fraud or scam 11.467/38.899 (29,5%), Unauthorized transactions 7.234/38.899 (18,6%), Trouble accessing funds in wallet 4.140/38.899 (10,6%); đối chiếu cả năm 2025: Fraud or scam 11.179/84.619 (13,2%); (2) review Google Play của ví/ngân hàng Mỹ, Anh, VN — gắn nhãn tay theo guide 1.2; (3) phỏng vấn ≥3 người ngoài nhóm từng bị giữ giao dịch hoặc nhận cuộc gọi lừa đảo. |
+| 5 | **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả) | Một người dùng ví nhắn vào chat vì giao dịch vừa bị tạm giữ · AI phân loại tin nhắn (bị giục chuyển tiền / gấp thật / nghi bị chiếm tài khoản / chưa rõ) và chọn giữ tiếp kèm cảnh báo, gửi xác thực, hỏi lại một câu hoặc chuyển tư vấn viên kèm tóm tắt · tiền không đi sai chỗ và người gấp thật không bị bỏ lơ. |
+| 6 | AI tự làm đến đâu + 1 dòng lý do: sai thì ai chịu gì | AI tự làm khi chắc, chuyển người khi không: AI tự tra giao dịch, giữ tiếp, gửi xác thực, chuyển tư vấn viên (đều đảo lại được); nhả giao dịch và khoá ví chỉ tạo bản nháp chờ tư vấn viên duyệt. Lý do: nhả nhầm thì người dùng mất tiền trong vài giây, không lấy lại được. |
+| 7 | Phân công có tên | Chia theo cặp, đổi việc sau mỗi chặng (guide). **Cặp X — Nguyễn Thế Cường (đội trưởng) + Hoàng Ngọc Minh Trí:** khung bản chạy thử (`codebase/agent.py`, `tools.py`) → nối model thật (`ai.py`) + chặn rủi ro. **Cặp Y — Chử Thị Ánh + Nguyễn Thị Thu Hà:** bộ câu thử, `metric_spec.yaml`, `DATA_CARD.md` → mở rộng 20–30 câu thử, mô phỏng chi phí. **Cả nhóm:** mỗi người phỏng vấn ≥1 người dùng ví ngoài nhóm; Cường dẫn phần đào data (CFPB + review, `evidence/data-mining.md`). |
 | — | *(CP2)* Đã đổi gì so với CP1 | |

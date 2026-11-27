@@ -11,10 +11,10 @@
 
 | STT | Họ và tên | Mã học viên | Vai trò | Phần việc chính |
 |---|---|---|---|---|
-| 1 | Nguyễn Thế Cường | 2A202603355 | Đội trưởng | ____ |
-| 2 | Hoàng Ngọc Minh Trí | 2A202603379 | Thành viên | ____ |
-| 3 | Chử Thị Ánh | 2A202603360 | Thành viên | ____ |
-| 4 | Nguyễn Thị Thu Hà | 2A202603719 | Thành viên | ____ |
+| 1 | Nguyễn Thế Cường | 2A202603355 | Đội trưởng | Cặp X: nối model thật (codebase/ai.py), chặn rủi ro · dẫn đào data (evidence/data-mining.md) |
+| 2 | Hoàng Ngọc Minh Trí | 2A202603379 | Thành viên | Cặp X: khung bản chạy thử, công cụ (codebase/agent.py, tools.py) |
+| 3 | Chử Thị Ánh | 2A202603360 | Thành viên | Cặp Y: bộ câu thử (eval/benchmark.csv), metric (eval/metric_spec.yaml) |
+| 4 | Nguyễn Thị Thu Hà | 2A202603719 | Thành viên | Cặp Y: data card, data giả (data/), mô phỏng chi phí (cost/) |
 
 **Quy tắc điền**
 - **Lớp:** `L3A` hoặc `L3B`. **Track:** một chữ `A` (EdTech), `B` (Y tế), `C` (Du lịch), `D` (Thương mại điện tử), `E` (Tài chính) hoặc `F` (Làn khác). **Link repo:** link GitHub công khai của nhóm.

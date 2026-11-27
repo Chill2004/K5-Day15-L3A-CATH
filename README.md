@@ -1,9 +1,17 @@
 > Đây là khung repo nộp bài. Điền mọi chỗ `____`, giữ nguyên tên các mục. 
 > Giờ, mốc, luật, rubric: xem `README.md`, `02-guide.md`, `03-rubric.md` trong repo đề (bộ đề BTC phát).
 
-# CATH — [Tên lát cắt]
+# CATH — Hỗ trợ khi giao dịch nghi lừa đảo bị tạm chặn
 
 **Thành viên, lớp, track:** xem [TEAMS.md](TEAMS.md). **Điền TEAMS.md đúng format**: khi chấm và đánh giá, BTC quét file này để ghép điểm cho từng người.
+
+**Track:** E · Tài chính (hướng E3).
+
+**Bài toán:** Người dùng ví điện tử đang chuyển tiền thì giao dịch bị ví tạm giữ vì nghi rủi ro, và họ nhắn vào kênh hỗ trợ trong lúc đang lo. Kênh hỗ trợ không phân biệt được người đang bị kẻ gian giục chuyển với người gấp thật: trấn an nhầm thì tiền mất trong vài giây, còn vòng vo thì người gấp bị bỏ lơ và mất lòng tin.
+
+**Lát cắt dự kiến:** Một người dùng ví nhắn vào chat vì giao dịch vừa bị tạm giữ · AI phân loại tin nhắn (bị giục chuyển tiền / gấp thật / nghi bị chiếm tài khoản / chưa rõ) và chọn giữ tiếp kèm cảnh báo, gửi xác thực, hỏi lại một câu hoặc chuyển tư vấn viên kèm tóm tắt · tiền không đi sai chỗ và người gấp thật không bị bỏ lơ.
+
+Canvas: [canvas.md](canvas.md) · Giả thuyết: [evidence/hypothesis.md](evidence/hypothesis.md)
 
 *Lát cắt = phần nhỏ nhất làm xong được trong hackathon: một người dùng · một việc · một quyết định AI · một kết quả.*
 
