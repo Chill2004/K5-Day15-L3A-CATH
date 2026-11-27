@@ -1,6 +1,6 @@
-# Nội dung chuẩn bị cho slide 5 — Đánh giá thế nào
+﻿# Nội dung chuẩn bị cho slide 5 — Đánh giá thế nào
 
-Trạng thái: nội dung để ghép vào slide chung, đã cập nhật hai lượt. Đối chiếu với Trí có AI hỗ trợ đã có số liệu; kiểm tra độc lập chưa đủ xác nhận. Đây chưa phải bộ slide hoàn chỉnh.
+Trạng thái: nội dung để ghép vào slide chung, đã cập nhật hai lượt. Đối chiếu với Trí có AI hỗ trợ đã có số liệu; K1 đã kiểm độc lập 5 output lượt 1, khớp 4/5, đạt mốc yêu cầu. Đây chưa phải bộ slide hoàn chỉnh.
 
 ## Nội dung đưa lên slide
 
@@ -13,9 +13,11 @@ Trạng thái: nội dung để ghép vào slide chung, đã cập nhật hai l�
 - So sánh: **60% → 75%, tăng 15 điểm phần trăm**. Bốn câu C03, C09, R03, R05 đạt lại; C07 từ đạt thành trượt. Hai lượt vẫn chưa đạt chuẩn tổng ≥80% và 100% câu từ chối. Nguồn: `eval/report.md`, hai file run và trace.
 - Đối chiếu bảng Trí chấm có AI hỗ trợ: **17/20 khớp**, riêng C01–C05 **3/5**; lệch C03, C05, C07. Không coi là kiểm tra độc lập đạt ≥4/5. Nguồn: `eval/tri-review-comparison.md`.
 
+- Kiểm tra chấm độc lập: **K1 khớp 4/5** trên C01–C05 lượt 1, đạt mốc ≥4/5; người chấm không viết spec/metric và chưa xem điểm trước, theo xác nhận của Ánh. Nguồn: `eval/peer-review-run1.md`.
+
 ## Lời nói dự thảo khoảng 45 giây
 
-Nhóm đánh giá trên 20 câu, trong đó 7 câu dựa trên review có nguồn. Một câu chỉ đạt khi đúng nhãn, đúng hành động và đáp ứng tiêu chí nội dung, an toàn. Lượt 1 đạt 60%. Sau cải tiến, lượt 2 đạt 75%, tăng 15 điểm phần trăm: bốn câu lỗi trạng thái công cụ đạt lại, nhưng C07 trượt mới do khẳng định thiếu căn cứ. Nhóm vẫn chưa đạt chuẩn 80% tổng và 100% câu từ chối. Cả hai lượt giữ cùng bộ câu thử và metric. Phần chấm có AI hỗ trợ; đối chiếu với bảng Trí khớp 17 trên 20 câu, chưa đủ xác nhận độc lập. Đây là kết quả bản chạy thử với công cụ mô phỏng, chưa chứng minh giảm mất tiền thực tế.
+Nhóm đánh giá trên 20 câu, trong đó 7 câu dựa trên review có nguồn. Một câu chỉ đạt khi đúng nhãn, đúng hành động và đáp ứng tiêu chí nội dung, an toàn. Lượt 1 đạt 60%. Sau cải tiến, lượt 2 đạt 75%, tăng 15 điểm phần trăm: bốn câu lỗi trạng thái công cụ đạt lại, nhưng C07 trượt mới do khẳng định thiếu căn cứ. Nhóm vẫn chưa đạt chuẩn 80% tổng và 100% câu từ chối. Cả hai lượt giữ cùng bộ câu thử và metric. Phần chấm có AI hỗ trợ; người chấm K1 kiểm độc lập năm output lượt 1, khớp bốn trên năm, đạt mốc yêu cầu. Đối chiếu riêng với bảng Trí lượt 2 khớp 17 trên 20 câu. Đây là kết quả bản chạy thử với công cụ mô phỏng, chưa chứng minh giảm mất tiền thực tế.
 
 ## Chuẩn bị cho câu hỏi của giám khảo
 
@@ -24,4 +26,5 @@ Nhóm đánh giá trên 20 câu, trong đó 7 câu dựa trên review có nguồ
 - Đã giảm mất tiền thật chưa? Chưa đo; chỉ đánh giá bản chạy thử với công cụ mô phỏng.
 - Đã thấy cải thiện chưa? Trên bộ cố định, pass tăng 12/20 → 15/20; bốn câu mục tiêu đạt lại nhưng một câu khác trượt mới. Không quy toàn bộ tăng trưởng cho một sửa code vì nội dung model sinh cũng thay đổi và nhóm có thêm thay đổi lọc dữ liệu.
 - Vì sao chưa đạt khi lượt 2 được 75%? Chuẩn tổng là ≥80%, câu từ chối phải đạt 100%; hiện chỉ 2/3 câu từ chối đạt.
-- Người thứ hai đã chấm chưa? Có bảng Trí chấm có AI hỗ trợ, khớp 17/20; năm câu đầu khớp 3/5. Chưa coi là kiểm tra độc lập đạt yêu cầu; giữ nguyên các bất đồng.
+- Người thứ hai đã chấm chưa? K1 đã kiểm độc lập C01–C05 lượt 1, khớp 4/5, đạt mốc yêu cầu; C05 vẫn bất đồng, không sửa điểm. Bảng Trí có AI hỗ trợ là đối chiếu khác của lượt 2, khớp 17/20.
+

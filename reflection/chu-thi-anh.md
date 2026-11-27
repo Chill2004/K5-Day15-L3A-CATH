@@ -1,4 +1,4 @@
-# Reflection — Chử Thị Ánh
+﻿# Reflection — Chử Thị Ánh
 
 1. Vai trò + phần mình làm (trỏ tới file / commit):
 
@@ -6,8 +6,9 @@
 
 2. AI hỗ trợ mình thế nào (việc gì, công cụ gì, chỗ nào phải sửa lại output AI):
 
-   Codex hỗ trợ soạn câu thử, đề xuất metric, đọc trace, điền pass/ghi_chu và tổng hợp báo cáo. Tôi xác nhận nguồn, đáp án và chuẩn đạt với nhóm; không coi phần AI hỗ trợ là đánh giá độc lập của mình. Trước khi chốt, expected được chuyển từ mô tả hành vi sang hai nhãn JSON phù hợp đầu ra của code. Tôi yêu cầu không sử dụng sáu review giả lập SIM-R001–SIM-R006 làm nguồn thật. Bảng Trí chấm có AI hỗ trợ đã được đối chiếu với bảng lượt 2: khớp 17/20, riêng năm câu đầu khớp 3/5; chưa có đủ xác nhận để coi là kiểm tra độc lập đạt yêu cầu.
+   Codex hỗ trợ soạn câu thử, đề xuất metric, đọc trace, điền pass/ghi_chu và tổng hợp báo cáo. Tôi xác nhận nguồn, đáp án và chuẩn đạt với nhóm; không coi phần AI hỗ trợ là đánh giá độc lập của mình. Trước khi chốt, expected được chuyển từ mô tả hành vi sang hai nhãn JSON phù hợp đầu ra của code. Tôi yêu cầu không sử dụng sáu review giả lập SIM-R001–SIM-R006 làm nguồn thật. Bảng Trí chấm có AI hỗ trợ đã được đối chiếu với bảng lượt 2: khớp 17/20, riêng năm câu đầu khớp 3/5; đây là đối chiếu riêng, không thay kiểm tra độc lập. Một người bạn khác lớp (K1), không viết spec/metric và chưa xem điểm trước, đã chấm độc lập năm output lượt 1, khớp 4/5, đạt mốc yêu cầu; tôi giữ nguyên bất đồng C05.
 
 3. Một câu thử trượt của nhóm và mình học được gì từ nó:
 
    Ở lượt 1, C03 đúng nhãn `nghi_chiem_tk / chuyen_tu_van_vien` nhưng lời trả lời nói đã chuyển yêu cầu trong khi trace chỉ ghi `status=draft`, chờ duyệt. Tôi rút ra rằng đúng nhãn chưa đủ: phải kiểm tra lời trả lời có phản ánh đúng trạng thái công cụ hay không. Lượt 2, bốn câu C03, C09, R03, R05 đạt lại khi công cụ trả `sent` trong mô phỏng và C09 thêm bước bảo vệ tài khoản. Tuy nhiên, C07 trượt mới do khẳng định thiếu căn cứ, nên tổng chỉ tăng từ 60% lên 75%. Tôi cần giữ nguyên tiêu chí, ghi cả cải thiện lẫn lỗi mới và không suy kết quả mô phỏng thành hiệu quả bảo vệ tiền thật.
+

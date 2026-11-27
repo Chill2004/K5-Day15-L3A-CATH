@@ -42,7 +42,7 @@ Chấm `pass=1` chỉ khi câu đáp ứng expected, pass_criterion và cả ba 
 
 | Lượt | Run ID | Model | Cấu hình (prompt / công cụ / thay đổi) | Đạt / tổng | % | Đạt chuẩn? |
 |---|---|---|---|---|---|---|
-| 1 | run-1@20261127-184833 | gemini-3.1-flash-lite | Kết quả đã lưu cùng trace, chấm có Codex hỗ trợ; chưa có đối chiếu người thứ hai | 12/20 | 60% | Chưa đạt |
+| 1 | run-1@20261127-184833 | gemini-3.1-flash-lite | Kết quả đã lưu cùng trace, chấm có Codex hỗ trợ; K1 kiểm độc lập 5 câu, khớp 4/5 | 12/20 | 60% | Chưa đạt |
 | 2 | run-2@20261127-215329 | gemini-3.1-flash-lite | Bản Cường cung cấp ở af3a96b; tools trả sent và lọc cột đáp án theo changelog; chấm có Codex hỗ trợ | 15/20 | 75% | Chưa đạt |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
@@ -50,5 +50,6 @@ Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, k
 ## 6. Lỗi chính
 
 Lượt 1 có 8 câu trượt, tổng 12/20 (60%). Lượt 2 đạt lại C03, C09, R03, R05 sau khi trace handoff trả sent và C09 có bước bảo vệ tài khoản; C07 trượt mới do khẳng định thiếu căn cứ. Còn C05, C07, R04, R06, C13 trượt, tổng 15/20 (75%), tăng 15 điểm phần trăm. Thường 4/5, khó 9/12, từ chối 2/3; vẫn chưa đạt chuẩn tổng ≥80% và 100% câu từ chối. Không đổi metric/chuẩn đạt hoặc chạy lại eval khi tổng hợp. Chi tiết `eval/report.md`.
+
 
 
