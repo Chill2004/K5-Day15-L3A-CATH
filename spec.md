@@ -33,28 +33,46 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): __
 - [sản phẩm / tính năng gần giống]: một điều đáng học · một điều đáng né · mình khác gì
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
-- **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả):
-- Không làm (≥3 điều):
-- **Sơ đồ** (ảnh / Mermaid / draw.io): [chèn ở đây]
-- **Hình dạng:** [ ] workflow cố định · [ ] một agent · [ ] nhiều agent — 2 dòng lý do, và vì sao **không** chọn hình dạng phức tạp hơn:
+- **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả): Một người dùng ví nhắn vào chat vì giao dịch vừa bị tạm giữ · AI phân loại tin nhắn (bị giục chuyển tiền / gấp thật / nghi bị chiếm tài khoản / chưa rõ) và chọn giữ tiếp kèm cảnh báo, gửi xác thực, hỏi lại một câu hoặc chuyển tư vấn viên kèm tóm tắt · tiền không đi sai chỗ và người gấp thật không bị bỏ lơ.
+- **Không làm** (≥3 điều):
+  1. Không tự động nhả giao dịch bị giữ.
+  2. Không tự động khoá vĩnh viễn tài khoản/ví.
+  3. Không tư vấn pháp lý hoặc hứa hoàn tiền.
+  4. Không hỏi hoặc lưu số tài khoản, mật khẩu, mã OTP.
+- **Sơ đồ** (Mermaid):
+
+```mermaid
+flowchart TD
+    U[Tin nhắn người dùng] --> T[Gọi tool: lookup_held_transaction]
+    T --> C{AI phân loại tình huống}
+    C -->|Bị giục chuyển tiền| P1[Giữ tiếp giao dịch + cảnh báo dấu hiệu lừa đảo]
+    C -->|Gấp thật| P2[Gửi yêu cầu xác thực nếu đủ căn cứ]
+    C -->|Nghi chiếm tài khoản| P3[Tạo bản nháp khoá ví chờ duyệt + chuyển tư vấn viên kèm tóm tắt]
+    C -->|Chưa rõ / ngoài phạm vi| P4[Hỏi lại tối đa 1 câu làm rõ - G10 hoặc chuyển tư vấn viên]
+```
+
+- **Hình dạng:** `[x] workflow cố định` · `[ ] một agent` · `[ ] nhiều agent` — Chỉ có một người dùng và một quyết định phân loại + chọn hành động trên mỗi lượt chat nên workflow cố định là đủ, dễ kiểm soát và dễ đo lường. Không dùng nhiều agent vì sẽ làm tăng độ trễ và khiến rủi ro mất tiền khó kiểm soát hơn.
 - **AI dựa vào đâu** — mỗi công cụ (khớp `codebase/tools.py`):
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-  |  |  |  |  |
+  | `lookup_held_transaction` | `user_hint: str` — mô tả/từ khoá từ người dùng | `dict` gồm `found`, `tx_id`, `amount`, `currency`, `recipient`, `status`, `hold_reason`, `hold_reason_label`, `timestamp`; nếu không tìm thấy: `{"found": False, "tx_id": None, "note": "..."}` | Không — chỉ đọc mock (CP2) hoặc `data/held_transactions.json` (CP3) |
+  | `draft_hold_warning` | `tx_id: str`, `reason: str` | `dict` gồm `status:"draft"`, `action`, `tx_id`, `reason`, `requires_human_approval: False`, `message_vi` | Không — chỉ tạo bản nháp trong bộ nhớ |
+  | `draft_verification_step` | `tx_id: str`, `method: str` | `dict` gồm `status:"draft"`, `action`, `tx_id`, `method`, `requires_human_approval: False`, `instructions_vi` | Không — chỉ tạo bản nháp bước xác thực, không gửi OTP thật |
+  | `draft_escalate_to_agent` | `tx_id: str`, `summary: str`, `suggested_action: str` | `dict` gồm `status:"draft"`, `action`, `tx_id`, `summary`, `suggested_action`, `requires_human_approval: True`, `note` | Không — chỉ tạo bản nháp; tư vấn viên phải duyệt trước khi thực thi |
 
-- **Mức tự động:** [ ] AI gợi ý, người quyết · [ ] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm — lý do (sai thì ai chịu gì, sửa đắt hay rẻ):
-- **Chỗ chặn rủi ro** (rủi ro lớn nhất của lát cắt bị chặn ở đâu, bằng gì):
-- **Chỗ người duyệt** (việc AI không được tự làm):
+- **Mức tự động:** `[ ] AI gợi ý, người quyết` · `[x] AI tự làm khi chắc, chuyển người khi không` · `[ ] AI tự làm` — AI tự tra giao dịch, giữ tiếp, gửi xác thực, hỏi lại 1 câu hoặc chuyển tư vấn viên (đều đảo lại được); nhả giao dịch và khoá ví chỉ tạo bản nháp chờ tư vấn viên duyệt vì nhả nhầm thì người dùng mất tiền trong vài giây, không lấy lại được.
+- **Chỗ chặn rủi ro:** AI không được gọi hàm thực thi nhả giao dịch hay khoá ví thật; mọi hành động dạng này chỉ tạo bản nháp với `status: "pending_human_approval"` để tư vấn viên duyệt.
+- **Chỗ người duyệt:** Tư vấn viên duyệt các bản nháp nhả giao dịch hoặc khoá ví (`status: "pending_human_approval"`), và tiếp nhận các ca `nghi chiếm tài khoản` hoặc ca ngoài phạm vi được chuyển lên kèm tóm tắt.
 - **Nguyên tắc thiết kế** (≥3, bắt buộc G10):
 
   | Nguyên tắc | Chỗ cụ thể trên sơ đồ / trong bản chạy thử |
   |---|---|
-  | G10 — thu hẹp phạm vi khi không chắc |  |
-  |  |  |
-  |  |  |
+  | G10 — thu hẹp phạm vi khi không chắc | Nhánh `Chưa rõ / ngoài phạm vi`: hỏi lại tối đa 1 câu làm rõ hoặc chuyển tư vấn viên |
+  | Chặn hành động không thể đảo ngược | Nhánh `Nghi chiếm tài khoản` và các thao tác nhả giao dịch/khoá ví chỉ tạo bản nháp `status: "pending_human_approval"` |
+  | Không thu thập dữ liệu nhạy cảm | Không hỏi hoặc lưu số tài khoản, mật khẩu, mã OTP trong luồng hội thoại |
 
-- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật:
+- **Phần nào còn giả:** `lookup_held_transaction` dùng 3 giao dịch mock in-memory cho CP2 (tình huống: nghi lừa đảo, vượt hạn mức giao dịch, nghi chiếm tài khoản); CP3 đặt file `data/held_transactions.json` là công cụ sẽ tự đọc. Các công cụ `draft_*` chỉ tạo bản nháp, chưa nối API ví thật.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 

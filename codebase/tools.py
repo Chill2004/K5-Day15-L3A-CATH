@@ -8,11 +8,243 @@ Số công cụ, kiểu công cụ do thiết kế của nhóm quyết định �
 Công cụ có tác động ra ngoài: KHÔNG tự làm. Trả về bản nháp chờ người duyệt (guide bước 2.2, "chỗ người duyệt").
 Dữ liệu công cụ đọc (bài mẫu, thông báo mẫu, lịch…): để trong data/ và mô tả ở data/DATA_CARD.md.
 """
+import json
+import os
+import unicodedata
 from tracing import tool, TOOLS  # noqa: F401  (TOOLS: danh sách công cụ đã đăng ký, dùng khi viết vòng lặp agent)
 
 
+def _strip_accents(text: str) -> str:
+    """Chuyển chuỗi tiếng Việt về dạng không dấu để so sánh linh hoạt hơn."""
+    nfkd = unicodedata.normalize("NFKD", text)
+    return "".join(c for c in nfkd if not unicodedata.combining(c)).lower()
+
+
+# ---------------------------------------------------------------------------
+# Dữ liệu mock cho CP2 — CP3 đọc từ data/held_transactions.json nếu tồn tại
+# ---------------------------------------------------------------------------
+
+_MOCK_TRANSACTIONS = [
+    {
+        "tx_id": "TX-2026-0001",
+        "user_hint_keywords": ["0001", "momo", "chuyển tiền", "bị giữ", "hôm nay"],
+        "amount": 2500000,
+        "currency": "VND",
+        "recipient": "Nguyễn Văn A",
+        "status": "held",
+        "hold_reason": "nghi_lua_dao",        # bị giục chuyển tiền
+        "hold_reason_label": "Nghi lừa đảo — người thụ hưởng thuộc danh sách cảnh báo",
+        "timestamp": "2026-11-27T19:45:00+07:00",
+    },
+    {
+        "tx_id": "TX-2026-0002",
+        "user_hint_keywords": ["0002", "tiền học phí", "học phí", "khẩn", "gấp"],
+        "amount": 8000000,
+        "currency": "VND",
+        "recipient": "Trường ĐH Bách Khoa",
+        "status": "held",
+        "hold_reason": "vuot_han_muc",         # gấp thật — vượt hạn mức giao dịch
+        "hold_reason_label": "Vượt hạn mức giao dịch trong ngày",
+        "timestamp": "2026-11-27T20:10:00+07:00",
+    },
+    {
+        "tx_id": "TX-2026-0003",
+        "user_hint_keywords": ["0003", "lạ", "không phải tôi", "chiếm", "tài khoản bị"],
+        "amount": 15000000,
+        "currency": "VND",
+        "recipient": "Người lạ",
+        "status": "held",
+        "hold_reason": "nghi_chiem_tai_khoan",  # nghi chiếm tài khoản
+        "hold_reason_label": "Giao dịch bất thường — nghi chiếm đoạt tài khoản",
+        "timestamp": "2026-11-27T20:30:00+07:00",
+    },
+]
+
+
+def _load_transactions() -> list:
+    """CP3 hook: đọc data/held_transactions.json nếu tồn tại, ngược lại dùng mock.
+    Không thay đổi signature của lookup_held_transaction."""
+    data_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "data", "held_transactions.json"
+    )
+    if os.path.isfile(data_path):
+        with open(data_path, encoding="utf-8") as f:
+            return json.load(f)
+    return _MOCK_TRANSACTIONS
+
+
+def _match_transaction(user_hint: str, transactions: list) -> dict | None:
+    """Tìm giao dịch khớp user_hint qua keyword (có dấu và không dấu)."""
+    hint_lower = user_hint.lower()
+    hint_stripped = _strip_accents(user_hint)
+    for tx in transactions:
+        # Khớp trực tiếp tx_id
+        if tx.get("tx_id", "").lower() in hint_lower:
+            return tx
+        for kw in tx.get("user_hint_keywords", []):
+            kw_lower = kw.lower()
+            kw_stripped = _strip_accents(kw)
+            # Khớp có dấu hoặc không dấu (cả chiều: hint chứa keyword hoặc keyword chứa trong hint)
+            if kw_lower in hint_lower or kw_stripped in hint_stripped:
+                return tx
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Công cụ 1 — Tra giao dịch bị giữ
+# ---------------------------------------------------------------------------
+
 @tool
-def search_example(query: str) -> list:
-    """(ví dụ — thay bằng công cụ của nhóm) Tra dữ liệu mẫu theo câu hỏi.
-    Input: câu hỏi (str). Output: danh sách đoạn {"code", "text"}. Không tác động ra ngoài."""
-    return [{"code": "VD-1", "text": "(ví dụ) đoạn dữ liệu giả — thay bằng dữ liệu thật của bài toán"}]
+def lookup_held_transaction(user_hint: str) -> dict:
+    """Tra giao dịch bị tạm giữ dựa trên gợi ý từ người dùng.
+
+    Tên/mục đích: Tra cứu thông tin giao dịch đang bị ví tạm giữ để AI
+        có căn cứ phân loại tình huống và chọn hành động phù hợp.
+    Input: user_hint (str) — đoạn mô tả ngắn từ người dùng (mã giao dịch,
+        số tiền, tên người nhận, từ khoá liên quan…); có thể rỗng hoặc thiếu.
+    Output: dict —
+        Nếu tìm thấy: {"found": True, "tx_id": str, "amount": int,
+            "currency": str, "recipient": str, "status": "held",
+            "hold_reason": str, "hold_reason_label": str, "timestamp": str}
+        Nếu không tìm thấy hoặc user_hint rỗng:
+            {"found": False, "tx_id": None, "note": "Không tìm thấy giao dịch"}
+    Tác động ra ngoài: Không — chỉ đọc dữ liệu, không thay đổi trạng thái.
+    """
+    # Edge case G10: user_hint rỗng hoặc chỉ có khoảng trắng
+    if not user_hint or not user_hint.strip():
+        return {"found": False, "tx_id": None, "note": "Không tìm thấy giao dịch"}
+
+    transactions = _load_transactions()
+    matched = _match_transaction(user_hint.strip(), transactions)
+
+    if matched is None:
+        return {"found": False, "tx_id": None, "note": "Không tìm thấy giao dịch"}
+
+    return {
+        "found": True,
+        "tx_id": matched["tx_id"],
+        "amount": matched["amount"],
+        "currency": matched["currency"],
+        "recipient": matched["recipient"],
+        "status": matched["status"],
+        "hold_reason": matched["hold_reason"],
+        "hold_reason_label": matched["hold_reason_label"],
+        "timestamp": matched["timestamp"],
+    }
+
+
+# ---------------------------------------------------------------------------
+# Công cụ 2 — Tạo bản nháp cảnh báo giữ tiếp
+# ---------------------------------------------------------------------------
+
+@tool
+def draft_hold_warning(tx_id: str, reason: str) -> dict:
+    """Tạo bản nháp cảnh báo giữ tiếp giao dịch khi nghi bị giục chuyển tiền.
+
+    Tên/mục đích: Tạo nội dung cảnh báo (dạng bản nháp) để gửi cho người dùng
+        rằng giao dịch sẽ được giữ tiếp do nghi ngờ lừa đảo; không nhả tiền.
+    Input:
+        tx_id (str) — mã giao dịch bị giữ.
+        reason (str) — lý do phân loại (ví dụ: "bị giục chuyển tiền").
+    Output: dict — {"status": "draft", "action": "hold_warning",
+        "tx_id": str, "reason": str, "requires_human_approval": False,
+        "message_vi": str}  # nội dung cảnh báo tiếng Việt gợi ý cho agent
+    Tác động ra ngoài: Không — chỉ tạo bản nháp trong bộ nhớ, không gửi tin
+        hay thay đổi trạng thái giao dịch.
+    """
+    message = (
+        f"Giao dịch {tx_id} đang được tạm giữ để bảo vệ bạn. "
+        "Dấu hiệu lừa đảo thường gặp: người lạ giục chuyển tiền gấp, "
+        "hứa lợi nhuận cao, giả danh cơ quan nhà nước hoặc người thân. "
+        "Nếu bạn không tự mình quyết định chuyển tiền, hãy dừng lại và "
+        "liên hệ trực tiếp với người nhận qua kênh khác để xác nhận."
+    )
+    return {
+        "status": "draft",
+        "action": "hold_warning",
+        "tx_id": tx_id,
+        "reason": reason,
+        "requires_human_approval": False,
+        "message_vi": message,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Công cụ 3 — Tạo bản nháp bước xác thực (trường hợp gấp thật)
+# ---------------------------------------------------------------------------
+
+@tool
+def draft_verification_step(tx_id: str, method: str) -> dict:
+    """Tạo bản nháp yêu cầu xác thực danh tính cho trường hợp giao dịch gấp thật.
+
+    Tên/mục đích: Tạo bước xác thực (dạng bản nháp) khi có căn cứ cho rằng
+        giao dịch là khẩn cấp thật — không nhả tiền, không thay đổi trạng thái.
+    Input:
+        tx_id (str) — mã giao dịch cần xác thực.
+        method (str) — phương thức xác thực đề xuất, ví dụ:
+            "selfie_id" (ảnh CCCD + ảnh mặt), "callback" (gọi lại số đăng ký),
+            "otp_registered_device" (OTP gửi về thiết bị đã đăng ký).
+    Output: dict — {"status": "draft", "action": "verification_step",
+        "tx_id": str, "method": str, "requires_human_approval": False,
+        "instructions_vi": str}  # hướng dẫn xác thực tiếng Việt gợi ý
+    Tác động ra ngoài: Không — chỉ tạo bản nháp bước xác thực, không gửi OTP
+        thật hay giải phóng giao dịch.
+    """
+    _method_labels = {
+        "selfie_id": "chụp ảnh CCCD/CMND và ảnh khuôn mặt",
+        "callback": "xác nhận qua cuộc gọi về số điện thoại đã đăng ký",
+        "otp_registered_device": "nhập mã OTP gửi về thiết bị đã đăng ký trước",
+    }
+    label = _method_labels.get(method, method)
+    instructions = (
+        f"Để xem xét giải phóng giao dịch {tx_id}, bạn cần hoàn tất bước xác thực: "
+        f"{label}. Tư vấn viên sẽ hướng dẫn bạn sau khi nhận được yêu cầu này."
+    )
+    return {
+        "status": "draft",
+        "action": "verification_step",
+        "tx_id": tx_id,
+        "method": method,
+        "requires_human_approval": False,
+        "instructions_vi": instructions,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Công cụ 4 — Tạo bản nháp chuyển tư vấn viên (luôn cần duyệt)
+# ---------------------------------------------------------------------------
+
+@tool
+def draft_escalate_to_agent(tx_id: str, summary: str, suggested_action: str) -> dict:
+    """Tạo bản nháp chuyển ca lên tư vấn viên kèm tóm tắt tình huống.
+
+    Tên/mục đích: Tạo bản nháp chuyển ca (escalation) cho tư vấn viên người thật
+        để duyệt và xử lý — dùng cho các tình huống nghi chiếm tài khoản,
+        yêu cầu nhả giao dịch, khoá ví, hoặc ca ngoài phạm vi AI.
+        KHÔNG thực thi bất kỳ hành động thật nào.
+    Input:
+        tx_id (str) — mã giao dịch liên quan.
+        summary (str) — tóm tắt ngắn tình huống để tư vấn viên nắm ngay.
+        suggested_action (str) — hành động AI đề xuất tư vấn viên xem xét,
+            ví dụ: "khoa_vi_tam_thoi", "nha_giao_dich", "lien_he_xac_minh".
+    Output: dict — {"status": "draft", "action": "escalate_to_agent",
+        "tx_id": str, "summary": str, "suggested_action": str,
+        "requires_human_approval": True,
+        "note": str}  # nhắc tư vấn viên đây là bản nháp cần duyệt
+    Tác động ra ngoài: Không — chỉ tạo bản nháp trong bộ nhớ; tư vấn viên
+        phải duyệt trước khi bất kỳ hành động thật nào được thực hiện.
+        status luôn là "draft" và requires_human_approval luôn là True.
+    """
+    return {
+        "status": "draft",
+        "action": "escalate_to_agent",
+        "tx_id": tx_id,
+        "summary": summary,
+        "suggested_action": suggested_action,
+        "requires_human_approval": True,
+        "note": (
+            "Đây là bản nháp — tư vấn viên cần xem xét và duyệt trước khi "
+            "thực hiện bất kỳ thay đổi nào đối với giao dịch hoặc tài khoản."
+        ),
+    }
