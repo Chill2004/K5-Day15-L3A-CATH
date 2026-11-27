@@ -5,49 +5,51 @@
 sessions: 50
 seed: 42
 
-# Tỷ giá bán ra USD/VND niêm yết tại Vietcombank (xem ngày 27/11/2026)
+# Tỷ giá bán ra USD/VND niêm yết chính thức tại Vietcombank (xem ngày 27/11/2026)
+# Nguồn: https://www.vietcombank.com.vn/
 usd_to_vnd:
   rate: 26030
-  source: "https://www.vietcombank.com.vn/ (xem ngày 27/11/2026)"
+  source: "https://www.vietcombank.com.vn/ (ngày 27/11/2026)"
 
-# Tổng số người dùng gặp giao dịch bị giữ và nhắn hỗ trợ / tháng (3 kịch bản)
+# Người dùng gặp giao dịch bị giữ và nhắn hỗ trợ / tháng:
+# Tính từ 30,35 triệu ví hoạt động (NHNN) × tỉ lệ bị giữ (thấp 0.1%, cơ sở 0.22%, cao 0.4%)
 users:
-  low: 50000
-  base: 112000
-  high: 215000
-  source: "Giả định của nhóm. Dựa trên 50 triệu người dùng ví tại VN, ước tính tỷ lệ gặp giao dịch bị giữ cần hỗ trợ là 0.1% - 0.4% / tháng (tự ước tính)."
+  low: 30350     # 30.350.000 × 0.1% ≈ 30.350 người
+  base: 66770    # 30.350.000 × 0.22% ≈ 66.770 người
+  high: 121400   # 30.350.000 × 0.4% ≈ 121.400 người
+  source: "Theo NHNN (Tạp chí Ngân hàng, 19/11/2025, https://tapchinganhang.gov.vn/phat-trien-thi-truong-vi-dien-tu-gop-phan-thuc-day-thanh-toan-so-va-chuyen-doi-so-16719.html): có gần 30,35 triệu ví điện tử đang hoạt động trên gần 49,57 triệu ví kích hoạt. Tỉ lệ người dùng có giao dịch bị giữ cần hỗ trợ ước tính 0.1% – 0.4%/tháng (giả định của nhóm, chưa có thống kê riêng cho ví bị giữ)."
 
-# Bảng giá model (dạng danh sách)
+# Bảng giá model BTC cung cấp ngày 25/11/2026
 prices:
   - model: "gemini-3.1-flash-lite"
-    input: 0.25   # USD / 1M tokens
+    input: 0.25   # USD / 1M tokens (cho prompt <= 128k)
     output: 1.50  # USD / 1M tokens
     source: "Bảng giá BTC cung cấp, ngày 25/11/2026"
 
   - model: "gemini-3.8-flash"
-    input: 1.50   # USD / 1M tokens
+    input: 1.50   # USD / 1M tokens (cho prompt <= 128k)
     output: 7.50  # USD / 1M tokens
-    source: "Bảng giá BTC cung cấp, ngày 25/11/2026"
+    source: "Bảng giá BTC cung cấp, ngày 25/11/2026 (áp dụng từ 01/01/2027)"
 
-# Danh sách Persona (dạng danh sách có dấu gạch ngang '-', có trường share)
+# Danh sách Persona
 personas:
   - name: "nguoi_lon_tuoi_bi_giuc"
-    share: 0.35             # Chiếm 35% tổng số phiên
-    uses_per_month: 1.2     # Trung bình bị giữ và liên hệ 1.2 lần/tháng
-    turns_per_session: 5    # Phản hồi nhiều lượt vì hoang mang và tranh luận
+    share: 0.35             # 35% tổng số phiên
+    uses_per_month: 1.2     # 1.2 lần/tháng
+    turns_per_session: 5    # 5 lượt/phiên
     human_handoff_rate: 0.85
     source: "Giả định của nhóm. Kịch bản lấy từ phỏng vấn P1–P6 (mẫu nhỏ), chưa có số liệu thống kê chính thức."
 
   - name: "chu_shop_nho_gap_that"
-    share: 0.50             # Chiếm 50% tổng số phiên
-    uses_per_month: 3.2     # Tần suất thanh toán và bị quét nhầm cao (3-4 lần/tháng)
-    turns_per_session: 2    # Giải thích ngắn gọn, cung cấp thông tin là xong
+    share: 0.50             # 50% tổng số phiên
+    uses_per_month: 3.2     # 3.2 lần/tháng
+    turns_per_session: 2    # 2 lượt/phiên
     human_handoff_rate: 0.25
     source: "Giả định của nhóm, tham khảo phỏng vấn P1–P6 (mẫu nhỏ). Chưa có nguồn cho số người dùng và tỉ lệ quét nhầm."
 
   - name: "nguoi_bi_chiem_tai_khoan"
-    share: 0.15             # Chiếm 15% tổng số phiên
-    uses_per_month: 1.0     # Thường là sự cố đột xuất 1 lần
-    turns_per_session: 3    # Báo cáo sự cố và yêu cầu khóa tài khoản khẩn cấp
+    share: 0.15             # 15% tổng số phiên
+    uses_per_month: 1.0     # 1.0 lần/tháng
+    turns_per_session: 3    # 3 lượt/phiên
     human_handoff_rate: 0.95
     source: "Giả định của nhóm, tham khảo phỏng vấn P1–P6 (mẫu nhỏ). Chưa có nguồn cho số người dùng."
