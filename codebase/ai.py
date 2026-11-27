@@ -77,12 +77,17 @@ def post_json(url, headers, body, timeout=60):
 
 
 @model_call
-def call_model(system: str, user: str) -> dict:
+def call_model(system: str, user: str, schema: dict = None) -> dict:
+    """schema (tuỳ chọn): JSON schema kiểu Gemini — có thì model bắt buộc trả JSON đúng schema,
+    "text" là chuỗi JSON. Không có thì trả chữ thường như cũ."""
     if MODEL_PROVIDER == "fake":
+        if schema:  # chế độ giả: trả JSON hợp lệ theo schema để luồng phía sau vẫn chạy được
+            fake = {k: (v.get("enum") or ["[giả]"])[-1] for k, v in schema.get("properties", {}).items()}
+            return {"text": json.dumps(fake, ensure_ascii=False), "model": "fake", "tokens_in": 0, "tokens_out": 0}
         last = (user.strip().splitlines() or [""])[-1]
         return {"text": "[câu trả lời giả — chưa nối model] " + last[:60], "model": "fake", "tokens_in": 0, "tokens_out": 0}
     if MODEL_PROVIDER == "gemini":
-        r = call_gemini(system, user)
+        r = call_gemini(system, user, schema)
     else:
         raise NotImplementedError(
             "chưa viết phần gọi model cho MODEL_PROVIDER=%s — nhóm đang dùng gemini, xem docs/connect-model.md"
@@ -94,11 +99,13 @@ def call_model(system: str, user: str) -> dict:
 URL_GEMINI = "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent"
 
 
-def call_gemini(system, user):
+def call_gemini(system, user, schema=None):
     """Gọi Gemini qua REST API (generateContent). Key gửi ở header, không nằm trong URL."""
     body = {"contents": [{"role": "user", "parts": [{"text": user}]}]}
     if system:
         body["systemInstruction"] = {"parts": [{"text": system}]}
+    if schema:
+        body["generationConfig"] = {"responseMimeType": "application/json", "responseSchema": schema}
     data = post_json(URL_GEMINI % MODEL_NAME, {"x-goog-api-key": API_KEY}, body)
     cands = data.get("candidates") or []
     parts = (cands[0].get("content") or {}).get("parts", []) if cands else []
