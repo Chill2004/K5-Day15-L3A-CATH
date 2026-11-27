@@ -2,68 +2,52 @@
 # BẢNG THIẾT LẬP MÔ PHỎNG CHI PHÍ & PERSONA NGƯỜI DÙNG (CATH Track E3)
 # ==============================================================================
 
-# Tỷ giá bán ra USD/VND niêm yết chính thức tại Vietcombank (xem ngày 27/11/2026)
-# Nguồn: https://www.vietcombank.com.vn/
-usd_to_vnd: 26030
+sessions: 50
+seed: 42
 
+# Tỷ giá bán ra USD/VND niêm yết tại Vietcombank (xem ngày 27/11/2026)
+usd_to_vnd:
+  rate: 26030
+  source: "https://www.vietcombank.com.vn/ (xem ngày 27/11/2026)"
+
+# Tổng số người dùng gặp giao dịch bị giữ và nhắn hỗ trợ / tháng (3 kịch bản)
+users:
+  low: 50000
+  base: 112000
+  high: 215000
+  source: "Giả định của nhóm. Dựa trên 50 triệu người dùng ví tại VN, ước tính tỷ lệ gặp giao dịch bị giữ cần hỗ trợ là 0.1% - 0.4% / tháng (tự ước tính)."
+
+# Bảng giá model (dạng danh sách)
 prices:
-  # Bảng giá chính thức của Google Gemini API cho gói trả phí (Pay-as-you-go)
-  # Nguồn: https://ai.google.dev/gemini-api/docs/pricing (xem ngày 27/11/2026)
-  gemini-1.5-flash:
-    input: 0.075   # USD / 1M tokens (cho prompt <= 128k)
-    output: 0.300  # USD / 1M tokens
-    source: "https://ai.google.dev/gemini-api/docs/pricing (xem ngày 27/11/2026)"
+  - model: "gemini-3.1-flash-lite"
+    input: 0.25   # USD / 1M tokens
+    output: 1.50  # USD / 1M tokens
+    source: "Bảng giá BTC cung cấp, ngày 25/11/2026"
 
-  gemini-1.5-pro:
-    input: 1.250   # USD / 1M tokens (cho prompt <= 128k)
-    output: 5.000  # USD / 1M tokens
-    source: "https://ai.google.dev/gemini-api/docs/pricing (xem ngày 27/11/2026)"
+  - model: "gemini-3.8-flash"
+    input: 1.50   # USD / 1M tokens
+    output: 7.50  # USD / 1M tokens
+    source: "Bảng giá BTC cung cấp, ngày 25/11/2026"
 
+# Danh sách Persona (dạng danh sách có dấu gạch ngang '-', có trường share)
 personas:
-  nguoi_lon_tuoi_bi_giuc:
-    name: "Người lớn tuổi bị giục chuyển tiền"
-    description: >
-      Người dùng bị kẻ xấu thao túng tâm lý (giả công an, viện phí tai nạn, trúng thưởng tri ân, nhiệm vụ tài chính).
-      Nạn nhân hoảng loạn, tin rằng mình gấp thật, thúc ép hỗ trợ mở chặn và dễ tranh cãi khi bị từ chối.
-    users:
-      low: 15000
-      base: 35000
-      high: 70000
+  - name: "nguoi_lon_tuoi_bi_giuc"
+    share: 0.35             # Chiếm 35% tổng số phiên
     uses_per_month: 1.2     # Trung bình bị giữ và liên hệ 1.2 lần/tháng
-    turns_per_session: 5.5  # Phản hồi nhiều lượt vì hoang mang và tranh luận với bot
-    human_handoff_rate: 0.85 # 85% trường hợp cần chuyển tư vấn viên can thiệp trực tiếp
+    turns_per_session: 5    # Phản hồi nhiều lượt vì hoang mang và tranh luận
+    human_handoff_rate: 0.85
     source: "Giả định của nhóm. Kịch bản lấy từ phỏng vấn P1–P6 (mẫu nhỏ), chưa có số liệu thống kê chính thức."
-    types:
-      - "bi_giuc"
 
-  chu_shop_nho_gap_that:
-    name: "Chủ shop nhỏ gấp thật"
-    description: >
-      Chủ hộ kinh doanh, tiểu thương, cá nhân thanh toán tiền hàng quen, học phí, tiền cọc, viện phí thật.
-      Giao dịch gấp gáp nhưng thông tin người nhận rõ ràng, mạch lạc, có lịch sử giao dịch trước đó.
-    users:
-      low: 30000
-      base: 65000
-      high: 120000
+  - name: "chu_shop_nho_gap_that"
+    share: 0.50             # Chiếm 50% tổng số phiên
     uses_per_month: 3.2     # Tần suất thanh toán và bị quét nhầm cao (3-4 lần/tháng)
-    turns_per_session: 2.5  # Giải thích lý do ngắn gọn, cung cấp thông tin là xong
-    human_handoff_rate: 0.25 # 25% ca chuyển tư vấn viên; 75% còn lại AI gửi xác thực cho người dùng, tư vấn viên duyệt, AI không tự mở
+    turns_per_session: 2    # Giải thích ngắn gọn, cung cấp thông tin là xong
+    human_handoff_rate: 0.25
     source: "Giả định của nhóm, tham khảo phỏng vấn P1–P6 (mẫu nhỏ). Chưa có nguồn cho số người dùng và tỉ lệ quét nhầm."
-    types:
-      - "gap_that"
 
-  nguoi_bi_chiem_tai_khoan:
-    name: "Người bị chiếm tài khoản"
-    description: >
-      Khách hàng phát hiện tài khoản bị hack, mất điện thoại, click link lừa đảo bị chiếm quyền hoặc bị trừ tiền lạ.
-      Tâm lý hoảng sợ, mục tiêu duy nhất là khóa ví và thu hồi tiền ngay lập tức.
-    users:
-      low: 5000
-      base: 12000
-      high: 25000
+  - name: "nguoi_bi_chiem_tai_khoan"
+    share: 0.15             # Chiếm 15% tổng số phiên
     uses_per_month: 1.0     # Thường là sự cố đột xuất 1 lần
-    turns_per_session: 3.0  # Báo cáo sự cố và yêu cầu khóa tài khoản khẩn cấp
-    human_handoff_rate: 0.95 # 95% chuyển ngay cho đội ngũ chuyên viên Fraud/Security để đóng băng tài khoản
+    turns_per_session: 3    # Báo cáo sự cố và yêu cầu khóa tài khoản khẩn cấp
+    human_handoff_rate: 0.95
     source: "Giả định của nhóm, tham khảo phỏng vấn P1–P6 (mẫu nhỏ). Chưa có nguồn cho số người dùng."
-    types:
-      - "chiem_tk"
