@@ -14,14 +14,14 @@
 ## 2. Số chính
 
 - Đào data: __/__ (__%) …
-- Phỏng vấn: __/3 người gặp *(n nhỏ không ghi %)* · số lần / tháng: P1 __, P2 __, P3 __ · mỗi lần mất __–__ phút
+- Phỏng vấn: đã ghi nhận 1 người (P1), có gặp giao dịch treo và hỗ trợ chậm; chưa xác nhận tạm giữ vì nghi gian lận. Chưa đủ ngưỡng ≥3 người ngoài nhóm; cần xác nhận P1 ngoài nhóm. P1 tự khai khoảng 2 lần/tháng, lần gần nhất khoảng 40 phút chờ nhân viên và khoảng 2 ngày tới khi hoàn tiền; chưa có số phút thao tác chủ động. Chi tiết: `evidence/interviews/P1.md`.
 - Khảo sát: n = __ · __/__ (__%) …
 
 Phỏng vấn nhiều vai thì đếm theo từng vai, không cộng chung.
 
 | | Vai | Gặp pain? | Số lần / 1 tháng qua | Lần gần nhất mất | Đang xoay xở bằng |
 |---|---|---|---|---|---|
-| P1 | | | | | |
+| P1 | Học viên cùng khóa, người dùng ví | Một phần: giao dịch treo, hỗ trợ chậm; chưa xác nhận giữ vì nghi gian lận | Khoảng 2 | Khoảng 40 phút chờ nhân viên; khoảng 2 ngày tới hoàn tiền | Không chuyển lặp, lưu ảnh, chat hỗ trợ, nhờ bạn tạm ứng; sau đó ưu tiên ngân hàng |
 | P2 | | | | | |
 | P3 | | | | | |
 
@@ -45,4 +45,4 @@ Giả thuyết ở `evidence/hypothesis.md`: **đúng / sai / phải đổi** �
 
 | Vai | Giờ hẹn | Đã xong? |
 |---|---|---|
-| | | |
+| Học viên cùng khóa, người dùng ví (P1) | 18:30 ngày 27/11/2026 (UTC+7) | Ánh xác nhận đã phỏng vấn; cần xác nhận ngoài nhóm |
