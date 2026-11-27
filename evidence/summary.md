@@ -64,4 +64,4 @@ Giả thuyết ở `evidence/hypothesis.md` (ngưỡng ≥10% review 1–2 sao g
 
 | Vai | Giờ hẹn | Đã xong? |
 |---|---|---|
-| Học viên cùng khóa, người dùng ví (P1) | 18:30 ngày 27/11/2026 (UTC+7) | Ánh xác nhận đã phỏng vấn; cần xác nhận ngoài nhóm |
+| Học viên cùng khóa, người dùng ví ngoài nhóm (P1) | 18:30 ngày 27/11/2026 (UTC+7) | Đã phỏng vấn; Ánh xác nhận ngoài nhóm và đồng ý dùng ghi chép ẩn danh |

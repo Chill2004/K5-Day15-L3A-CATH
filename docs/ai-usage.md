@@ -13,7 +13,7 @@ README của nhóm có mục "Dùng AI vào việc gì" (2–3 dòng, bắt bu�
 | Rà câu hỏi phỏng vấn / khảo sát | | Chỉ rà câu dẫn dắt | | |
 | Sinh data `synthetic` (nếu có) |Claude |hỗ trợ khung script gen_synthetic.py |Hà viết lại, chỉnh sửa 30 tin nhắn cho sát thực tế VN Seed 42 · kiểm tay 30 dòng | Nguyễn Thị Thu Hà |
 | Viết câu thử (benchmark) | Codex | Soạn 12 câu tự viết, diễn giải/dịch 6 review đã có; đề xuất metric, chuẩn đạt và hồ sơ nguồn | Ánh đối chiếu nhãn 6 review; Ánh cùng Cường/Trí duyệt đáp án, metric và chuẩn đạt. Mỗi câu có source; không dùng 6 review giả lập SIM-R001–SIM-R006 | Chử Thị Ánh |
-| Chấm cột `pass` bằng LLM (nếu có) | | | Kiểm tra thủ công __ câu thử, khớp __/__ | |
-| Slide, văn bản | | | | |
+| Chấm cột `pass` bằng LLM (nếu có) | Codex | Đối chiếu 20 output lượt 1 với expected, tiêu chí và trace; chỉ điền pass/ghi_chu; tổng hợp 12/20 đạt | Đã rà tính nhất quán bằng code; chưa có độ khớp người chấm thứ hai. Không coi chấm AI là Ánh chấm độc lập | Chử Thị Ánh |
+| Slide, văn bản | Codex | Soạn báo cáo lượt 1, phiếu đối chiếu, bàn giao lỗi, nội dung slide đánh giá và nháp reflection của Ánh từ dữ kiện repo | Reflection và lời trình bày là bản nháp chờ Ánh đọc, sửa theo trải nghiệm thật; không điền kết quả lượt 2 khi chưa có | Chử Thị Ánh |
 
 **Không dùng AI để:** tạo người được phỏng vấn, trích dẫn, câu trả lời khảo sát; sửa kết quả các lượt đã chạy (`eval/run-*.csv`, `cost/simulate-*.csv`, `traces/`).

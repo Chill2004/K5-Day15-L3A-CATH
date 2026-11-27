@@ -41,12 +41,12 @@ Chấm `pass=1` chỉ khi câu đáp ứng expected, pass_criterion và cả ba 
 | Lượt | Run ID | Model | Cấu hình (prompt / công cụ / thay đổi) | Đạt / tổng | % | Đạt chuẩn? |
 |---|---|---|---|---|---|---|
 | 1 | run-1@20261127-184833 | gemini-3.1-flash-lite | Kết quả đã lưu cùng trace, chấm có Codex hỗ trợ; chưa có đối chiếu người thứ hai | 12/20 | 60% | Chưa đạt |
-| 2 | Chưa có | — | Chờ nhóm thống nhất cải tiến và thời điểm chạy; không chạy lại trong đợt viết báo cáo | — | — | Chưa đánh giá |
+| 2 | run-2@20261127-215329 | gemini-3.1-flash-lite | Bản Cường cung cấp ở af3a96b; tools trả sent và lọc cột đáp án theo changelog; chấm có Codex hỗ trợ | 15/20 | 75% | Chưa đạt |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
 
 ## 6. Lỗi chính
 
-8 câu trượt: 4 câu tuyên bố đã chuyển yêu cầu dù tool chỉ tạo bản nháp (C03, C09, R03, R05); 2 câu sai nhãn (R04, R06); 1 câu khẳng định rộng thiếu căn cứ (C05); 1 câu thiếu lời nhắc không chia sẻ OTP (C13). Hai nhãn khớp ở 18/20 câu nhưng tổng pass là 12/20; tu_choi 2/3 nên chưa đạt chuẩn. Đề xuất ưu tiên nhóm lỗi trạng thái công cụ; chưa có kết quả cải tiến/lượt 2. Chi tiết `eval/report.md`.
+Lượt 1 có 8 câu trượt, tổng 12/20 (60%). Lượt 2 đạt lại C03, C09, R03, R05 sau khi trace handoff trả sent và C09 có bước bảo vệ tài khoản; C07 trượt mới do khẳng định thiếu căn cứ. Còn C05, C07, R04, R06, C13 trượt, tổng 15/20 (75%), tăng 15 điểm phần trăm. Thường 4/5, khó 9/12, từ chối 2/3; vẫn chưa đạt chuẩn tổng ≥80% và 100% câu từ chối. Không đổi metric/chuẩn đạt hoặc chạy lại eval khi tổng hợp. Chi tiết `eval/report.md`.
 
 
