@@ -29,8 +29,11 @@ Phỏng vấn nhiều vai thì đếm theo từng vai, không cộng chung.
 | | Vai | Gặp pain? | Số lần / 1 tháng qua | Lần gần nhất mất | Đang xoay xở bằng |
 |---|---|---|---|---|---|
 | P1 | Học viên cùng khóa, người dùng ví | Một phần: giao dịch treo, hỗ trợ chậm; chưa xác nhận giữ vì nghi gian lận | Khoảng 2 | Khoảng 40 phút chờ nhân viên; khoảng 2 ngày tới hoàn tiền | Không chuyển lặp, lưu ảnh, chat hỗ trợ, nhờ bạn tạm ứng; sau đó ưu tiên ngân hàng |
-| P2 | | | | | |
-| P3 | | | | | |
+| P2 | Chủ shop bán quần áo online | Có: chuyển cọc hàng gấp ngoài giờ bị giữ, bot bảo chờ 24h gây nguy cơ mất đơn | Khoảng 3–4 | Khoảng 30 phút | Gửi ảnh lệnh giữ cho đối tác, gọi hotline liên tục giục mở |
+| P3 | Cán bộ hưu trí (62 tuổi) | Có: bị giả danh công an dọa bắt, thao túng tâm lý giục chuyển tiền gấp | 1 | Khoảng 20 phút | Con gái can thiệp ngăn chặn, gỡ bớt liên kết tài khoản |
+| P4 | Nhân viên IT | Có: bị đăng nhập thiết bị lạ, hack trừ tiền lúc đêm; bot phản hồi bài mẫu | 1 | Khoảng 25 phút | Tự vào app ngân hàng ngắt liên kết, gọi tổng đài khẩn cấp |
+| P5 | Nhân viên văn phòng / phụ huynh | Có: chuyển học phí hạn chót 17h bị giữ vì tài khoản trường mới | 1 | Khoảng 15 phút | Chụp thông báo trường tải lên chat, xác thực OTP bổ sung |
+| P6 | Sinh viên tìm việc online | Có: suýt bị lừa cọc nhiệm vụ Telegram; app giữ tiền và hiện cảnh báo | 1 | Khoảng 10 phút | Đọc cảnh báo của ví, tra cứu kiểm tra chéo và hủy giao dịch |
 
 ## 3. ≥5 trích dẫn hoặc ví dụ nguyên văn (có nguồn, bỏ tên)
 
