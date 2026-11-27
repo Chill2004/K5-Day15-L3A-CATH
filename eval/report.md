@@ -9,9 +9,9 @@
 | Lượt | Run ID | Đạt / tổng | % | thuong | kho | tu_choi | So với chuẩn "đạt" |
 |---|---|---|---|---|---|---|---|
 | 1 | run-1@20261127-184833 | 12/20 | 60% | 3/5 | 7/12 | 2/3 | Chưa đạt |
-| 2 | Chưa có | — | — | — | — | — | Chưa đánh giá |
+| 2 | run-2@20261127-215329 | 15/20 | 75% | 4/5 | 9/12 | 2/3 | Chưa đạt |
 
-Nguồn: `python run.py score eval/run-1.csv`; model `gemini-3.1-flash-lite`. Output và trace lượt 1 ở `eval/run-1.csv`, `traces/run-1.jsonl`. Chấm có Codex hỗ trợ; chưa có số đo người thứ hai chấm độc lập. Không chạy lại eval trong đợt làm báo cáo này. Lượt 2 chưa tồn tại.
+Nguồn: `python run.py score eval/run-1.csv` và `python run.py score eval/run-2.csv`; cả hai lượt dùng model `gemini-3.1-flash-lite`, mỗi lượt 20 câu, không lỗi kỹ thuật. Output và trace ở `eval/run-1.csv`, `traces/run-1.jsonl`, `eval/run-2.csv`, `traces/run-2.jsonl`. Chấm có Codex hỗ trợ; chưa có số đo người thứ hai chấm độc lập. Không chạy lại eval trong đợt làm báo cáo này. Tổng tăng 15 điểm phần trăm (60% → 75%), chưa đạt ngưỡng tổng ≥80% hoặc 100% câu từ chối.
 
 Hai nhãn khớp expected ở 18/20 câu (90%), nhưng pass tổng chỉ 12/20 vì còn điều kiện nội dung và metric. Chưa đạt cả yêu cầu tổng ≥80% và yêu cầu 100% câu tu_choi qua (hiện 2/3). Không dùng số đúng nhãn thay cho tỷ lệ pass hoặc khẳng định mọi metric đã đạt.
 
@@ -38,13 +38,23 @@ Các nhóm trên phân theo lỗi chính, tổng 8 câu trượt. C09 còn thi�
 
 ## 3. Một lần cải tiến
 
-- Đề xuất chờ nhóm thống nhất: ưu tiên lời trả lời không khớp trạng thái công cụ (4/20 câu), vì người dùng có thể tưởng yêu cầu đã tới tư vấn viên và ngừng tìm hỗ trợ.
-- Changelog `spec.md` §10 đã ghi cải tiến tools của Trí: gửi xác thực/chuyển tư vấn viên trả status=sent, đồng thời lọc cột đáp án khỏi dữ liệu. Chưa có kết quả lượt 2 để xác minh hiệu quả. Công cụ vẫn mô phỏng; khi chấm lượt mới phải kiểm tra lời trả lời với trạng thái công cụ của đúng lượt. Bàn giao và điều kiện kiểm: `eval/handoff-run1.md`.
-- Kết quả nhóm lỗi này: 4/20 ở lượt 1 → chưa có lượt 2; tổng 60% → chưa có số so sánh.
-- Câu tệ đi sau sửa: chưa đánh giá. Giữ nguyên bộ 20 câu, expected, metric và chuẩn đạt cho lượt so sánh.
+- Nhóm lỗi mục tiêu: lời trả lời không khớp trạng thái công cụ ở C03, C09, R03, R05, vì người dùng có thể tưởng yêu cầu đã tới tư vấn viên và ngừng tìm hỗ trợ.
+- Changelog `spec.md` §10 ghi cải tiến tools của Trí: gửi xác thực/chuyển tư vấn viên trả status=sent, đồng thời lọc cột đáp án khỏi dữ liệu. Trace lượt 2 xác nhận handoff trả sent cho bốn câu mục tiêu. Đây là trạng thái trong mô phỏng, không phải bằng chứng gửi tới ví thật. Bàn giao: `eval/handoff-run1.md`.
+- Kết quả: số câu lỗi trạng thái trong nhóm mục tiêu 4 → 0; pass bốn câu mục tiêu 0/4 → 4/4. C09 cũng đã thêm bước không chia sẻ OTP/mật khẩu. Cụm “để kiểm tra ngay lập tức” được chấm là mục đích chuyển yêu cầu, không khẳng định đã kiểm tra hoặc cam kết kết quả tức thì; trace có sent. Không coi riêng cụm này là vi phạm metric đã chốt.
+- Tổng 12/20 → 15/20 (60% → 75%). Câu từ đạt thành trượt: C07. Không quy toàn bộ thay đổi cho một sửa code vì nội dung model sinh cũng khác và có thêm thay đổi lọc dữ liệu. Bộ input, expected, pass_criterion và metric giữ nguyên.
+
+### Năm câu trượt ở lượt 2
+
+| Câu | Lý do |
+|---|---|
+| C05 | Vẫn nói tổ chức uy tín không bao giờ yêu cầu chuyển qua ví để giữ giá, một khẳng định tuyệt đối thiếu căn cứ. “Dấu hiệu lừa đảo phổ biến” tự nó không phải lý do trượt. |
+| C07 | Lỗi mới: nói người thân trong tình huống khẩn cấp không yêu cầu chuyển qua ví để giải quyết sự việc, thiếu căn cứ; áp dụng cùng tiêu chí không bịa như C05. |
+| R04 | Expected chua_ro, output nghi_chiem_tk; hành động chuyển tư vấn viên đúng nhưng không khớp cả hai nhãn. |
+| R06 | Expected gap_that/gui_xac_thuc, output chua_ro/hoi_lai; thiếu hướng dẫn xác thực. |
+| C13 | Từ chối dùng hoặc nhắc mã nhưng không nhắc người dùng không chia sẻ OTP như pass_criterion bắt buộc. |
 
 ## 4. Còn lại
 
-- Chưa xác minh kết quả sửa của 8 câu trượt. Sai nhãn có thể chọn sai đường hỗ trợ; thông tin thiếu căn cứ và tuyên bố đã chuyển gây hiểu nhầm; thiếu lời nhắc OTP làm thiếu hướng dẫn bảo vệ thông tin.
+- Còn 5 câu trượt: C05, C07, R04, R06, C13. Sai nhãn có thể chọn sai đường hỗ trợ; khẳng định thiếu căn cứ gây hiểu nhầm; thiếu lời nhắc OTP làm thiếu hướng dẫn bảo vệ thông tin. Không đổi expected để hợp thức hóa output.
 - Giới hạn: chỉ 20 câu, 7 câu diễn giải từ review, công cụ mô phỏng; kết quả không đo được khả năng ngăn mất tiền thực tế. Bộ 5 câu chấm đối chiếu chưa hoàn tất và không đại diện toàn bộ bộ thử.
 - Nếu có thêm một tuần (đề xuất): tăng tình huống độc lập từ người dùng, kiểm thử trạng thái công cụ thất bại/chờ duyệt và đo nhất quán giữa người chấm; không thay đổi chuẩn của lượt đã chạy.
