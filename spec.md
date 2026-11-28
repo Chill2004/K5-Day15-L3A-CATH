@@ -193,5 +193,5 @@ flowchart LR
 
 | Thời điểm | Đổi gì | Vì sao |
 |---|---|---|
-|  |  |  |
+| 10:20 ngày 28/11/2026 (UTC+7) | Thêm giao diện chat web 2 cột trên HF Space (`web_app.py`): trái là khung chat chỉ hiện `tra_loi`, phải là "AI quyết định gì" cho tin nhắn mới nhất (nhóm, hành động, lý do, guard can thiệp, công cụ, bản nháp chờ duyệt, token/thời gian — đọc từ output + trace) và lịch sử quyết định; giới hạn 15 tin/phiên; `spaces` tuỳ chọn cho ZeroGPU | Góp ý giao diện demo của Cường. Chỉ là lớp vỏ: mỗi tin vẫn gọi `answer(text)` một lần, phân loại riêng (§4). Không đổi `agent.py`, `decide.py`, `guard.py`, `tools.py`, câu thử, metric, chuẩn đạt hay kết quả lượt chạy. |
 

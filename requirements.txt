@@ -3,3 +3,5 @@
 # Nhóm dùng thêm thư viện (vd SDK của nhà cung cấp model) thì ghi tên gói vào đây, mỗi dòng một gói,
 # và ghi lệnh cài vào README: python -m pip install -r requirements.txt
 google-play-scraper  # chỉ để chạy evidence/scripts/scrape_reviews.py
+gradio>=4.0.0  # chỉ để chạy giao diện web: python web_app.py (xem DEPLOY.md)
+spaces  # chỉ cần trên Hugging Face Spaces (ZeroGPU); chạy trên máy không cài cũng được — web_app.py tự bỏ qua

@@ -1,0 +1,5 @@
+# Chỉ dùng cho Render (Build Command: pip install -r requirements-render.txt) — xem DEPLOY.md §3.
+# web_app.py chỉ cần gradio; codebase/ chỉ dùng thư viện chuẩn (gọi model qua urllib).
+# Không cài `spaces` (chỉ cho HF ZeroGPU, web_app.py tự bỏ qua) và `google-play-scraper` (chỉ cho evidence/scripts).
+# Ghim đúng bản đã chạy thử trên máy để build trên Render lặp lại được.
+gradio==6.32.0
