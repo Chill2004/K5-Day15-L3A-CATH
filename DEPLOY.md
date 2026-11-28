@@ -141,9 +141,11 @@ git ls-files | grep -i "\.env"   # chỉ được thấy .env.example
 | Key | Giá trị | Ghi chú |
 |---|---|---|
 | `PYTHON_VERSION` | `3.13.7` | Bắt buộc nên có: service mới trên Render mặc định Python 3.14, còn app đã thử trên 3.13. |
-| `MODEL_PROVIDER` | `fake` (thử) → `gemini` (demo thật) | Để `fake` = không gọi model, không tốn lượt. |
-| `MODEL_NAME` | `gemini-3.1-flash-lite` | Cùng giá trị như `.env` trên máy. |
-| `API_KEY` | key của nhóm | Chỉ nhập ở đây. Không dán vào code, `render.yaml`, slide, ảnh chụp màn hình. |
+| `MODEL_PROVIDER` | `fake` (thử) → `gemini` hoặc `openrouter` (demo thật) | Để `fake` = không gọi model, không tốn lượt. |
+| `MODEL_NAME` | `gemini-3.1-flash-lite` · hoặc `deepseek/deepseek-v4.1-flash-1017` (openrouter) | Cùng giá trị như `.env` trên máy. Với openrouter, để trống thì dùng mã deepseek này. |
+| `API_KEY` | key của nhóm (Gemini hoặc OpenRouter) | Chỉ nhập ở đây. Không dán vào code, `render.yaml`, slide, ảnh chụp màn hình. Với openrouter có thể đặt `OPENROUTER_API_KEY` thay cho `API_KEY`. |
+
+**OpenRouter** (`MODEL_PROVIDER=openrouter`): `codebase/ai.py` gọi `https://openrouter.ai/api/v1/chat/completions` bằng `urllib` (không cần cài thêm gói), gửi header `HTTP-Referer: https://k5-day15-l3a-cath.onrender.com` và `X-Title: E3 Wallet Guard`. Schema phân loại của `decide.py` được đổi sang `response_format` kiểu JSON Schema, kèm một câu nhắc "chỉ trả JSON" trong system prompt (vì không phải nhà cung cấp nào trên OpenRouter cũng tôn trọng `response_format`); nếu model vẫn bọc ```` ```json … ``` ```` thì `ai.py` tự bỏ khung. Token lấy đúng từ `usage.prompt_tokens` / `usage.completion_tokens` → cột phải và trace hiện số thật. Model trả sai định dạng thì `decide.py` vẫn dùng mặc định an toàn (chuyển tư vấn viên) như cũ.
 | `MAX_TURNS_PER_SESSION` | `15` | Tuỳ chọn, giới hạn mềm số tin / phiên. |
 | `GRADIO_ANALYTICS_ENABLED` | `False` | Tuỳ chọn, tắt gửi thống kê của Gradio. |
 

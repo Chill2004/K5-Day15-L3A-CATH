@@ -19,6 +19,7 @@ Nối model thật: điền .env (chép từ .env.example), rồi viết nhánh 
 """
 import json
 import os
+import re
 import time
 import urllib.error
 import urllib.request
@@ -94,11 +95,13 @@ def call_model(system: str, user: str, schema: dict = None) -> dict:
         return {"text": "[câu trả lời giả — chưa nối model] " + last[:60], "model": "fake", "tokens_in": 0, "tokens_out": 0}
     if MODEL_PROVIDER == "gemini":
         r = call_gemini(system, user, schema)
+    elif MODEL_PROVIDER == "openrouter":
+        r = call_openrouter(system, user, schema)
     else:
         raise NotImplementedError(
-            "chưa viết phần gọi model cho MODEL_PROVIDER=%s — nhóm đang dùng gemini, xem docs/connect-model.md"
+            "chưa viết phần gọi model cho MODEL_PROVIDER=%s — hỗ trợ: fake, gemini, openrouter; xem docs/connect-model.md"
             % MODEL_PROVIDER)
-    return {"text": r["text"], "model": MODEL_NAME,
+    return {"text": r["text"], "model": r.get("model") or MODEL_NAME,
             "tokens_in": int(r["tokens_in"]), "tokens_out": int(r["tokens_out"])}
 
 
@@ -120,3 +123,84 @@ def call_gemini(system, user, schema=None):
     # Token ra = token trả lời + token suy nghĩ (model "thinking" tính tiền cả phần suy nghĩ).
     tokens_out = u.get("candidatesTokenCount", 0) + u.get("thoughtsTokenCount", 0)
     return {"text": text, "tokens_in": u.get("promptTokenCount", 0), "tokens_out": tokens_out}
+
+
+URL_OPENROUTER = "https://openrouter.ai/api/v1/chat/completions"
+OPENROUTER_DEFAULT_MODEL = "deepseek/deepseek-v4.1-flash-1017"
+OPENROUTER_HEADERS = {
+    "HTTP-Referer": "https://k5-day15-l3a-cath.onrender.com",
+    "X-Title": "E3 Wallet Guard",
+}
+
+
+def _to_json_schema(s):
+    """Đổi schema kiểu Gemini (type viết HOA, propertyOrdering) sang JSON Schema chuẩn cho OpenAI / OpenRouter."""
+    if not isinstance(s, dict):
+        return s
+    out = {}
+    for k, v in s.items():
+        if k == "propertyOrdering":
+            continue
+        if k == "type" and isinstance(v, str):
+            out[k] = v.lower()
+        elif k == "properties":
+            out[k] = {name: _to_json_schema(sub) for name, sub in v.items()}
+        elif k == "items":
+            out[k] = _to_json_schema(v)
+        else:
+            out[k] = v
+    if out.get("type") == "object":
+        out.setdefault("additionalProperties", False)  # strict mode của json_schema đòi trường này
+    return out
+
+
+_FENCE = re.compile(r"^\s*```[a-zA-Z0-9_-]*\s*\n?(.*?)\n?\s*```\s*$", re.DOTALL)
+
+
+def _strip_fences(text):
+    """Bỏ khung ```json ... ``` nếu model bọc JSON trong Markdown; còn chữ thừa quanh JSON thì lấy { … } ngoài cùng."""
+    t = (text or "").strip()
+    m = _FENCE.match(t)
+    if m:
+        t = m.group(1).strip()
+    if not t.startswith("{"):
+        a, b = t.find("{"), t.rfind("}")
+        if a != -1 and b > a:
+            t = t[a:b + 1]
+    return t
+
+
+def call_openrouter(system, user, schema=None):
+    """Gọi OpenRouter (API kiểu OpenAI chat/completions) bằng urllib. Key gửi ở header Authorization.
+    Token lấy từ usage.prompt_tokens / usage.completion_tokens (completion đã gồm token suy luận)."""
+    key = API_KEY or (os.environ.get("OPENROUTER_API_KEY") or "").strip()
+    if not key:
+        raise RuntimeError("MODEL_PROVIDER=openrouter nhưng chưa có API_KEY (hoặc OPENROUTER_API_KEY) "
+                           "trong biến môi trường / .env")
+    model = MODEL_NAME or OPENROUTER_DEFAULT_MODEL
+    messages = []
+    if system or schema:
+        sys_text = system or ""
+        if schema:
+            # Nhắc thêm bằng lời: không phải model / nhà cung cấp nào trên OpenRouter cũng tôn trọng response_format.
+            sys_text += ("\n\n## Định dạng trả lời\nChỉ trả về MỘT object JSON hợp lệ, không bọc ```, không thêm chữ "
+                         "ngoài JSON, đúng các khoá: %s." % ", ".join(schema.get("properties", {})))
+        messages.append({"role": "system", "content": sys_text})
+    messages.append({"role": "user", "content": user})
+    body = {"model": model, "messages": messages}
+    if schema:
+        body["response_format"] = {"type": "json_schema", "json_schema": {
+            "name": "tra_loi", "strict": True, "schema": _to_json_schema(schema)}}
+    headers = dict(OPENROUTER_HEADERS, Authorization="Bearer " + key)
+    data = post_json(URL_OPENROUTER, headers, body)
+    if data.get("error"):
+        err = data["error"]
+        raise RuntimeError("OpenRouter lỗi: %s" % (err.get("message") if isinstance(err, dict) else err))
+    choices = data.get("choices") or []
+    content = ((choices[0].get("message") or {}).get("content") if choices else "") or ""
+    if isinstance(content, list):  # một số model trả content dạng danh sách phần
+        content = "".join(p.get("text", "") for p in content if isinstance(p, dict))
+    text = _strip_fences(content) if schema else content
+    u = data.get("usage") or {}
+    return {"text": text, "model": model,
+            "tokens_in": u.get("prompt_tokens", 0), "tokens_out": u.get("completion_tokens", 0)}
