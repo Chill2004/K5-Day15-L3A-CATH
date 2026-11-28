@@ -1,0 +1,24 @@
+# Render Blueprint (tuỳ chọn) cho giao diện web E3 — xem DEPLOY.md §3.
+# Không bắt buộc: tạo Web Service bằng tay trên dashboard với cùng thông số cũng được.
+# Không ghi API key vào file này: API_KEY / MODEL_NAME để sync: false → Render hỏi giá trị khi tạo.
+services:
+  - type: web
+    name: e3-ho-tro-vi
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements-render.txt
+    startCommand: python web_app.py
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION          # Render mặc định Python 3.14 cho service mới; ghim bản đã thử trên máy
+        value: 3.13.7
+      - key: GRADIO_ANALYTICS_ENABLED
+        value: "False"
+      - key: MODEL_PROVIDER          # mặc định chế độ giả (không tốn token); đổi thành gemini khi demo thật
+        value: fake
+      - key: MODEL_NAME
+        sync: false
+      - key: API_KEY                 # secret — nhập trên dashboard, không commit
+        sync: false
+      - key: MAX_TURNS_PER_SESSION
+        value: "15"

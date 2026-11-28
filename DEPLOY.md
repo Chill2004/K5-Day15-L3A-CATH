@@ -93,6 +93,76 @@ Space miễn phí dùng phần cứng **CPU basic**; app ngủ khi không ai dù
 
 **Lưu ý bảo mật:** Space **Public** + `API_KEY` thật = ai có link cũng gọi model bằng key của nhóm (tốn hạn mức). Để Space **Private** khi demo bằng key thật, hoặc để Public ở chế độ giả. Không bao giờ commit `.env` hay dán key vào code.
 
-## 3. Render (tuỳ chọn)
+## 3. Render — Web Service gói Free (không cần thẻ)
 
-`web_app.py` đọc `PORT` nên chạy được trên Render (Web Service, gói Free): Build Command `pip install -r requirements.txt`, Start Command `python web_app.py`, đặt `MODEL_PROVIDER`, `MODEL_NAME`, `API_KEY` ở mục **Environment**. Cùng lưu ý bảo mật như trên.
+Render build thẳng từ repo GitHub này, không cần chép file ra thư mục riêng như HF. Đã kiểm trên máy (chế độ giả): app mở cổng sau ~4 giây, dùng ~155 MB RAM (gói Free có 512 MB), `GET /` trả 200.
+
+**Hai file chỉ dành cho Render** (không ảnh hưởng `run.py`, eval hay HF Spaces):
+
+| File | Vì sao |
+|---|---|
+| `requirements-render.txt` | Chỉ cài `gradio==6.32.0` (bản đã thử). Bỏ `spaces` (chỉ cho HF ZeroGPU) và `google-play-scraper` (chỉ cho script thu bằng chứng) → build nhanh, nhẹ hơn. `requirements.txt` giữ nguyên cho HF Spaces / chạy trên máy. |
+| `render.yaml` | Blueprint tuỳ chọn, ghi sẵn đúng các thông số ở bước 2–3 dưới đây. Không chứa key. |
+
+### Bước 1 — Kiểm repo trước khi đẩy
+
+```bash
+git status                       # không thấy .env trong danh sách
+git check-ignore -v .env         # phải in ra: .gitignore:2:.env  .env
+git ls-files | grep -i "\.env"   # chỉ được thấy .env.example
+```
+
+- `.env` (key thật) đã nằm trong `.gitignore` — Render **không** đọc `.env`; key đặt ở bước 3.
+- `eval/run-N.csv`, `traces/run-N.jsonl`, `cost/simulate-N.csv` **phải commit** (là bài nộp, xem `.gitignore`). Chúng chỉ là dữ liệu giả, lên Render cũng không sao — app không đọc chúng. Các lượt nháp (`run-try`, `run-fake`…) đã được ignore sẵn.
+- Không commit dữ liệu thật, `evidence/raw/`, `data-btc/` (đã ignore).
+- Đẩy nhánh muốn deploy lên GitHub (repo Private cũng được — Render xin quyền đọc qua GitHub).
+
+### Bước 2 — Tạo Web Service (Free)
+
+1. Đăng ký <https://render.com> bằng tài khoản GitHub (gói Free không đòi thẻ).
+2. **New → Web Service** → chọn repo này → chọn **Branch** cần chạy.
+3. Điền:
+
+   | Mục | Giá trị |
+   |---|---|
+   | Language / Runtime | `Python 3` |
+   | Root Directory | để trống |
+   | Build Command | `pip install -r requirements-render.txt` |
+   | Start Command | `python web_app.py` |
+   | Instance Type | **Free** |
+   | Health Check Path (Advanced) | `/` |
+
+   Không cần đặt `PORT`: Render tự cấp (mặc định 10000), `web_app.py` đọc `PORT` và nghe `0.0.0.0`.
+
+   *Cách khác:* **New → Blueprint** → chọn repo → Render đọc `render.yaml` và tự điền như trên. Nếu Render đòi thông tin thanh toán ở luồng Blueprint, quay lại tạo bằng tay theo bảng trên.
+
+### Bước 3 — Biến môi trường (mục **Environment**)
+
+| Key | Giá trị | Ghi chú |
+|---|---|---|
+| `PYTHON_VERSION` | `3.13.7` | Bắt buộc nên có: service mới trên Render mặc định Python 3.14, còn app đã thử trên 3.13. |
+| `MODEL_PROVIDER` | `fake` (thử) → `gemini` (demo thật) | Để `fake` = không gọi model, không tốn lượt. |
+| `MODEL_NAME` | `gemini-3.1-flash-lite` | Cùng giá trị như `.env` trên máy. |
+| `API_KEY` | key của nhóm | Chỉ nhập ở đây. Không dán vào code, `render.yaml`, slide, ảnh chụp màn hình. |
+| `MAX_TURNS_PER_SESSION` | `15` | Tuỳ chọn, giới hạn mềm số tin / phiên. |
+| `GRADIO_ANALYTICS_ENABLED` | `False` | Tuỳ chọn, tắt gửi thống kê của Gradio. |
+
+Bấm **Save, rebuild and deploy** (đổi biến sau này cũng vậy — service tự khởi động lại).
+
+### Bước 4 — Kiểm sau khi deploy
+
+1. Tab **Logs**: build xong thấy `Running on local URL: http://0.0.0.0:10000`, trạng thái **Live**.
+2. Mở `https://<tên-service>.onrender.com`, bấm 4 nút ví dụ.
+3. Với `MODEL_PROVIDER=fake`: cột phải có băng "⚠️ Đang chạy chế độ giả". Với model thật: cột phải hiện tên model và token vào/ra > 0.
+4. Lỗi gọi model (sai key, hết lượt): xem **Logs**; giao diện không bao giờ in API key.
+
+### Lưu ý gói Free, bảo mật và hạn mức
+
+- **Ngủ sau ~15 phút không có truy cập**; lần mở đầu tiên sau đó chờ khoảng 1 phút (cold start). Trước giờ demo, mở link sớm vài phút cho app thức.
+- 750 giờ chạy Free / workspace / tháng — đủ cho 1 service chạy suốt tháng. Ổ đĩa không lưu lâu dài (mỗi lần deploy/ngủ dậy là mới), nhưng app web không ghi file nên không ảnh hưởng.
+- **Link `onrender.com` là công khai** (gói Free không có chế độ Private như HF Space). Ai có link + `API_KEY` thật = gọi model bằng hạn mức của nhóm. Vì vậy:
+  - Mặc định để `MODEL_PROVIDER=fake`; chỉ đổi sang `gemini` quanh giờ demo, xong đổi lại `fake` (hoặc **Suspend** service).
+  - Dùng key riêng cho demo, đặt giới hạn / hạn mức thấp ở phía nhà cung cấp; lộ thì thu hồi key ngay.
+  - `MAX_TURNS_PER_SESSION` chỉ là giới hạn mềm (tải lại trang là phiên mới), không thay cho các biện pháp trên.
+  - Không gửi link công khai lên nhóm chat lớn khi đang bật key thật.
+- App xử lý từng lượt một (`queue(default_concurrency_limit=1)` + khoá) — nhiều người bấm cùng lúc thì xếp hàng, không lỗi.
